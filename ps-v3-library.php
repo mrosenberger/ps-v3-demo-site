@@ -88,7 +88,9 @@ class PsApiCall {
     foreach ($valid_options as $option) {
       if (isset($options[$option])) {
 	if ($option == 'logging') {
-	  $this->logger->enable();
+	  if ($options[$option]) {
+	    $this->logger->enable();
+	  }
 	} else {
 	  $this->options[$option] = $options[$option];
 	}

@@ -1,0 +1,19 @@
+<?php
+function renderProduct($product) {
+  print('<div class="row">');
+    print('<div class="span2 offset1">');
+      print('<img style="width:100%;max-width:200px" src=' . $product->largestImageUrl() . '>');
+    print('</div>');
+    print('<div class="span3">');
+      print($product->attr('name'));
+    print('</div>');
+    print('<div class="span5">');
+      print('<i>' . $product->attr('description') . '</i>');
+    print('</div>');
+    print('<div class="span2">');
+      print('Offers available: ' . $product->attr('offer_count'));
+    print('</div>');
+  print('</div>');
+  print('<hr>');
+}
+?>

@@ -27,8 +27,8 @@
 	      <li><a href="coupons/1">Coupons</a></li>
 	      <li><a href="about">About</a></li>
 	    </ul>
-	    <form class="navbar-form pull-right">
-	      <input class="span2" type="text" placeholder="Search products...">
+	    <form class="navbar-form pull-right" method="get" action="search.php">
+	      <input name='keyword' class="span2" type="text" placeholder="Search products...">
 	      <button type="submit" class="btn">Go</button>
 	    </form>
 	  </div>
@@ -41,7 +41,14 @@
         'catalog' => 'dp4rtmme6tbhugpv6i59yiqmr',
         'logging' => false
       ));
-      $api->get('products', array('keyword' => 'wallet'));
+      $valid_options = array('category', 'include_discounts', 'keyword', 'keyword_description', 'keyword_ean', 'keyword_isbn', 'keyword_mpn', 'keyword_name', 'keyword_person', 'keyword_upc', 'keyword_sku', 'merchant', 'merchant_type', 'page', 'percent_off', 'percent_off_max', 'percent_off_min', 'postal_code', 'price', 'price_max', 'product', 'product_spec', 'include_identifiers', 'results_per_page', 'session', 'tracking_id');
+      $parameters = array();
+      foreach ($_GET as $key=>$value) {
+        if (in_array($key, $valid_options)) {
+	  $parameters[$key] = $value;
+	}
+      }
+      $api->get('products', $parameters);
       foreach ($api->resource('products') as $product) {
 	renderProduct($product);
       }
