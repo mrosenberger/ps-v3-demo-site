@@ -7,14 +7,18 @@ function println($s) {
 
 function renderProduct($product) {
   println('<div class="row">');
-  println('  <div class="span2 offset1">');
-  println('    <img style="width:100%;max-width:200px" src=' . $product->largestImageUrl() . '>');
+  println('  <div class="span2">');
+  println('    <a href="' . $product->largestImageUrl() . '">');
+  println('      <img style="width:100%;max-width:200px" src=' . $product->largestImageUrl() . '>');
+  println('    </a>');
+  println('  </div>');
+  println('  <div class="span2">');
+  println('    <a href="product.php?product="' . $product->attr('id') . '">');
+  println('      ' . $product->attr('name'));
+  println('    </a>');
   println('  </div>');
   println('  <div class="span3">');
-  println('    ' . $product->attr('name'));
-  println('  </div>');
-  println('  <div class="span5">');
-  println('    <i>' . $product->attr('description') . '</i>');
+  println('    <i>' . substr($product->attr('description'), 0, 150) . '</i>');
   println('  </div>');
   println('  <div class="span2">');
   println('    Offers available: ' . $product->attr('offer_count'));
