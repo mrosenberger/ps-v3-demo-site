@@ -10,20 +10,24 @@ function renderProduct($product) {
   println('<div class="row">');
   println('  <div class="span2">');
   println('    <a href="' . $product->largestImageUrl() . '">');
-  println('      <img style="width:100%;max-width:200px" src=' . $product->largestImageUrl() . '>');
+  println('      <img style="width:100%;max-width:200px;max-height:150px;" src=' . $product->largestImageUrl() . '>');
   println('    </a>');
   println('  </div>');
   println('  <div class="span2">');
-  println('    <a href="product.php?product="' . $product->attr('id') . '">');
+  println('    <a href="product.php?product=' . $product->attr('id') . '">');
   println('      ' . $product->attr('name'));
   println('    </a>');
   println('  </div>');
-  println('  <div class="span3">');
+  println('  <div class="span3" id="product-desc-' . $product->attr('id') . '">');
   if (strlen($product->attr('description')) > $description_cutoff) {
-    println('    ' . substr($product->attr('description'), 0, $description_cutoff) . '...');
-    println('    <br><a href="$product.php?product="' . $product->attr('id') . '">Read more</a>');
+    println('    ' . substr(htmlentities($product->attr('description')), 0, $description_cutoff) . '...');
+    println('<script language="javascript">function product_desc_show_' . $product->attr('id') .
+	    '() { document.getElementById("product-desc-' . $product->attr('id') . '").innerHTML = "' . htmlentities($product->attr('description')) . 
+	    '"; return false; }</script>');
+    //println('    <br><a href="$product.php?product="' . $product->attr('id') . '">Read more</a>');
+    println('<br><a href="#!" onclick="product_desc_show_' . $product->attr('id') . '()">Read more</a>');
   } else {
-    println('    ' . $product->attr('description'));
+    println('    ' . htmlentities($product->attr('description')));
   }
   println('  </div>');
   println('  <div class="span2">');
