@@ -22,6 +22,7 @@
 	margin-left: 0;
 	padding-right: 19px;
 	border-right: 1px groove #000000;
+	min-height: 768px;
       }
     </style>
     <title>ShopFoo</title>
@@ -41,7 +42,7 @@
 	    </ul>
 	    <form class="navbar-form pull-right" method="get" action="search.php">
 	      <input name="keyword" class="span2" type="text" placeholder="Search products...">
-	      <select name="category" class="span2" id="category"> 
+	      <select name="category" class="span3" id="category"> 
 		<option value="" id="nav-cat-select-default">All products</option>
 		<option value="32194" id="nav-cat-select-32194">Arts &amp; Crafts</option>
 		<option value="2000" id="nav-cat-select-2000">Automotive Parts &amp; Vehicles</option>
