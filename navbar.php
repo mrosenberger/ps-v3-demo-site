@@ -5,7 +5,7 @@
 	  <div class="nav-collapse collapse">
 	    <ul class="nav">
 	      <li><a href="c">Departments</a></li>
-	      <li><a href="s">Stores</a></li>
+	      <li><a href="merchants.php?alpha=A">Stores</a></li>
 	      <li><a href="coupons/1">Coupons</a></li>
 	      <li><a href="about">About</a></li>
 	    </ul>

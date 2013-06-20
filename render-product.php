@@ -30,9 +30,10 @@ function renderProduct($product) {
   println('  </div>');
   println('  <div class="span2">');
   if ($product->attr('price_min') == $product->attr('price_max')) {
-    println('    $' . $product->attr('price_min'));
+    println('    $' . money_format('%i', $product->attr('price_min')));
   } else {
-    println('    $' . $product->attr('price_min') . ' <i>to</i> $' . $product->attr('price_max'));
+    println('    $' . money_format('%i', $product->attr('price_min')) . ' <i>to</i> $' .
+            money_format('%i', $product->attr('price_max')));
   }
   println('    <br><br>');
   println('    <a href="product.php?product=' . $product->attr('id') . '">');

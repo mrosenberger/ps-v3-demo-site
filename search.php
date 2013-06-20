@@ -9,7 +9,7 @@
     <div class="container">
       <div class="row">
         <div class="span2 sidebar">
-          Categories:
+          <h3>Categories</h3>
           <ul>
 	    <li>Something</li>
 	    <li>Something</li>
@@ -18,24 +18,30 @@
 	  </ul>
         </div>
         <div class="span10">
-        <?php
-        $api = new PsApiCall(array(
-				   'account' => 'd1lg0my9c6y3j5iv5vkc6ayrd',
-				   'catalog' => 'dp4rtmme6tbhugpv6i59yiqmr',
-				   'logging' => false
-				   ));
-        $valid_options = array('category', 'include_discounts', 'keyword', 'keyword_description', 'keyword_ean', 'keyword_isbn', 'keyword_mpn', 'keyword_name', 'keyword_person', 'keyword_upc', 'keyword_sku', 'merchant', 'merchant_type', 'page', 'percent_off', 'percent_off_max', 'percent_off_min', 'postal_code', 'price', 'price_max', 'product', 'product_spec', 'include_identifiers', 'results_per_page', 'session', 'tracking_id');
-        $parameters = array();
-        foreach ($_GET as $key=>$value) {
-	  if (in_array($key, $valid_options)) {
-	    $parameters[$key] = $value;
+	  <?php
+	    if (array_key_exists("keyword", $_GET) and $_GET['keyword'] != '') {
+	      println('<h2>Results for "' . $_GET['keyword'] . '"</h2>');
+	      println('<hr>');
+	    }
+	  ?>
+	  <?php
+	  $api = new PsApiCall(array(
+				     'account' => 'd1lg0my9c6y3j5iv5vkc6ayrd',
+				     'catalog' => 'dp4rtmme6tbhugpv6i59yiqmr',
+				     'logging' => false
+				     ));
+	  $valid_options = array('category', 'include_discounts', 'keyword', 'keyword_description', 'keyword_ean', 'keyword_isbn', 'keyword_mpn', 'keyword_name', 'keyword_person', 'keyword_upc', 'keyword_sku', 'merchant', 'merchant_type', 'page', 'percent_off', 'percent_off_max', 'percent_off_min', 'postal_code', 'price', 'price_max', 'product', 'product_spec', 'include_identifiers', 'results_per_page', 'session', 'tracking_id');
+	  $parameters = array();
+	  foreach ($_GET as $key=>$value) {
+	    if (in_array($key, $valid_options)) {
+	      $parameters[$key] = $value;
+	    }
 	  }
-	}
-        $api->get('products', $parameters);
-        foreach ($api->resource('products') as $product) {
-	  renderProduct($product);
-	}
-        ?>
+	  $api->get('products', $parameters);
+	  foreach ($api->resource('products') as $product) {
+	    renderProduct($product);
+	  }
+	  ?>
 	</div>
       </div>
     </div>
