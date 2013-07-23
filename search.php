@@ -11,6 +11,7 @@
         <div class="span2 sidebar">
           <h3>Categories</h3>
 	  <hr>
+	  <h6>Focus search to:</h6>
 	  <ul>
 	  <?php
 	    $api = new PsApiCall(array(
@@ -27,7 +28,7 @@
 	    }
 	    $api->get('products', $parameters);
 	    foreach($api->resource('categories') as $category) {
-	      println('<li><a href="">');
+	      println('<li><a href="search.php?keyword=' . $_GET['keyword'] . '&category=' . $category->attr('id') . '">');
 	      println($category->attr('name'));
 	      println('</a></li>');
 	    }

@@ -20,7 +20,8 @@
 				   'logging' => false
 				   ));
 	    $api->get('products', array('product' => $_GET['product']));
-	    $p = $api->resource('products')[0];
+	    $p = $api->resource('products');
+            $p = $p[0];
 	    foreach($api->resource('categories') as $category) {
 	      println('<li><a href="">');
 	      println($category->attr('name'));

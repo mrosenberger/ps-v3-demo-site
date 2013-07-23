@@ -11,8 +11,7 @@ function render_offer($offer) {
     println('    ' . ucfirst($offer->attr('condition')));
     println('  </div>');
     println('  <div class="span2">');
-    println('    <form method="get" action="' . $offer->attr('url') . '">');
-    println('         <button type="submit" class="btn">Go to Store</button>');
+    println("    <button type=\"submit\" class=\"btn\" onClick=\"location.href='" . $offer->attr('url')."';\">Go to Store</button>");
     println('  </div>');
     println('</div>');
     println('<br>');

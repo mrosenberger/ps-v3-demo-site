@@ -16,6 +16,13 @@ function renderProduct($product) {
   println('    <a href="product.php?product=' . $product->attr('id') . '">');
   println('      ' . $product->attr('name'));
   println('    </a>');
+  /*
+  println('    <br><br><i>');
+  println('      Category: ' . $product->resource('category')->attr('name'));
+  println('    </i><br><i>');
+  println('      Brand: ' . $product->resource('brand')->attr('name'));
+  println('    </i>');
+  */
   println('  </div>');
   println('  <div class="span3" id="product-desc-' . $product->attr('id') . '">');
   if (strlen($product->attr('description')) > $description_cutoff) {
@@ -32,7 +39,7 @@ function renderProduct($product) {
   if ($product->attr('price_min') == $product->attr('price_max')) {
     println('    $' . money_format('%i', $product->attr('price_min')));
   } else {
-    println('    $' . money_format('%i', $product->attr('price_min')) . ' <i>to</i> $' .
+    println('    $' . money_format('%i', $product->attr('price_min')) . ' <i>-</i> $' .
             money_format('%i', $product->attr('price_max')));
   }
   println('    <br><br>');

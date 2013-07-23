@@ -4,10 +4,10 @@
 	  <a class="brand">ShopFoo</a>
 	  <div class="nav-collapse collapse">
 	    <ul class="nav">
-	      <li><a href="c">Departments</a></li>
+	      <li><a href="categories.php">Departments</a></li>
 	      <li><a href="merchants.php?alpha=A">Stores</a></li>
-	      <li><a href="coupons/1">Coupons</a></li>
-	      <li><a href="about">About</a></li>
+	      <li><a href="#">Coupons</a></li>
+	      <li><a href="#">About</a></li>
 	    </ul>
 	    <form class="navbar-form pull-right" method="get" action="search.php">
 	      <input name="keyword" class="span2" type="text" placeholder="Search products...">

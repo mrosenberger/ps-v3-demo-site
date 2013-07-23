@@ -74,27 +74,42 @@ class PsApiCall {
   private $call_type;    // One of ['merchants', 'products', 'deals']. Specifies which api will be called.
   private $called;       // Set to true once API has been called once. Enforces single-use behavior of the PsApiCall object.
   private $logger;       // A Logger object used to log progress and errors
+  private $url_mode;     // Enables url mode, where options are loaded from the GET query string
+  private $url_mode_prefix; // If url mode is enabled, this specifies the prefix that is prepended to all parameters
 
   // For statistics and analysis
   private $start_time;             // Time that PsApiCall->get was called
   private $response_received_time; // Time that the API response was received
 
   // Constructs a PsApiCall object using the provided api key and catalog id.
-  public function __construct($options) {
+  public function construct_old($options) {
 
     $this->logger = new PsApiLogger;
 
-    $valid_options = array('account', 'catalog', 'logging');
+    $this->url_mode = false;
+    $this->url_mode_prefix = 'psapi_';
 
-    foreach ($valid_options as $option) {
-      if (isset($options[$option])) {
-	if ($option == 'logging') {
-	  if ($options[$option]) {
-	    $this->logger->enable();
-	  }
+    foreach ($options as $option=>$value) {
+      switch ($option) {
+      case 'logging':
+	if ($options['logging']) $this->logger->enable();
+	break;
+      case 'url-mode':
+	if ($value) $this->url_mode = true;
+	break;
+      case 'url-mode-prefix':
+	if (strlen($value) > 0) {
+	  $this->url_mode_prefix = $value;
 	} else {
-	  $this->options[$option] = $options[$option];
+	  $this->logger->error('Invalid url mode prefix. Must be at least one character.');
 	}
+	break;
+      case 'account':
+	$this->options['account'] = $value;
+	break;
+      case 'catalog':
+	$this->options['catalog'] = $value;
+	break;
       }
     }
 
@@ -104,6 +119,128 @@ class PsApiCall {
     foreach ($resources as $resource) {
       $this->{$resource} = array();
     }
+  }
+  
+   // Constructs a PsApiCall object using the provided api key and catalog id.
+  public function __construct($account, $catalog=NULL, $logging=false, $url_mode=false, $url_mode_prefix='psapi_') {
+
+    $this->logger = new PsApiLogger;
+    $this->options['account'] = $account;
+    if (isset($catalog)) $this->options['catalog'] = $catalog;
+    if ($logging) $this->logger->enable();
+    $this->url_mode_prefix = $url_mode_prefix;
+    $this->url_mode = $url_mode;
+    $this->called = false;
+    $resources = array('merchants', 'products', 'deals', 'offers', 'categories', 'brands', 'deal_types', 'countries', 'merchant_types');
+    foreach ($resources as $resource) {
+      $this->{$resource} = array();
+    }
+  }
+
+  private function loadOptionsGeneric($valid_options) {
+    foreach ($_GET as $opt=>$val) {
+      if (strpos($opt, $this->url_mode_prefix) == 0) {
+	$right = substr($opt, strlen($this->url_mode_prefix));
+	if (in_array($right, $valid_options)) {
+	  $this->logger->info('Option "' . $right . '" loaded from url with value="' . $val . '"');
+	  $this->options[$right] = $val;
+	}
+      }
+    }
+  }
+
+  private function loadOptionsFromGetParams() {
+    $valid_products_call_params = array('category', 'include_discounts', 'keyword', 'keyword_description', 'keyword_ean', 'keyword_identifier',
+				       'keyword_isbn', 'keyword_mpn', 'keyword_name', 'keyword_person', 'keyword_upc', 'keyword_sku',
+				       'merchant', 'merchant_type', 'page', 'percent_off', 'percent_off_max', 'percent_off_min', 'postal_code',
+				       'price', 'price_max', 'percent_off_min', 'product', 'product_spec', 'include_identifiers',
+				       'results_per_page', 'session', 'tracking_id');
+    $valid_merchants_call_params = array('alpha', 'category', 'keyword', 'merchant', 'network', 'page', 'results_per_page', 'tracking_id');
+    $valid_deals_call_params = array();
+    $valid_categories_call_params = array();
+    $this->loadOptionsGeneric(${'valid_' . $this->call_type . '_call_params'});
+  }
+
+  public function getQueryParamString($option_modifications=array()) {
+    if (! $this->called) {
+      $this->logger->error('PopShops API error: Attempt to get query string before performing API call.');
+      return 'PopShops API error: Attempt to get query string before performing API call.';
+    }
+    $tmp_options = $this->options;
+    foreach ($option_modifications as $opt=>$value) {
+      $tmp_options[$opt] = $value;
+    }
+    $output_params = array();
+    // output_params has two sets of entries: options from the internal options array (without account and catalog), and
+    //   options passed as part of the $_GET (which aren't used at all by this library, but are nice to pass along anyways)
+    foreach ($tmp_options as $opt=>$value) { // First add the internal options (prefixed with the url mode prefix)
+      if (($opt != 'account') and ($opt != 'catalog')) {
+	$output_params[$this->url_mode_prefix . $opt] = $value;
+      }
+    }
+    foreach ($_GET as $param=>$value) { // Now add the non-internal params (not used interally, but it's friendly to pass them along)
+      if (strpos($param, $this->url_mode_prefix) === 0) {
+	// Skip over any params with the prefix
+      } else {
+	$output_params[$param] = $value;
+      }
+    }
+    $result_string = '';
+    $first = true;
+    foreach ($output_params as $opt=>$value) {
+      if ($first) {
+	$first = false;
+      } else {
+	$result_string .= '&';
+      }
+      $result_string .= $opt . '=' . $value;
+    }
+    return $result_string;
+  }
+
+  public function getQueryString($option_modifications=array()) {
+    $param_string = $this->getQueryParamString($option_modifications);
+    $host = $_SERVER['SERVER_NAME'];
+    $path = explode('?', $_SERVER['REQUEST_URI'])[0];
+    $protocol = strtolower(explode('/', $_SERVER['SERVER_PROTOCOL'])[0]);
+    return $protocol . '://' . $host . $path . '?' . $param_string;
+  }
+
+  public function paginate($page) { // Page can be an integer or a string representing an integer
+    $page = (string) page;
+    return $this->getQueryString(array('page' => $page));
+  } 
+
+  public function nextPage() {
+    if (isset($this->options['page'])) {
+      if (intval($this->options['page']) > 99) {
+	return $this->getQueryString(array('page' => 100));
+      } else {
+	return $this->getQueryString(array('page' => ($this->options['page'] + 1)));
+      }
+    } else {
+      return $this->getQueryString(array('page' => 2));
+    }
+  }
+
+  public function prevPage() {
+    if (isset($this->options['page'])) {
+      if (intval($this->options['page']) < 2) {
+	return $this->getQueryString(array('page' => 1));
+      } else { 
+	return $this->getQueryString(array('page' => ($this->options['page'] - 1)));
+      }
+    } else {
+      return $this->getQueryString(array('page' => 1));
+    }
+  }
+
+  public function previousPage() {
+    return $this->prevPage();
+  }
+
+  public function modifyQuery($option_modifications) {
+    return $this->getQueryString($option_modifications);
   }
 
   // Calls the specified PopShops API, then parses the results into internal data structures. 
@@ -115,18 +252,18 @@ class PsApiCall {
   public function get($call_type='products', $arguments=array()) {
     $this->start_time = microtime(true);
     $this->logger->info("Setting up to call PopShops $call_type API...");
-
     if ($this->called) {
       $this->logger->error('Client attempted to call PsApiCall object more than once. Call aborted.');
       return;
     }
-
     if (! in_array($call_type, array('products', 'merchants', 'deals', 'categories'))) {
       $this->logger->error("Invalid call_type '$call_type' was passed to PsApiCall->call. Call aborted.");
       return;
     }
-
     $this->call_type = $call_type;
+    if ($this->url_mode) {
+      $this->loadOptionsFromGetParams();
+    }
     $this->called = true;
     $this->options = array_merge($this->options, $arguments);
     $formatted_options = array();
@@ -168,7 +305,7 @@ class PsApiCall {
     }
   }
 
-  // Retrieves an individual resource by its id. Accepts plural or singular $resource; behavior is identical
+  // Retrieves an individual resource by its id. Accepts plural $resource
   public function resourceById($resource, $id) {
     if (array_key_exists( $id, $this->{$resource})) {
       return $this->{$resource}[$id];
@@ -560,8 +697,7 @@ class PsApiCategoryTree {
   
   public function getChildren() {
     return $this->children;
-  }
-  
+  }  
 }
 
 class PsApiDealType extends PsApiResource {
