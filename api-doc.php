@@ -142,6 +142,84 @@
                         Apple - iPad with Retina display Wi-Fi - 128GB - Black<br/>
                         ...
                     </div>
+		    <a class="anchor" name="theapis"></a>
+		    <h3>The PopShops APIs</h3>
+		    <div class="well">
+			The <a href="#psapicall">PsApiCall</a> object can perform calls to four distinct APIs:
+			<dl class="dl-horizontal">
+			    <dt>Products</dt>
+			    <dd>
+				Retrieve <a href="#psapiproduct">products</a> and their associated
+				<a href="#psapioffer">offers</a>, <a href="#psapicategory">categories</a>,
+				<a href="#psapimerchant">merchants</a>, <a href="#psapideal">deals</a>, and
+				<a href="#psapibrand">brands</a>.
+			    </dd>
+			    <dd>
+				Having instantiated a <code>PsApiCall</code> instance called <code>$api</code>, call this API as follows:
+			    </dd>
+			    <dd>
+				<blockquote><code>$api->get('products', $parameters);</code></blockquote> where <code>$parameters</code>
+				is an array of <i>$param=>$value</i> string pairs,
+				such as: <code>array('keyword'=>'ipad', 'category'=>'7000')</code>
+			    </dd>
+			    <dd>
+				These <i>$param</i>s can be any of the option request parameters listed 
+				<a href="http://www.popshops.com/support/api-3-products">here</a>.
+			    </dd>
+			    <dt>Merchants</dt>
+			    <dd>
+				Retrieve <a href="#psapimerchant">merchants</a> and their associated
+				<a href="#psapimerchanttype">merchant types</a>, <a href="#psapicategory">categories</a>, and
+				<a href="#psapicountry">countries</a>.
+			    </dd>
+			    <dd>
+				Having instantiated a <code>PsApiCall</code> instance called <code>$api</code>, call this API as follows:
+			    </dd>
+			    <dd>
+				<blockquote><code>$api->get('merchants', $parameters);</code></blockquote> where <code>$parameters</code>
+				is an array of <i>$param=>$value</i> string pairs,
+				such as: <code>array('alpha'=>'p', 'network'=>'2')</code>
+			    </dd>
+			    <dd>
+				These <i>$param</i>s can be any of the option request parameters listed 
+				<a href="http://www.popshops.com/support/api-3-merchants">here</a>.
+			    </dd>
+			    <dt>Deals</dt>
+			    <dd>
+				Retrieve <a href="#psapideal">deals</a>
+				and their associated <a href="#psapimerchant">merchants</a>,
+				<a href="#psapidealtype">deal types</a>, and <a href="#psapicountry">countries</a>.
+			    </dd>
+			    <dd>
+				Having instantiated a <code>PsApiCall</code> instance called <code>$api</code>, call this API as follows:
+			    </dd>
+			    <dd>
+				<blockquote><code>$api->get('deals', $parameters);</code></blockquote> where <code>$parameters</code>
+				is an array of <i>$param=>$value</i> string pairs,
+				such as: <code>array('keyword'=>'laptop', 'deal_type'=>'6')</code>
+			    </dd>
+			    <dd>
+				These <i>$param</i>s can be any of the option request parameters listed 
+				<a href="http://www.popshops.com/support/api-3-coupons-deals">here</a>.
+			    </dd>
+			    <dt>Categories</dt>
+			    <dd>
+				Retrieve categories and construct a hierarchical tree, starting at the most
+				general and descending into the very specific.
+			    </dd>
+			    <dd>
+				Having instantiated a <code>PsApiCall</code> instance called <code>$api</code>, call this API as follows:
+			    </dd>
+			    <dd>
+				<blockquote><code>$api->get('categories');</code></blockquote>
+			    <dd><code>PsApiCall->getCategoryTree()</code> returns the topmost node of this tree.
+			    </dd>
+			    <dd>
+				Each node supports the methods <code>getName()</code>, <code>getId()</code>, and
+				<code>getChildren()</code>, the last of which returns a list of zero or more child nodes.
+			    </dd>
+			</dl>
+		    </div>
 		    <a class="anchor" name="urlmode"></a>
                     <h3>Passing parameters via the URL string</h3>
                     <div class="well">
