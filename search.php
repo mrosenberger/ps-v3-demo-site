@@ -28,9 +28,9 @@
 	    }
 	    $api->get('products', $parameters);
 	    foreach($api->resource('categories') as $category) {
-	      println('<li><a href="search.php?keyword=' . $_GET['keyword'] . '&category=' . $category->attr('id') . '">');
-	      println($category->attr('name'));
-	      println('</a></li>');
+	      print('<li><a href="search.php?keyword=' . $_GET['keyword'] . '&category=' . $category->attr('id') . '">');
+	      print($category->attr('name'));
+	      print('</a></li>');
 	    }
 	  ?>
 	  </ul>
@@ -38,8 +38,8 @@
         <div class="span10">
 	  <?php
 	    if (array_key_exists("keyword", $_GET) and $_GET['keyword'] != '') {
-	      println('<h2>Results for "' . $_GET['keyword'] . '"</h2>');
-	      println('<hr>');
+	      print('<h2>Results for "' . $_GET['keyword'] . '"</h2>');
+	      print('<hr>');
 	    }
 	    foreach ($api->resource('products') as $product) {
 	      renderProduct($product);

@@ -2,7 +2,6 @@
 <html>
   <head>
     <?php require("header-titleless.php");?>
-    <?php require("render-merchant.php");?>
     <title>ShopFoo Merchants</title>
   </head>
   <body>
@@ -30,12 +29,13 @@
 	    $api->get('merchants', array('results_per_page' => 100,
 					 'page' => $page,
 					 'alpha' => ord($alpha) - 64));
-	    foreach($api->resource('categories') as $category) {
-	      println('<li><a href="">');
-	      println($category->attr('name'));
-	      println('</a></li>');
-	    }
-	  ?>
+	    foreach($api->resource('categories') as $category) { ?>
+	      <li>
+		<a href="#">
+		  <?=$category->attr('name');?>
+		</a>
+	      </li>
+	    <?php } ?>
 	  </ul>
         </div>
         <div class="span10">
@@ -43,11 +43,11 @@
 	  <form name="alphachoose" method="get" action="merchants.php" style="float:right">
 	     <select onchange="this.form.submit()" name="alpha" class="span1" id="alpha">
 	      <?php
-	        foreach(str_split('ABCDEFGHIJKLMNOPQRSTUVWXYZ') as $letter) {
-		  println('<option value=' . $letter . '> ' . $letter . '</option>');
-		}
-	      ?>
-
+	        foreach(str_split('ABCDEFGHIJKLMNOPQRSTUVWXYZ') as $letter) { ?>
+		  <option value="<?=$letter?>">
+		    <?=$letter?>
+		  </option>
+		<?php } ?>
 	     </select>
 	  </form>
 	  <hr>
@@ -62,13 +62,13 @@
 	      <h4>Products</h4>
 	    </div>
 	  </div>
-	  <?php
-	    
-	    foreach ($api->resource('merchants') as $merchant) {
-	      //println($merchant->attr('name') . '<br>');
-	      render_merchant($merchant);
-	    }
+	  <table>
+	    <?php
+	      foreach ($api->resource('merchants') as $merchant) {
+		renderMerchant($merchant);
+	      }
 	    ?>
+	  </table>
 	</div>
       </div>
     </div>

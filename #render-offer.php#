@@ -1,0 +1,16 @@
+function renderOffer($offer) { ?>
+    <tr>
+      <td class="span2">
+        <img style="max-height:31px" src="<?= $offer->resource('merchant')->attr('logo_url') ?>">
+      </td>
+      <td class="span2">
+        <h5>$<?= money_format('%i', $offer->attr('price_merchant')) ?></h5>
+      </td>
+      <td class="span2">
+        <?= ucfirst($offer->attr('condition')) ?>
+      </td>
+      <td class="span2">
+        <a href="<?= $offer->attr('url') ?>" rel="nofollow" class="btn">Go to Store</a>
+      </td>
+    </tr>
+  <?php }

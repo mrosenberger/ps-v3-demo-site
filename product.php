@@ -2,7 +2,6 @@
 <html>
   <head>
     <?php require("header-titleless.php");?>
-    <?php require("render-offer.php");?>
     <title>ShopFoo</title>
   </head>
   <body>
@@ -22,12 +21,13 @@
 	    $api->get('products', array('product' => $_GET['product']));
 	    $p = $api->resource('products');
             $p = $p[0];
-	    foreach($api->resource('categories') as $category) {
-	      println('<li><a href="">');
-	      println($category->attr('name'));
-	      println('</a></li>');
-	    }
-	  ?>
+	    foreach($api->resource('categories') as $category) { ?>
+	      <li>
+		<a href="#">
+		  <?=$category->attr('name');?>
+		</a>
+	      </li>
+	    <?php } ?>
 	  </ul>
         </div>
         <div class="span10">
@@ -58,15 +58,17 @@
 	    <div class="span2">
 	      <h3>Price</h3>
 	    </div>
-	    <div class="span3">
+	    <div class="span2">
 	      <h3>Condition</h3>
 	    </div>
 	  </div>
+	  <table>
 	  <?php
 	    foreach($p->resource('offers') as $offer) {
-	      render_offer($offer);
+	      renderOffer($offer);
 	    }
 	  ?>
+	  </table>
 	</div>
       </div>
     </div>
