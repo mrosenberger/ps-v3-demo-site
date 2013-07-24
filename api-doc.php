@@ -242,6 +242,8 @@
                       Now, append <code>?psapi_keyword=backpack</code> to your request. The full request will look something like:<br/><br/>
                       <blockquote>http://localhost/demo.php?psapi_keyword=backpack</blockquote>
 		      This technique is useful for a variety of applications, such as accepting input from HTML forms.
+		      <!-- Add something about the precedence of parameters: call-time vs url-passed etc. -->
+                      <!-- Also add something about calling (with ->get) vs retrieving stored values (with ->getProducts) etc. -->
 		    </div>
 		    <div class="well">
 		       The library can also do the "opposite": we can use it to generate query strings which,<br/>

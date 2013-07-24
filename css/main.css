@@ -1,22 +1,26 @@
+img.product-detail-large-image {
+    float:left;
+    max-width:300px;
+    padding:20px;
+}
 
+img.merchant-small-image {
+    max-height:31px;
+}
 
-/* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
+img.search-product-image {
+    width:100%;
+    max-width:200px;
+    max-height:150px;
+}
 
+body {
+	padding-top: 60px;
+        padding-bottom: 40px;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+hr {
+    color: #000000;
+    background-color: #000000;
+    height: 2px;
+}

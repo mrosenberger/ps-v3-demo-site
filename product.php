@@ -36,7 +36,7 @@
 	  <div class="row">
 	    <div class="span10">
 	      <a href="<?=$p->largestImageUrl()?>">
-		<img style="float:left;max-width:300px;padding:20px;" src="<?=$p->largestImageUrl()?>">
+		<img class="product-detail-large-image" src="<?=$p->largestImageUrl()?>">
 	      </a>
 	      <?=$p->attr('description')?>
 	      <br><br>

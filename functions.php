@@ -3,7 +3,7 @@
   function renderOffer($offer) { ?>
     <tr>
       <td class="span2">
-        <img style="max-height:31px" src="<?= $offer->resource('merchant')->attr('logo_url') ?>">
+        <img class="merchant-small-image" src="<?=$offer->resource('merchant')->attr('logo_url') ?>">
       </td>
       <td class="span2">
         <h5>$<?= money_format('%i', $offer->attr('price_merchant')) ?></h5>
@@ -20,7 +20,7 @@
   function renderMerchant($merchant) { ?>
     <tr>
       <td class="span2">
-        <img style="max-height:31px" src="<?=$merchant->attr('logo_url')?>">
+        <img class="merchant-small-image" src="<?=$merchant->attr('logo_url')?>">
       </dtd>
       <td class="span2">
         <a href="merchant.php?merchant=<?=$merchant->attr('id')?>">
@@ -41,7 +41,7 @@
     <div class="row">
       <div class="span2">
         <a href=product.php?product="<?= $product->attr('id')?>">
-          <img style="width:100%;max-width:200px;max-height:150px;" src="<?= $product->largestImageUrl() ?>">
+          <img class="search-product-image" src="<?= $product->largestImageUrl() ?>">
         </a>
       </div>
       <div class="span2">

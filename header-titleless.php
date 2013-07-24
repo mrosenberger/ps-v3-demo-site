@@ -1,14 +1,3 @@
-<style>
-    body {
-	padding-top: 60px;
-        padding-bottom: 40px;
-    }
-    hr {
-	color: #000000;
-        background-color: #000000;
-        height: 2px;
-    }
-</style>
 <?php require 'ps-v3-library.php' ?>
 <?php require 'functions.php'?>
 <link rel="stylesheet" href="css/bootstrap.min.css">
