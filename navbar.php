@@ -5,13 +5,13 @@
 	  <div class="nav-collapse collapse">
 	    <ul class="nav">
 	      <li><a href="categories.php">Departments</a></li>
-	      <li><a href="merchants.php?alpha=A">Stores</a></li>
+	      <li><a href="merchants.php?psapi_alpha=1">Stores</a></li>
 	      <li><a href="#">Coupons</a></li>
-	      <li><a href="#">About</a></li>
+	      <li><a href="about.php">About</a></li>
 	    </ul>
 	    <form class="navbar-form pull-right" method="get" action="search.php">
-	      <input name="keyword" class="span2" type="text" placeholder="Search products...">
-	      <select name="category" class="span3" id="category"> 
+	      <input name="psapi_keyword" class="span2" type="text" placeholder="Search products...">
+	      <select name="psapi_category" class="span3" id="category">
 		<option value="" id="nav-cat-select-default">All products</option>
 		<option value="32194" id="nav-cat-select-32194">Arts &amp; Crafts</option>
 		<option value="2000" id="nav-cat-select-2000">Automotive Parts &amp; Vehicles</option>
@@ -35,12 +35,11 @@
 		<option value="32345" id="nav-cat-select-32345">Travel</option>
 		<option value="8400" id="nav-cat-select-8400">Video Games, Consoles &amp; Accessories</option>
 		<option value="9100" id="nav-cat-select-9100">Weapons</option>
-		<?php
-		  if(array_key_exists("category", $_GET)) {
-		    $val = $_GET["category"];
-		    print('<script language="javascript">document.getElementById("nav-cat-select-".concat(' . $val . ')).setAttribute("selected", "true")</script>' . "\n");
-		  }
-		?>
+		<?php if(array_key_exists("psapi_category", $_GET)) { ?>
+		  <script language="javascript">
+		    document.getElementById("nav-cat-select-".concat(<?= $_GET["psapi_category"] ?>)).setAttribute("selected", "true");
+		  </script>
+		<?php } ?>
 	      </select>
 	      <button type="submit" class="btn">Search</button>
 	    </form>

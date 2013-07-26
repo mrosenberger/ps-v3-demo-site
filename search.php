@@ -14,37 +14,50 @@
 	  <h6>Focus search to:</h6>
 	  <ul>
 	  <?php
-	    $api = new PsApiCall(array(
-				       'account' => 'd1lg0my9c6y3j5iv5vkc6ayrd',
-				       'catalog' => 'dp4rtmme6tbhugpv6i59yiqmr',
-				       'logging' => false
-				       ));
-	    $valid_options = array('category', 'include_discounts', 'keyword', 'keyword_description', 'keyword_ean', 'keyword_isbn', 'keyword_mpn', 'keyword_name', 'keyword_person', 'keyword_upc', 'keyword_sku', 'merchant', 'merchant_type', 'page', 'percent_off', 'percent_off_max', 'percent_off_min', 'postal_code', 'price', 'price_max', 'product', 'product_spec', 'include_identifiers', 'results_per_page', 'session', 'tracking_id');
-	    $parameters = array();
-	    foreach ($_GET as $key=>$value) {
-	      if (in_array($key, $valid_options)) {
-		$parameters[$key] = $value;
-	      }
-	    }
-	    $api->get('products', $parameters);
-	    foreach($api->resource('categories') as $category) {
-	      print('<li><a href="search.php?keyword=' . $_GET['keyword'] . '&category=' . $category->attr('id') . '">');
-	      print($category->attr('name'));
-	      print('</a></li>');
-	    }
+	    $api = new PsApiCall($api_key, $catalog_key, 'psapi_', true);
+	    $api->get('products');
+	    foreach($api->getCategories() as $category) {?>
+	      <li>
+		<a href="search.php?keyword=<?= $api->getParameterValue('keyword') ?>&category=<?= $category->getId() ?>">
+		  <?= $category->getName() ?>
+		</a>
+	      </li>
+	    <?php }
 	  ?>
 	  </ul>
         </div>
         <div class="span10">
 	  <?php
-	    if (array_key_exists("keyword", $_GET) and $_GET['keyword'] != '') {
-	      print('<h2>Results for "' . $_GET['keyword'] . '"</h2>');
-	      print('<hr>');
+	    if ($api->hasParameter('keyword') and $api->getParameterValue('keyword') != '') {
+	      print('<h2>Results for "' . $api->getParameterValue('keyword') . '"</h2>');
 	    }
-	    foreach ($api->resource('products') as $product) {
+	    if ($api->hasParameter('merchant')) {
+	      $merchants = $api->getMerchants();
+	      print('From ' . $merchants[0]->getName());
+	    }
+	    print('Page ');
+	    if ($api->hasParameter('page')) {
+	      print($api->getParameterValue('page'));
+	    } else {
+	      print('1');
+	    }
+	    print('<hr>');
+	    foreach ($api->getProducts() as $product) {
 	      renderProduct($product);
 	    }
 	  ?>
+	  <div class="pagination">
+	    <ul>
+	      <li><a href="<?= $api->prevPage() ?>">Prev</a></li>
+	      <li><a href="#">Current page: <?php
+	      if ($api->hasParameter('page')) {
+		print($api->getParameterValue('page'));
+	      } else {
+		print('1');
+	      } ?></a></li>
+	      <li><a href="<?= $api->nextPage() ?>">Next</a></li>
+	    </ul>
+	  </div>
 	</div>
       </div>
     </div>

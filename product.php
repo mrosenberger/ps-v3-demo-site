@@ -13,18 +13,14 @@
 	  <hr>
 	  <ul>
 	  <?php
-	    $api = new PsApiCall(array(
-				   'account' => 'd1lg0my9c6y3j5iv5vkc6ayrd',
-				   'catalog' => 'dp4rtmme6tbhugpv6i59yiqmr',
-				   'logging' => false
-				   ));
-	    $api->get('products', array('product' => $_GET['product']));
-	    $p = $api->resource('products');
+	    $api = new PsApiCall($api_key, $catalog_key);
+	    $api->get('products');
+	    $p = $api->getProducts();
             $p = $p[0];
-	    foreach($api->resource('categories') as $category) { ?>
+	    foreach($api->getCategories() as $category) { ?>
 	      <li>
 		<a href="#">
-		  <?=$category->attr('name');?>
+		  <?= $category->getName() ?>
 		</a>
 	      </li>
 	    <?php } ?>
@@ -62,12 +58,12 @@
 	      <h3>Condition</h3>
 	    </div>
 	  </div>
-	  <table>
-	  <?php
-	    foreach($p->resource('offers') as $offer) {
-	      renderOffer($offer);
-	    }
-	  ?>
+	  <table class="table-hover">
+	    <?php
+	      foreach($p->resource('offers') as $offer) {
+		renderOffer($offer);
+	      }
+	    ?>
 	  </table>
 	</div>
       </div>

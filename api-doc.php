@@ -255,7 +255,7 @@
 			 and <b>without</b> the '<i>psapi_</i>' prefix)</li>
 		       </ul>
                        This feature allows you to preserve any parameters that already exist in the URL string, while modifying others.<br/>
-                       If you want to add to/edit the parameters included in the link, see <code>PsApiCall->modifyQuery()</code> below.<br/><br/>
+                       If you want to add to/edit the parameters included in the link, see <code>PsApiCall->getQueryString()</code> below.<br/><br/>
                        <strong>Note that these link generators do not return API call strings: they generate URLs with the same domain, path, and page name as the PHP page being served, but with the query parameters modified.</strong>
 		    </div>
 		    &nbsp;&nbsp;&nbsp;&nbsp;Let's add a link to the next page of results:<br/>
@@ -280,10 +280,10 @@
 			<dd>Generates a link to the previous page of results</dd>
 			<dt><code>paginate($page)</code></dt>
 			<dd>Generates a link to the specified page of results (1-100)</dd>
-			<dt><code>modifyQuery($mods)</code></dt>
+			<dt><code>getQueryString($mods)</code></dt>
 			<dd>Generates a link to the page with the $mods (map of $params=>$values) applied
 			    <br/>&nbsp;&nbsp;For example: 
-			    <br/>&nbsp;&nbsp;<code>$api->modifyQuery(array('page' => 7))</code>
+			    <br/>&nbsp;&nbsp;<code>$api->getQueryString(array('page' => 7))</code>
 			    <br/>&nbsp;&nbsp;is equivalent to
 			    <br/>&nbsp;&nbsp;<code>$api->paginate(7)</code>
 			    <br/>&nbsp;&nbsp;This generator is much more powerful than the other three. 

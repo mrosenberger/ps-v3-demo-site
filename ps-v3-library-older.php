@@ -74,6 +74,7 @@ class PsApiCall {
   private $call_type;    // One of ['merchants', 'products', 'deals']. Specifies which api will be called.
   private $called;       // Set to true once API has been called once. Enforces single-use behavior of the PsApiCall object.
   private $logger;       // A Logger object used to log progress and errors
+  private $url_mode;     // Enables url mode, where options are loaded from the GET query string
   private $url_mode_prefix; // If url mode is enabled, this specifies the prefix that is prepended to all parameters
 
   // For statistics and analysis
@@ -81,16 +82,20 @@ class PsApiCall {
   private $response_received_time; // Time that the API response was received
 
   // Constructs a PsApiCall object using the provided api key and catalog id.
-  public function __construct_old($options) {
+  public function construct_old($options) {
 
     $this->logger = new PsApiLogger;
 
+    $this->url_mode = false;
     $this->url_mode_prefix = 'psapi_';
 
     foreach ($options as $option=>$value) {
       switch ($option) {
       case 'logging':
 	if ($options['logging']) $this->logger->enable();
+	break;
+      case 'url-mode':
+	if ($value) $this->url_mode = true;
 	break;
       case 'url-mode-prefix':
 	if (strlen($value) > 0) {
@@ -117,13 +122,14 @@ class PsApiCall {
   }
   
    // Constructs a PsApiCall object using the provided api key and catalog id.
-  public function __construct($account, $catalog=NULL, $logging=false, $url_mode_prefix='psapi_') {
+  public function __construct($account, $catalog=NULL, $logging=false, $url_mode=false, $url_mode_prefix='psapi_') {
 
     $this->logger = new PsApiLogger;
     $this->options['account'] = $account;
     if (isset($catalog)) $this->options['catalog'] = $catalog;
     if ($logging) $this->logger->enable();
     $this->url_mode_prefix = $url_mode_prefix;
+    $this->url_mode = $url_mode;
     $this->called = false;
     $resources = array('merchants', 'products', 'deals', 'offers', 'categories', 'brands', 'deal_types', 'countries', 'merchant_types');
     foreach ($resources as $resource) {
@@ -155,7 +161,7 @@ class PsApiCall {
     $this->loadOptionsGeneric(${'valid_' . $this->call_type . '_call_params'});
   }
 
-  private function getQueryParamString($option_modifications=array()) {
+  public function getQueryParamString($option_modifications=array()) {
     if (! $this->called) {
       $this->logger->error('PopShops API error: Attempt to get query string before performing API call.');
       return 'PopShops API error: Attempt to get query string before performing API call.';
@@ -195,33 +201,15 @@ class PsApiCall {
   public function getQueryString($option_modifications=array()) {
     $param_string = $this->getQueryParamString($option_modifications);
     $host = $_SERVER['SERVER_NAME'];
-    $path = explode('?', $_SERVER['REQUEST_URI']);
-    $path = $path[0];
-    try {
-      $protocol = explode('/', $_SERVER['SERVER_PROTOCOL']);
-      $protocol = strtolower($protocol[0]);
-      return $protocol . '://' . $host . $path . '?' . $param_string;
-    } catch (Exception $e) {
-      return $host . $path . '?' . $param_string;
-    }
-  }
-  
-  public function hasParameter($param) {
-    return array_key_exists($param, $this->options);
-  }
-  
-  public function getParameterValue($param) {
-    if (array_key_exists($param, $this->options)) {
-      return $this->options[$param];
-    } else {
-      return "Parameter '" . $param . "' is not present in PsApiCall instance.";
-    }
+    $path = explode('?', $_SERVER['REQUEST_URI'])[0];
+    $protocol = strtolower(explode('/', $_SERVER['SERVER_PROTOCOL'])[0]);
+    return $protocol . '://' . $host . $path . '?' . $param_string;
   }
 
   public function paginate($page) { // Page can be an integer or a string representing an integer
     $page = (string) page;
     return $this->getQueryString(array('page' => $page));
-  }
+  } 
 
   public function nextPage() {
     if (isset($this->options['page'])) {
@@ -251,6 +239,10 @@ class PsApiCall {
     return $this->prevPage();
   }
 
+  public function modifyQuery($option_modifications) {
+    return $this->getQueryString($option_modifications);
+  }
+
   // Calls the specified PopShops API, then parses the results into internal data structures. 
   // Parameter $call_type is a string. Valid values are 'products', 'merchants', or 'deals'. 
   // The value of $call_type directly selects which API will be called.
@@ -269,7 +261,9 @@ class PsApiCall {
       return;
     }
     $this->call_type = $call_type;
-    $this->loadOptionsFromGetParams();
+    if ($this->url_mode) {
+      $this->loadOptionsFromGetParams();
+    }
     $this->called = true;
     $this->options = array_merge($this->options, $arguments);
     $formatted_options = array();
@@ -318,38 +312,6 @@ class PsApiCall {
     } else {
       return new PsApiDummy($this, $resource . " with id= $id is not present in PsApiCall results");
     }
-  }
-  
-  public function getProducts() {
-    return $this->resource('products');
-  }
-  
-  public function getOffers() {
-    return $this->resource('offers');
-  }
-  
-  public function getDeals() {
-    return $this->resource('deals');
-  }
-  
-  public function getMerchants() {
-    return $this->resource('merchants');
-  }
-  
-  public function getCategories() {
-    return $this->resource('categories');
-  }
-  
-  public function getCountries() {
-    return $this->resource('countries');
-  }
-  
-  public function getDealTypes() {
-    return $this->resource('deal_types');
-  }
-  
-  public function getMerchantTypes() {
-    return $this->resource('merchant_types');
   }
 
   private function processObjectJson($json, $class, $resource_name) {
@@ -554,62 +516,6 @@ class PsApiProduct extends PsApiResource {
         return $this->reference->resourceById('brands', $this->attr('brand'));
     }
   }
-
-  public function getBrandId() {
-    return $this->attr('brand');
-  }
-  
-  public function getCategoryId() {
-    return $this->attr('category');
-  }
-  
-  public function getDescription() {
-    return $this->attr('description');
-  }
-  
-  public function getId() {
-    return $this->attr('id');
-  }
-  
-  public function getImageUrlLarge() {
-    return $this->attr('image_url_large');
-  }
-  
-  public function getImageUrlMedium() {
-    return $this->attr('image_url_medium');
-  }
-  
-  public function getImageUrlSmall() {
-    return $this->attr('image_url_small');
-  }
-  
-  public function getName() {
-    return $this->attr('name');
-  }
-  
-  public function getOfferCount() {
-    return $this->attr('offer_count');
-  }
-  
-  public function getPriceMax() {
-    return $this->attr('price_max');
-  }
-  
-  public function getPriceMin() {
-    return $this->attr('price_min');
-  }
-  
-  public function getBrand() {
-    return $this->resource('brand');
-  }
-  
-  public function getCategory() {
-    return $this->resource('category');
-  }
-  
-  public function getOffers() {
-    return $this->resource('offers');
-  }
 }
 
 class PsApiMerchant extends PsApiResource {
@@ -655,70 +561,6 @@ class PsApiMerchant extends PsApiResource {
       return $this->reference->resourceById('categories', $this->attr('category'));
     }
   }
-  
-  public function getCategoryId() {
-    return $this->attr('category');
-  }
-  
-  public function getCountryId() {
-    return $this->attr('country');
-  }
-  
-  public function getDealCount() {
-    return $this->attr('deal_count');
-  }
-  
-  public function getId() {
-    return $this->attr('id');
-  }
-  
-  public function getLogoUrl() {
-    return $this->attr('logo_url');
-  }
-  
-  public function getMerchantTypeId() {
-    return $this->attr('merchant_type');
-  }
-  
-  public function getName() {
-    return $this->attr('name');
-  }
-  
-  public function getNetworkId() {
-    return $this->attr('network');
-  }
-  
-  public function getNetworkMerchantId() {
-    return $this->attr('network_merchant_id');
-  }
-  
-  public function getProductCount() {
-    return $this->attr('product_count');
-  }
-  
-  public function getUrl() {
-    return $this->attr('url');
-  }
-  
-  public function getOffers() {
-    return $this->resource('offers');
-  }
-  
-  public function getDeals() {
-    return $this->resource('deals');
-  }
-  
-  public function getMerchantType() {
-    return $this->resource('merchant_type');
-  }
-  
-  public function getCountry() {
-    return $this->resource('country');
-  }
-  
-  public function getCategory() {
-    return $this->resource('category');
-  }
 }
 
 class PsApiDeal extends PsApiResource {
@@ -741,62 +583,6 @@ class PsApiDeal extends PsApiResource {
 	return $this->deal_types;
       }
     }
-  }
-  
-  public function getCode() {
-    return $this->attr('code');
-  }
-  
-  public function getDealTypeId() {
-    return $this->attr('deal_type');
-  }
-  
-  public function getDescription() {
-    return $this->attr('description');
-  }
-  
-  public function getEndOn() {
-    return $this->attr('end_on');
-  }
-  
-  public function getId() {
-    return $this->attr('id');
-  }
-  
-  public function getImageUrl() {
-    return $this->attr('image_url');
-  }
-  
-  public function getMerchantId() {
-    return $this->attr('merchant');
-  }
-  
-  public function getName() {
-    return $this->attr('name');
-  }
-  
-  public function getRestrictions() {
-    return $this->attr('restrictions');
-  }
-  
-  public function isSiteWide() {
-    return $this->attr('site_wide') === 'yes';
-  }
-  
-  public function getStartOn() {
-    return $this->attr('start_on');
-  }
-  
-  public function getUrl() {
-    return $this->attr('url');
-  }
-  
-  public function getMerchant() {
-    return $this->resource('merchant');
-  }
-  
-  public function getDealTypes() {
-    return $this->resource('deal_types');
   }
 }
 
@@ -841,90 +627,6 @@ class PsApiOffer extends PsApiResource {
         return $this->reference->resourceById('merchants', $this->attr('merchant'));
     }
   }
-  
-  public function getCondition() {
-    return $this->attr('condition');
-  }
-  
-  public function getCurrencyIso() {
-    return $this->attr('currency_iso');
-  }
-  
-  public function getCurrencySymbol() {
-    return $this->attr('currency_symbol');
-  }
-  
-  public function getDescription() {
-    return $this->attr('description');
-  }
-  
-  public function getEstimatedShipping() {
-    return $this->attr('estimated_shipping');
-  }
-  
-  public function getEstimatedSalesTaxRate() {
-    return $this->attr('estimated_sales_tax_rate');
-  }
-  
-  public function getEstimatedSalesTax() {
-    return $this->attr('estimated_sales_tax');
-  }
-  
-  public function getEstimatedPriceTotal() {
-    return $this->attr('estimated_price_total');
-  }
-  
-  public function getId() {
-    return $this->attr('id');
-  }
-  
-  public function getImageUrlLarge() {
-    return $this->attr('image_url_large');
-  }
-  
-  public function getImageUrlMedium() {
-    return $this->attr('image_url_medium');
-  }
-  
-  public function getImageUrlSmall() {
-    return $this->attr('image_url_small');
-  }
-  
-  public function getMerchantId() {
-    return $this->attr('merchant');
-  }
-  
-  public function getName() {
-    return $this->attr('name');
-  }
-  
-  public function getPercentOff() {
-    return $this->attr('percent_off');
-  }
-  
-  public function getPriceMerchant() {
-    return $this->attr('price_merchant');
-  }
-  
-  public function getPriceRetail() {
-    return $this->attr('price_retail');
-  }
-  
-  public function getSku() {
-    return $this->attr('sku');
-  }
-  
-  public function getUrl() {
-    return $this->attr('url');
-  }
-  
-  public function getMerchant() {
-    return $this->resource('merchant');
-  }
-  
-  public function getProduct() {
-    return $this->resource('product');
-  }
 }
 
 class PsApiBrand extends PsApiResource {
@@ -947,22 +649,6 @@ class PsApiBrand extends PsApiResource {
       }
     }
   }
-  
-  public function getName() {
-    return $this->attr('name');
-  }
-  
-  public function getId() {
-    return $this->attr('id');
-  }
-  
-  public function getCount() {
-    return $this->attr('count');
-  }
-  
-  public function getProducts() {
-    return $this->resource('products');
-  }
 }
 
 class PsApiCategory extends PsApiResource {
@@ -982,26 +668,6 @@ class PsApiCategory extends PsApiResource {
         return $this->products;
       }
     }
-  }
-  
-  public function getName() {
-    return $this->attr('name');
-  }
-  
-  public function getId() {
-    return $this->attr('id');
-  }
-  
-  public function getCount() {
-    return $this->attr('count');
-  }
-  
-  public function isLeaf() {
-    return array_key_exists('leaf', $this->attributes);
-  }
-  
-  public function getProducts() {
-    return $this->resource('products');
   }
 }
 
@@ -1057,22 +723,6 @@ class PsApiDealType extends PsApiResource {
       }
     }
   }
-  
-  public function getName() {
-    return $this->attr('name');
-  }
-  
-  public function getId() {
-    return $this->attr('id');
-  }
-  
-  public function getCount() {
-    return $this->attr('count');
-  }
-  
-  public function getDeals() {
-    return $this->resource('deals');
-  }
 }
 
 class PsApiCountry extends PsApiResource {
@@ -1095,22 +745,6 @@ class PsApiCountry extends PsApiResource {
       }
     }
   }
-  
-  public function getId() {
-    return $this->attr('id');
-  }
-  
-  public function getName() {
-    return $this->attr('name');
-  }
-  
-  public function getCount() {
-    return $this->attr('count');
-  }
-  
-  public function getMerchants() {
-    return $this->resource('merchants');
-  }
 }
 
 class PsApiMerchantType extends PsApiResource {
@@ -1132,22 +766,6 @@ class PsApiMerchantType extends PsApiResource {
         return $this->merchants;
       }
     }
-  }
-  
-  public function getName() {
-    return $this->attr('name');
-  }
-  
-  public function getId() {
-    return $this->attr('id');
-  }
-  
-  public function getCount() {
-    return $this->attr('count');
-  }
-  
-  public function getMerchants() {
-    return $this->resource('merchants');
   }
 }
 

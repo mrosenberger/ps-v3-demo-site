@@ -14,9 +14,6 @@
 	return $s;
       }
     ?>
-    <script language="javascript">
-    
-    </script>
   </head>
   <body>
     <?php require("navbar.php");?>
@@ -27,15 +24,13 @@
         <div class="span10">
             <h1>Categories</h1>
              <?php
-	    $api = new PsApiCall(array('account' => 'd1lg0my9c6y3j5iv5vkc6ayrd',
-				       'catalog' => 'dp4rtmme6tbhugpv6i59yiqmr',
-				       'logging' => false));
+	    $api = new PsApiCall($api_key, $catalog_key);
 	    $api->get('categories');
 	    $tree = $api->getCategoryTree();
 	    foreach($tree->getChildren() as $child) {
               print("<div class=row><div class=span10>");
               print("<hr>");
-	      print("<h3><a href=search.php?keyword=&category=" . $child->getId() . ">"  . $child->getName() . '</a></h3><br>');
+	      print("<h3><a href=search.php?category=" . $child->getId() . ">"  . $child->getName() . '</a></h3><br>');
               //print('<form method="get" action="search.php">');
               //  print('<input name="keyword" class="span2" type="text" placeholder="Search ' . $child->getName() . '...">');
               //print("</form>");
