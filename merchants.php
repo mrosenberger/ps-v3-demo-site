@@ -43,18 +43,7 @@
 	  <?php } ?>
 	  </form>
 	  <hr>
-	  <div class="pagination">
-	    <ul>
-	      <li><a href="<?= $api->prevPage() ?>">Prev</a></li>
-	      <li><a href="#">Current page: <?php
-	      if ($api->hasParameter('page')) {
-		print($api->getParameterValue('page'));
-	      } else {
-		print('1');
-	      } ?></a></li>
-	      <li><a href="<?= $api->nextPage() ?>">Next</a></li>
-	    </ul>
-	  </div>
+	  <?php generateBootstrapPagination($api) ?>
 	  <div class="row">
 	    <div class="span3 offset2">
 	      <h4>Store</h4>
@@ -67,8 +56,6 @@
 	    </div>
 	  </div>
 	  <table class="table-hover">
-	    
-	    
 	    <?php
 	      foreach ($api->getMerchants() as $merchant) {
 		renderMerchant($merchant);
@@ -76,18 +63,7 @@
 	    ?>
 	  </table>
 	  <hr />
-	  <div class="pagination">
-	    <ul>
-	      <li><a href="<?= $api->prevPage() ?>">Prev</a></li>
-	      <li><a href="#">Current page: <?php
-	      if ($api->hasParameter('page')) {
-		print($api->getParameterValue('page'));
-	      } else {
-		print('1');
-	      } ?></a></li>
-	      <li><a href="<?= $api->nextPage() ?>">Next</a></li>
-	    </ul>
-	  </div>
+	  <?php generateBootstrapPagination($api) ?>
 	</div>
       </div>
     </div>

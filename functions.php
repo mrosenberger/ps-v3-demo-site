@@ -77,7 +77,34 @@
     <hr />
   <?php }
   
-  function generateBootstrapPagination($api) {
-    
+  function generateBootstrapPagination($api, $num_cells=5) {
+    $current = 1;
+    $total = (int) $api->getResultsCount();
+    $per_page = 20;
+    if ($api->hasParameter('results_per_page')) { $per_page = (int) $api->getParameter('results_per_page'); }
+    if ($api->hasParameter('page')) { $current = (int) $api->getParameterValue('page'); }
+    $pages = (int) ($total / $per_page);
+    $half = (int) ($num_cells / 2);
+    $min = 0;
+    if ($current < ($half + 1)) {
+      $min = 1;
+    } else {
+      $min = $current - $half;
+    }?>
+    <div class="pagination">
+      <ul>
+        <li><a href="<?= $api->paginate(1) ?>">&laquo; First</a></li>
+        <?php for ($i=$min; $i < $min + $num_cells; $i += 1) {
+          if ($i <= $pages) { ?>
+            <li <?php if ($i === $current) { print('class="active"'); } ?>>
+              <a href="<?= $api->paginate($i) ?>">
+                <?= $i ?>
+              </a>
+            </li>
+          <?php }
+        }?>
+        <li><a href="<?= $api->paginate($pages) ?>">Last &raquo;</a></li>
+      </ul>
+    </div><?php
   }
 ?>

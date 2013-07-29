@@ -75,6 +75,7 @@ class PsApiCall {
   private $called;       // Set to true once API has been called once. Enforces single-use behavior of the PsApiCall object.
   private $logger;       // A Logger object used to log progress and errors
   private $url_mode_prefix; // If url mode is enabled, this specifies the prefix that is prepended to all parameters
+  private $results_count; // A count of the number of results returned, an integer
 
   // For statistics and analysis
   private $start_time;             // Time that PsApiCall->get was called
@@ -125,6 +126,7 @@ class PsApiCall {
     if ($logging) $this->logger->enable();
     $this->url_mode_prefix = $url_mode_prefix;
     $this->called = false;
+    $this->results_count = 0;
     $resources = array('merchants', 'products', 'deals', 'offers', 'categories', 'brands', 'deal_types', 'countries', 'merchant_types');
     foreach ($resources as $resource) {
       $this->{$resource} = array();
@@ -150,7 +152,9 @@ class PsApiCall {
 				       'price', 'price_max', 'percent_off_min', 'product', 'product_spec', 'include_identifiers',
 				       'results_per_page', 'session', 'tracking_id');
     $valid_merchants_call_params = array('alpha', 'category', 'keyword', 'merchant', 'network', 'page', 'results_per_page', 'tracking_id');
-    $valid_deals_call_params = array();
+    $valid_deals_call_params = array('end_on', 'end_on_max', 'end_on_min', 'deal_type', 'keyword', 'keyword_description', 'keyword_name',
+				     'merchant', 'merchant_type', 'page', 'results_per_page', 'session', 'site_wide', 'sort_deal',
+				     'start_on', 'start_on_max', 'start_on_min',  'tracking_id');
     $valid_categories_call_params = array();
     $this->loadOptionsGeneric(${'valid_' . $this->call_type . '_call_params'});
   }
@@ -219,7 +223,7 @@ class PsApiCall {
   }
 
   public function paginate($page) { // Page can be an integer or a string representing an integer
-    $page = (string) page;
+    $page = (string) $page;
     return $this->getQueryString(array('page' => $page));
   }
 
@@ -407,9 +411,16 @@ class PsApiCall {
       return $node;
     }
   }
+  
+  public function getResultsCount() {
+    return $this->results_count;
+  }
 
   private function processResults($json) {
     if (isset($json['results'])) {
+      if ($this->call_type === 'products') $this->results_count = (int) $json['results']['products']['count'];
+      if ($this->call_type === 'merchants') $this->results_count = (int) $json['results']['merchants']['count'];
+      if ($this->call_type === 'deals') $this->results_count = (int) $json['results']['deals']['count'];
       if (isset($json['results']['products']))
         $this->processProductsJson($json['results']['products']['product']);
       if (isset($json['results']['merchants']))

@@ -33,31 +33,16 @@
 	    }
 	    if ($api->hasParameter('merchant')) {
 	      $merchants = $api->getMerchants();
-	      print('From ' . $merchants[0]->getName() . '<br>');
+	      print('From ' . $merchants[0]->getName() . '<br />');
 	    }
-	    print('Page ');
-	    if ($api->hasParameter('page')) {
-	      print($api->getParameterValue('page') . '<br>');
-	    } else {
-	      print('1');
-	    }
+	    print('Total returned results: ' . $api->getResultsCount());
+	    generateBootstrapPagination($api);
 	    print('<hr>');
 	    foreach ($api->getProducts() as $product) {
 	      renderProduct($product);
 	    }
 	  ?>
-	  <div class="pagination">
-	    <ul>
-	      <li><a href="<?= $api->prevPage() ?>">Prev</a></li>
-	      <li><a href="#">Current page: <?php
-	      if ($api->hasParameter('page')) {
-		print($api->getParameterValue('page'));
-	      } else {
-		print('1');
-	      } ?></a></li>
-	      <li><a href="<?= $api->nextPage() ?>">Next</a></li>
-	    </ul>
-	  </div>
+	  <?php generateBootstrapPagination($api) ?>
 	</div>
       </div>
     </div>
