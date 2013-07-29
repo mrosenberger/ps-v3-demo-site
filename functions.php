@@ -76,4 +76,8 @@
     </div>
     <hr />
   <?php }
+  
+  function generateBootstrapPagination($api) {
+    
+  }
 ?>

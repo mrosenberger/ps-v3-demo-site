@@ -14,7 +14,7 @@
 	  <h6>Focus search to:</h6>
 	  <ul>
 	  <?php
-	    $api = new PsApiCall($api_key, $catalog_key, 'psapi_', true);
+	    $api = new PsApiCall($api_key, $catalog_key);
 	    $api->get('products');
 	    foreach($api->getCategories() as $category) {?>
 	      <li>
@@ -33,11 +33,11 @@
 	    }
 	    if ($api->hasParameter('merchant')) {
 	      $merchants = $api->getMerchants();
-	      print('From ' . $merchants[0]->getName());
+	      print('From ' . $merchants[0]->getName() . '<br>');
 	    }
 	    print('Page ');
 	    if ($api->hasParameter('page')) {
-	      print($api->getParameterValue('page'));
+	      print($api->getParameterValue('page') . '<br>');
 	    } else {
 	      print('1');
 	    }
