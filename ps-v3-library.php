@@ -74,7 +74,7 @@ class PsApiCall {
   private $call_type;    // One of ['merchants', 'products', 'deals']. Specifies which api will be called.
   private $called;       // Set to true once API has been called once. Enforces single-use behavior of the PsApiCall object.
   private $logger;       // A Logger object used to log progress and errors
-  private $url_mode_prefix; // If url mode is enabled, this specifies the prefix that is prepended to all parameters
+  private $url_prefix; // If url mode is enabled, this specifies the prefix that is prepended to all parameters
   private $results_count; // A count of the number of results returned, an integer
 
   // For statistics and analysis
@@ -86,7 +86,7 @@ class PsApiCall {
 
     $this->logger = new PsApiLogger;
 
-    $this->url_mode_prefix = 'psapi_';
+    $this->url_prefix = 'psapi_';
 
     foreach ($options as $option=>$value) {
       switch ($option) {
@@ -95,7 +95,7 @@ class PsApiCall {
 	break;
       case 'url-mode-prefix':
 	if (strlen($value) > 0) {
-	  $this->url_mode_prefix = $value;
+	  $this->url_prefix = $value;
 	} else {
 	  $this->logger->error('Invalid url mode prefix. Must be at least one character.');
 	}
@@ -118,13 +118,13 @@ class PsApiCall {
   }
   
    // Constructs a PsApiCall object using the provided api key and catalog id.
-  public function __construct($account, $catalog=NULL, $logging=false, $url_mode_prefix='psapi_') {
+  public function __construct($account, $catalog=NULL, $logging=false, $url_prefix='psapi_') {
 
     $this->logger = new PsApiLogger;
     $this->options['account'] = $account;
     if (isset($catalog)) $this->options['catalog'] = $catalog;
     if ($logging) $this->logger->enable();
-    $this->url_mode_prefix = $url_mode_prefix;
+    $this->url_prefix = $url_prefix;
     $this->called = false;
     $this->results_count = 0;
     $resources = array('merchants', 'products', 'deals', 'offers', 'categories', 'brands', 'deal_types', 'countries', 'merchant_types');
@@ -135,8 +135,8 @@ class PsApiCall {
 
   private function loadOptionsGeneric($valid_options) {
     foreach ($_GET as $opt=>$val) {
-      if (strpos($opt, $this->url_mode_prefix) == 0) {
-	$right = substr($opt, strlen($this->url_mode_prefix));
+      if (strpos($opt, $this->url_prefix) == 0) {
+	$right = substr($opt, strlen($this->url_prefix));
 	if (in_array($right, $valid_options)) {
 	  $this->logger->info('Option "' . $right . '" loaded from url with value="' . $val . '"');
 	  $this->options[$right] = $val;
@@ -173,11 +173,11 @@ class PsApiCall {
     //   options passed as part of the $_GET (which aren't used at all by this library, but are nice to pass along anyways)
     foreach ($tmp_options as $opt=>$value) { // First add the internal options (prefixed with the url mode prefix)
       if (($opt != 'account') and ($opt != 'catalog')) {
-	$output_params[$this->url_mode_prefix . $opt] = $value;
+	$output_params[$this->url_prefix . $opt] = $value;
       }
     }
     foreach ($_GET as $param=>$value) { // Now add the non-internal params (not used interally, but it's friendly to pass them along)
-      if (strpos($param, $this->url_mode_prefix) === 0) {
+      if (strpos($param, $this->url_prefix) === 0) {
 	// Skip over any params with the prefix
       } else {
 	$output_params[$param] = $value;
@@ -254,6 +254,14 @@ class PsApiCall {
   public function previousPage() {
     return $this->prevPage();
   }
+  
+  public function getOptions() {
+    return $this->options;
+  }
+  
+  public function getUrlPrefix() {
+    return $this->url_prefix;
+  }
 
   // Calls the specified PopShops API, then parses the results into internal data structures. 
   // Parameter $call_type is a string. Valid values are 'products', 'merchants', or 'deals'. 
@@ -322,6 +330,38 @@ class PsApiCall {
     } else {
       return new PsApiDummy($this, $resource . " with id= $id is not present in PsApiCall results");
     }
+  }
+  
+  public function getProduct($id) {
+    return $this->resourceById('products', $id);
+  }
+  
+  public function getOffer($id) {
+    return $this->resourceById('offers', $id);
+  }
+  
+  public function getDeal($id) {
+    return $this->resourceById('deals', $id);
+  }
+  
+  public function getMerchant($id) {
+    return $this->resourceById('merchants', $id);
+  }
+  
+  public function getCategory($id) {
+    return $this->resourceById('categories', $id);
+  }
+  
+  public function getDealType($id) {
+    return $this->resourceById('deal_types', $id);
+  }
+  
+  public function getMerchantType($id) {
+    return $this->resourceById('merchant_types', $id);
+  }
+  
+  public function getCountry($id) {
+    return $this->resourceById('countries', $id);
   }
   
   public function getProducts() {

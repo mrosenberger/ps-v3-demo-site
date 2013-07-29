@@ -19,9 +19,9 @@
 	    <hr/>
 	    <h4>Resources</h4>
 	    <ul>
-	      <li><a href="#">What is PopShops?</a></li>
-	      <li><a href="#">PopShops V3 API Documentation</a></li>
-	      <li><a href="#">PopShops PHP Library Documentation</a></li>
+	      <li><a href="https://www.popshops.com/coupons-and-comparison-shopping">What is PopShops?</a></li>
+	      <li><a href="http://www.popshops.com/support/api-3-overview">PopShops V3 API Documentation</a></li>
+	      <li><a href="api-doc.php">PopShops PHP Library Documentation</a></li>
 	      <li><a href="#">Download the PHP source of this site</a></li>
 	    </ul>
 	  </div>

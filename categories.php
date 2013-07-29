@@ -30,14 +30,9 @@
 	    foreach($tree->getChildren() as $child) {
               print("<div class=row><div class=span10>");
               print("<hr>");
-	      print("<h3><a href=search.php?category=" . $child->getId() . ">"  . $child->getName() . '</a></h3><br>');
-              //print('<form method="get" action="search.php">');
-              //  print('<input name="keyword" class="span2" type="text" placeholder="Search ' . $child->getName() . '...">');
-              //print("</form>");
-	      print(generate_cat_form($child));
+	      print("<h3><a href=search.php?psapi_keyword=&psapi_category=" . $child->getId() . ">"  . $child->getName() . '</a></h3>');
 	      foreach($child->getChildren() as $childchild) {
-		print($childchild->getName() . '<br>');
-		print(generate_cat_form($childchild));
+		print("&nbsp;&nbsp;&nbsp;<a href=search.php?psapi_keyword=&psapi_category=" . $childchild->getId() . ">"  . $childchild->getName() . '</a><br>');
 	      }
               print("</div></div>");
             }

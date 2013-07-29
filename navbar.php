@@ -9,7 +9,7 @@
 	      <li><a href="#">Coupons</a></li>
 	      <li><a href="about.php">About</a></li>
 	    </ul>
-	    <form class="navbar-form pull-right" method="get" action="search.php">
+	    <form class="navbar-form pull-right" method="get" action="search.php?">
 	      <input name="psapi_keyword" class="span2" type="text" placeholder="Search products...">
 	      <select name="psapi_category" class="span3" id="category">
 		<option value="" id="nav-cat-select-default">All products</option>

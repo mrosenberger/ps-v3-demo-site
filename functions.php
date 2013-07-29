@@ -77,7 +77,7 @@
     <hr />
   <?php }
   
-  function generateBootstrapPagination($api, $num_cells=5) {
+  function generateBootstrapPagination($api, $num_cells=5, $center=true) {
     $current = 1;
     $total = (int) $api->getResultsCount();
     $per_page = 20;
@@ -91,7 +91,7 @@
     } else {
       $min = $current - $half;
     }?>
-    <div class="pagination">
+    <div class="pagination <?php if ($center) { print('pagination-centered'); } ?>">
       <ul>
         <li><a href="<?= $api->paginate(1) ?>">&laquo; First</a></li>
         <?php for ($i=$min; $i < $min + $num_cells; $i += 1) {
@@ -106,5 +106,15 @@
         <li><a href="<?= $api->paginate($pages) ?>">Last &raquo;</a></li>
       </ul>
     </div><?php
+  }
+  
+  function generateHiddenParameters($api, $omit=array()) {
+    $omit[] = 'catalog';
+    $omit[] = 'account';
+    foreach ($api->getOptions() as $option=>$value) {
+      if (! in_array($option, $omit)) { ?>
+        <input type="hidden" name="<?= $api->getUrlPrefix() . $option ?>" value="<?= $value ?>">
+      <?php }
+    }
   }
 ?>

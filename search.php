@@ -18,31 +18,47 @@
 	    $api->get('products');
 	    foreach($api->getCategories() as $category) {?>
 	      <li>
-		<a href="search.php?keyword=<?= $api->getParameterValue('keyword') ?>&category=<?= $category->getId() ?>">
+		<a href="<?= $api->getQueryString(array('category' => $category->getId())) ?>">
 		  <?= $category->getName() ?>
 		</a>
 	      </li>
-	    <?php }
-	  ?>
+	    <?php } ?>
 	  </ul>
         </div>
         <div class="span10">
 	  <?php
 	    if ($api->hasParameter('keyword') and $api->getParameterValue('keyword') != '') {
-	      print('<h2>Results for "' . $api->getParameterValue('keyword') . '"</h2>');
+	      print('<h2 style="display:inline">' . $api->getResultsCount() .
+		    ' results for "' . $api->getParameterValue('keyword') . '"</h2>');
+	    } else {
+	      print('<h2 style="display:inline">Results</h2>');
 	    }
 	    if ($api->hasParameter('merchant')) {
-	      $merchants = $api->getMerchants();
-	      print('From ' . $merchants[0]->getName() . '<br />');
+	      print(' <h4 style="display:inline">&#8213; From ' .
+		    $api->getMerchant($api->getParameterValue('merchant'))->getName() . '</h4><br />');
 	    }
-	    print('Total returned results: ' . $api->getResultsCount());
-	    generateBootstrapPagination($api);
-	    print('<hr>');
+	    ?>
+	    <div>
+	      <form style="float:left;padding-right:20px;">
+		<fieldset>
+		  <?php generateHiddenParameters($api, array('keyword')) ?>
+		  <div class="input-append">
+		    <input class="span2" type="text" name="psapi_keyword" placeholder="Refine keywords...">
+		    <button class="btn" type="submit">Search</button>
+		  </div>
+		</fieldset>
+	      </form>
+	      <?php
+		generateBootstrapPagination($api, 5, false);
+	      ?>
+	    </div>
+	    <hr />
+	    <?php
 	    foreach ($api->getProducts() as $product) {
 	      renderProduct($product);
 	    }
+	    generateBootstrapPagination($api);
 	  ?>
-	  <?php generateBootstrapPagination($api) ?>
 	</div>
       </div>
     </div>
