@@ -6,7 +6,7 @@
 	    <ul class="nav">
 	      <li><a href="categories.php">Departments</a></li>
 	      <li><a href="merchants.php?psapi_alpha=1">Stores</a></li>
-	      <li><a href="#">Coupons</a></li>
+	      <li><a href="coupons.php">Coupons</a></li>
 	      <li><a href="about.php">About</a></li>
 	    </ul>
 	    <form class="navbar-form pull-right" method="get" action="search.php?">

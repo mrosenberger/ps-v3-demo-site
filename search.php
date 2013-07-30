@@ -38,7 +38,9 @@
 	    if ($api->getResultsCount() == 0) { ?>
 	      <br /><br />
 	      <button class="btn" onclick="window.history.back()"><i class="icon-hand-left"> </i> Go back</a>
-	    <?php }
+	      <?php
+	      die();
+	    }
 	    if ($api->hasParameter('merchant') and $api->getParameterValue('merchant') !== '') {
 	      print(' <h4 class="search-results-merchant">&#8213; From ' .
 		    $api->getMerchant($api->getParameterValue('merchant'))->getName() . '</h4>');
@@ -59,7 +61,7 @@
 	      </fieldset>
 	    </form>
 	    <?php
-	      generateBootstrapPagination($api, 5, false);
+	      generateBootstrapPagination($api, 8, false);
 	    ?>
 	  </div>
 	  <br />

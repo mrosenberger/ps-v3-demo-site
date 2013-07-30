@@ -77,7 +77,35 @@
     <hr />
   <?php }
   
-  function generateBootstrapPagination($api, $num_cells=5, $center=true) {
+  function renderDeal($deal) {
+    $description_cutoff = 200; ?>
+    <div class="row">
+      <div class="span2">
+        <a href="<?= $deal->getUrl() ?>">
+          <?php if ($deal->getMerchant()) { ?>
+            <img class="merchant-small-image" src="<?= $deal->getMerchant()->getLogoUrl() ?>">
+          <?php } ?>
+        </a>
+      </div>
+      <div class="span4 deal-name">
+        <a href="<?= $deal->getUrl() ?>"><?= $deal->getName() ?></a>
+      </div>
+      <div class="span3">
+        <?php if ($deal->getStartOn() != '') { ?>
+          <span class="deal-start-label">Valid from: </span><span class="deal-start-value"><?= $deal->getStartOn() ?></span><br />
+        <?php }
+        if ($deal->getEndOn() != '') { ?>
+          <span class="deal-end-label">Good through: </span><span class="deal-end-value"><?= $deal->getEndOn() ?></span><br />
+        <?php }
+        if ($deal->getCode() != '') { ?>
+          <span class="deal-code-label">Coupon code: </span><span class="deal-code-value"><?= $deal->getCode() ?></span>
+        <?php } ?>
+      </div>
+    </div>
+    <hr />
+  <?php }
+  
+  function generateBootstrapPagination($api, $num_cells=8, $center=true) {
     $current = 1;
     $total = (int) $api->getResultsCount();
     $per_page = 20;
@@ -109,7 +137,7 @@
         <li><a href="<?= $api->paginate(1) ?>">&laquo; First</a></li>
         <?php for ($i=$min; $i < $min + $num_cells; $i += 1) {
           if ($i <= $pages) { ?>
-            <li <?php if ($i === $current) { print('class="active"'); } ?>>
+            <li<?php if ($i === $current) { print(' class="active"'); } ?>>
               <a href="<?= $api->paginate($i) ?>">
                 <?= $i ?>
               </a>

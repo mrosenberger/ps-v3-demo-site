@@ -550,7 +550,8 @@ abstract class PsApiResource {
     if (array_key_exists($attribute, $this->attributes)) {
       return $this->attributes[$attribute];
     } else {
-      return 'PopShops API Error: Invalid attribute passed to ' . get_class($this) . '->attr: ' . $attribute;
+      //return 'PopShops API Error: Invalid attribute passed to ' . get_class($this) . '->attr: ' . $attribute;
+      return '';
     }
   }
 
