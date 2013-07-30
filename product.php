@@ -13,8 +13,10 @@
 	  <hr>
 	  <ul>
 	  <?php
-	    $api = new PsApiCall($api_key, $catalog_key);
-	    $api->get('products');
+	    require("include-before-call.php");
+	      $api = new PsApiCall($api_key, $catalog_key, true);
+	      $api->get('products');
+	    require("include-after-call.php");
 	    $p = $api->getProducts();
             $p = $p[0];
 	    foreach($api->getCategories() as $category) { ?>
@@ -65,6 +67,7 @@
 	      }
 	    ?>
 	  </table>
+	  <a type="button" class="btn" href="#inspect_modal" data-toggle="modal">Inspect</a>
 	</div>
       </div>
     </div>

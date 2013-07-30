@@ -13,8 +13,10 @@
 	  <hr>
 	  <ul>
 	  <?php
-	    $api = new PsApiCall($api_key, $catalog_key);
-	    $api->get('merchants');
+	    require("include-before-call.php");
+	      $api = new PsApiCall($api_key, $catalog_key, true);
+	      $api->get('merchants');
+	    require("include-after-call.php");
 	    foreach($api->getCategories() as $category) { ?>
 	      <li>
 		<a href="<?= $api->getQueryString(array('category' => $category->getId(), 'alpha' => '', 'page' => '1')) ?>">
@@ -64,6 +66,7 @@
 	  </table>
 	  <hr />
 	  <?php generateBootstrapPagination($api) ?>
+	  <a type="button" class="btn" href="#inspect_modal" data-toggle="modal">Inspect</a>
 	</div>
       </div>
     </div>

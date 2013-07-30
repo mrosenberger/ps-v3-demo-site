@@ -14,8 +14,10 @@
 	  <h6>Focus search to:</h6>
 	  <ul>
 	  <?php
-	    $api = new PsApiCall($api_key, $catalog_key);
-	    $api->get('products');
+	    require("include-before-call.php");
+	      $api = new PsApiCall($api_key, $catalog_key, true);
+	      $api->get('products');
+	    require("include-after-call.php");
 	    foreach($api->getCategories() as $category) {?>
 	      <li>
 		<a href="<?= $api->getQueryString(array('category' => $category->getId())) ?>">
@@ -59,6 +61,7 @@
 	    }
 	    generateBootstrapPagination($api);
 	  ?>
+	  <a type="button" class="btn" href="#inspect_modal" data-toggle="modal">Inspect</a>
 	</div>
       </div>
     </div>

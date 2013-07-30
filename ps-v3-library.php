@@ -304,8 +304,8 @@ class PsApiCall {
     $this->logger->info("Processing JSON from $call_type call...");
     $this->processResults($parsed_json);
     $this->logger->info('JSON processing completed.');
-    $this->logger->info('Internal processing time elapsed: ' . (string) (microtime(true) - $this->response_received_time));
-    $this->logger->info('Total call time elapsed: ' . (string) (microtime(true) - $this->start_time));
+    $this->logger->info('Internal processing time elapsed: ' . (string) (microtime(true) - $this->response_received_time) . 's');
+    $this->logger->info('Total call time elapsed: ' . (string) (microtime(true) - $this->start_time) . 's');
   }
 
   public function getCategoryTree() {
@@ -334,6 +334,10 @@ class PsApiCall {
   
   public function getProduct($id) {
     return $this->resourceById('products', $id);
+  }
+  
+  public function getBrand($id) {
+    return $this->resourceById('brands', $id);
   }
   
   public function getOffer($id) {
@@ -368,6 +372,10 @@ class PsApiCall {
     return $this->resource('products');
   }
   
+  public function getBrands() {
+    return $this->resource('brands');
+  }
+  
   public function getOffers() {
     return $this->resource('offers');
   }
@@ -399,7 +407,7 @@ class PsApiCall {
   private function processObjectJson($json, $class, $resource_name) {
     if (isset($json)) {
       foreach ($json as $object) {
-        $this->logger->info('Internalizing ' . $resource_name . ' with ID=' . (string) $object['id']);
+        $this->logger->info('Internalizing ' . substr($resource_name, 0, strlen($resource_name) - 1) . ' with ID=' . (string) $object['id']);
         $this->internalize($object, (new $class($this)), $this->{$resource_name});
       }
     }

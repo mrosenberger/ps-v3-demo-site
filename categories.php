@@ -24,8 +24,10 @@
         <div class="span10">
             <h1>Categories</h1>
              <?php
-	    $api = new PsApiCall($api_key, $catalog_key);
-	    $api->get('categories');
+	    require("include-before-call.php");
+	      $api = new PsApiCall($api_key, $catalog_key, true);
+	      $api->get('categories');
+	    require("include-after-call.php");
 	    $tree = $api->getCategoryTree();
 	    foreach($tree->getChildren() as $child) {
               print("<div class=row><div class=span10>");
@@ -37,6 +39,8 @@
               print("</div></div>");
             }
             ?>
+	    <br />
+	    <a type="button" class="btn" href="#inspect_modal" data-toggle="modal">Inspect</a>
 	</div>
       </div>
     </div>
