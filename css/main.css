@@ -67,7 +67,7 @@ hr {
 }
 
 .departments-subcategory {
-    padding-left:20px;
+    padding-left:40px;
 }
 
 .departments-sidebar-li {
@@ -129,4 +129,15 @@ hr {
 
 .deal-code-value {
     color:red;
+}
+
+.sidebar-option-ul {
+    list-style-type:none;
+    padding:0px;
+    margin-left:10px;
+}
+
+.selection-count {
+    color:gray;
+    font-style:italic;
 }

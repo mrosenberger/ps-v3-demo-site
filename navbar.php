@@ -41,7 +41,7 @@
 		  </script>
 		<?php } ?>
 	      </select>
-	      <button type="submit" class="btn">Search</button>
+	      <button type="submit" class="btn btn-info">Search</button>
 	    </form>
 	  </div>
 	</div>

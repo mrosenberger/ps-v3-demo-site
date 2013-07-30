@@ -8,32 +8,56 @@
     <?php require("navbar.php");?>
     <div class="container">
       <div class="row">
-        <div class="span2 sidebar">
-          <h3>Categories</h3>
-	  <hr>
-	  <h6>Focus search to:</h6>
-	  <ul style="list-style-type:none;padding:0;margin:0;">
+        <div class="span3 sidebar">
+	  <h6>Focus on category:</h6>
+	  <ul class="sidebar-option-ul">
 	    <?php
 	      require("include-before-call.php");
 		$api = new PsApiCall($api_key, $catalog_key, true);
-		$api->get('products');
+		$api->get('products', array('results_per_page'=>'8'));
 	      require("include-after-call.php");
 	      foreach($api->getCategories() as $category) {
 		$checked = ($api->hasParameter('category') and ($category->getId() == $api->getParameterValue('category')));
 		?>
 		<li>
-		  <a href="<?= $api->getQueryString(array('category' => $category->getId())) ?>">
+		  <a href="<?php
+		  if ($checked) {
+		    print($api->getQueryString(array('category' => '')));
+		  } else {
+		    print($api->getQueryString(array('category' => $category->getId())));
+		  } ?>
+		    ">
 		    <input type="checkbox" <?php if ($checked) { print("checked"); } ?>>
 		    <small><?= $category->getName() ?></small>
 		  </a>
 		</li>
 	    <?php } ?>
 	  </ul>
+	  <h6>Focus on brand:</h6>
+	  <ul class="sidebar-option-ul">
+	    <?php
+	      foreach($api->getBrands() as $brand) {
+		$checked = ($api->hasParameter('brand') and ($brand->getId() == $api->getParameterValue('brand')));
+		?>
+		<li>
+		  <a href="<?php
+		  if ($checked) {
+		    print($api->getQueryString(array('brand' => '')));
+		  } else {
+		    print($api->getQueryString(array('brand' => $brand->getId())));
+		  } ?>
+		    ">
+		    <input type="checkbox" <?php if ($checked) { print("checked"); } ?>>
+		    <small><?= $brand->getName() ?> <span class="selection-count">(<?= $brand->getCount() ?>)</span></small>
+		  </a>
+		</li>
+	    <?php } ?>
+	  </ul>
         </div>
-        <div class="span10">
+        <div class="span9">
 	  <?php
 	    if ($api->hasParameter('keyword') and $api->getParameterValue('keyword') !== '') {
-	      print('<h2 class="search-results-header">' . $api->getResultsCount() .
+	      print('<h2 class="search-results-header">' . str_replace("100001", "Thousands of ", (string) $api->getResultsCount()) .
 		    ' results for "' . $api->getParameterValue('keyword') . '"</h2>');
 	    } else {
 	      print('<h2 class="search-results-header">Results</h2>');

@@ -150,7 +150,7 @@ class PsApiCall {
 				       'keyword_isbn', 'keyword_mpn', 'keyword_name', 'keyword_person', 'keyword_upc', 'keyword_sku',
 				       'merchant', 'merchant_type', 'page', 'percent_off', 'percent_off_max', 'percent_off_min', 'postal_code',
 				       'price', 'price_max', 'percent_off_min', 'product', 'product_spec', 'include_identifiers',
-				       'results_per_page', 'session', 'tracking_id');
+				       'results_per_page', 'session', 'tracking_id', 'brand');
     $valid_merchants_call_params = array('alpha', 'category', 'keyword', 'merchant', 'network', 'page', 'results_per_page', 'tracking_id');
     $valid_deals_call_params = array('end_on', 'end_on_max', 'end_on_min', 'deal_type', 'keyword', 'keyword_description', 'keyword_name',
 				     'merchant', 'merchant_type', 'page', 'results_per_page', 'session', 'site_wide', 'sort_deal',

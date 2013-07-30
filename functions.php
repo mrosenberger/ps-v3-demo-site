@@ -110,9 +110,12 @@
     $current = 1;
     $total = (int) $api->getResultsCount();
     $per_page = 20;
-    if ($api->hasParameter('results_per_page')) { $per_page = (int) $api->getParameter('results_per_page'); }
+    if ($api->hasParameter('results_per_page')) { $per_page = (int) $api->getParameterValue('results_per_page'); }
     if ($api->hasParameter('page')) { $current = (int) $api->getParameterValue('page'); }
     $pages = (int) ($total / $per_page);
+    if ($total % $per_page != 0.0) {
+      $pages += 1;
+    }
     if ($pages < 2) { ?>
       <div class="pagination generated-pagination <?php if ($center) { print('pagination-centered'); } ?>">
         <ul>
