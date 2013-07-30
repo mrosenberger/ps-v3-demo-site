@@ -60,8 +60,8 @@
                 <div data-spy="affix" class="span2 sidebar">
                     <h4>Tutorial</h4>
                     <ul class="nav nav-pills nav-stacked">
-                        <li><a href="#overview" class="hashlink">Overview</a></li>
-                        <li><a href="#gettingstarted" class="hashlink">Getting Started</a></li>
+                        <li><a href="#overview">Overview</a></li>
+                        <li><a href="#gettingstarted">Getting Started</a></li>
                         <li><a href="#hellopopshops">Hello, Popshops</a></li>
                         <li><a href="#theapis">The PopShops APIs</a></li>
                         <li><a href="#urlmode">URL Parameters</a></li>

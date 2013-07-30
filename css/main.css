@@ -63,13 +63,16 @@ hr {
 }
 
 .departments-category {
-    
+    padding-top: 55px;
 }
 
 .departments-subcategory {
     padding-left:20px;
 }
 
+.departments-sidebar-li {
+    padding:2px;
+}
 .offer-price-merchant {
     font-weight:bold;
 }

@@ -184,7 +184,7 @@
       case "9000": // Mature & Adult
         return "icon-heart";
       case "21000": // Media
-        return "icon-play-circle";
+        return "icon-film";
       case "22000": // Musical Instruments
         return "icon-music";
       case "24000": // Office & Professional Supplies
@@ -200,7 +200,7 @@
       case "31000": // Toys, Games & Hobbies
         return "icon-bell";
       case "32345": // Travel
-        return "icon-globe";
+        return "icon-plane";
       case "8400": // Video Games, Consoles & Accessories
         return "icon-hdd";
       case "9100": // Weapons
