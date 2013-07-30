@@ -761,6 +761,10 @@ class PsApiMerchant extends PsApiResource {
     return $this->attr('url');
   }
   
+  public function getCount() {
+    return $this->attr('count');
+  }
+  
   public function getOffers() {
     return $this->resource('offers');
   }

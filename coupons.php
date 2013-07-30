@@ -5,38 +5,58 @@
     <title>ShopFoo</title>
   </head>
   <body>
-    <?php require("navbar.php");?>
+    <?php
+      require("navbar.php");
+      require("include-before-call.php");
+	$api = new PsApiCall($api_key, $catalog_key, true);
+	$api->get('deals', array('results_per_page'=>'10'));
+      require("include-after-call.php");
+    ?>
     <div class="container">
       <div class="row">
-        <div class="span2 sidebar">
-	  <h6>Focus deal type:</h6>
-	  <ul>
+        <div class="span3 sidebar">
+	  <h6>Focus on type of deal:</h6>
+	  <ul class="sidebar-option-ul">
 	    <?php
-	      require("include-before-call.php");
-		$api = new PsApiCall($api_key, $catalog_key, true);
-		$api->get('deals');
-	      require("include-after-call.php");
-	      foreach($api->getDealTypes() as $deal_type) {?>
+	      foreach($api->getDealTypes() as $deal_type) {
+		$checked = ($api->hasParameter('deal_type') and ($deal_type->getId() == $api->getParameterValue('deal_type')));
+		?>
 		<li>
-		  <a href="<?= $api->getQueryString(array('deal_type' => $deal_type->getId())) ?>">
-		    <?= $deal_type->getName() ?>
+		  <a href="<?php
+		  if ($checked) {
+		    print($api->getQueryString(array('deal_type' => '', 'page' => '1')));
+		  } else {
+		    print($api->getQueryString(array('deal_type' => $deal_type->getId(), 'page' => '1')));
+		  } ?>
+		    ">
+		    <input type="checkbox" <?php if ($checked) { print("checked"); } ?>>
+		    <small><?= $deal_type->getName() ?> <span class="selection-count">(<?= $deal_type->getCount() ?>)</span></small>
 		  </a>
 		</li>
 	    <?php } ?>
 	  </ul>
-	  <h6>Focus merchant:</h6>
-	  <ul>
+	  <h6>Focus on retailer:</h6>
+	  <ul class="sidebar-option-ul">
 	    <?php
-	      foreach($api->getMerchants() as $merchant) {?>
+	      foreach($api->getMerchants() as $merchant) {
+		$checked = ($api->hasParameter('merchant') and ($merchant->getId() == $api->getParameterValue('merchant')));
+		?>
 		<li>
-		  <a href="<?= $api->getQueryString(array('merchant' => $merchant->getId())) ?>">
-		    <?= $merchant->getName() ?>
+		  <a href="<?php
+		  if ($checked) {
+		    print($api->getQueryString(array('merchant' => '', 'page' => '1')));
+		  } else {
+		    print($api->getQueryString(array('merchant' => $merchant->getId(), 'page' => '1')));
+		  } ?>
+		    ">
+		    <input type="checkbox" <?php if ($checked) { print("checked"); } ?>>
+		    <small><?= $merchant->getName() ?> <span class="selection-count">(<?= $merchant->getCount() ?>)</span></small>
 		  </a>
 		</li>
 	    <?php } ?>
 	  </ul>
         </div>
-        <div class="span10">
+        <div class="span9">
 	  <?php
 	    if ($api->hasParameter('keyword') and $api->getParameterValue('keyword') !== '') {
 	      print('<h2 class="search-results-header">' . $api->getResultsCount() .

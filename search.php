@@ -5,26 +5,28 @@
     <title>ShopFoo</title>
   </head>
   <body>
-    <?php require("navbar.php");?>
+    <?php
+      require("navbar.php");
+      require("include-before-call.php");
+	$api = new PsApiCall($api_key, $catalog_key, true);
+	$api->get('products', array('results_per_page'=>'10'));
+      require("include-after-call.php");
+    ?>
     <div class="container">
       <div class="row">
         <div class="span3 sidebar">
 	  <h6>Focus on category:</h6>
 	  <ul class="sidebar-option-ul">
 	    <?php
-	      require("include-before-call.php");
-		$api = new PsApiCall($api_key, $catalog_key, true);
-		$api->get('products', array('results_per_page'=>'8'));
-	      require("include-after-call.php");
 	      foreach($api->getCategories() as $category) {
 		$checked = ($api->hasParameter('category') and ($category->getId() == $api->getParameterValue('category')));
 		?>
 		<li>
 		  <a href="<?php
 		  if ($checked) {
-		    print($api->getQueryString(array('category' => '')));
+		    print($api->getQueryString(array('category' => '', 'page' => '1')));
 		  } else {
-		    print($api->getQueryString(array('category' => $category->getId())));
+		    print($api->getQueryString(array('category' => $category->getId(), 'page' => '1')));
 		  } ?>
 		    ">
 		    <input type="checkbox" <?php if ($checked) { print("checked"); } ?>>
@@ -42,9 +44,9 @@
 		<li>
 		  <a href="<?php
 		  if ($checked) {
-		    print($api->getQueryString(array('brand' => '')));
+		    print($api->getQueryString(array('brand' => '', 'page' => '1')));
 		  } else {
-		    print($api->getQueryString(array('brand' => $brand->getId())));
+		    print($api->getQueryString(array('brand' => $brand->getId(), 'page' => '1')));
 		  } ?>
 		    ">
 		    <input type="checkbox" <?php if ($checked) { print("checked"); } ?>>
