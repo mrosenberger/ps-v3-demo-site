@@ -30,18 +30,18 @@
         <div class="span10">
 	  <?php
 	    if ($api->hasParameter('keyword') and $api->getParameterValue('keyword') != '') {
-	      print('<h2 style="display:inline">' . $api->getResultsCount() .
+	      print('<h2 class="search-results-header">' . $api->getResultsCount() .
 		    ' results for "' . $api->getParameterValue('keyword') . '"</h2>');
 	    } else {
-	      print('<h2 style="display:inline">Results</h2>');
+	      print('<h2 class="search-results-header">Results</h2>');
 	    }
 	    if ($api->hasParameter('merchant')) {
-	      print(' <h4 style="display:inline">&#8213; From ' .
+	      print(' <h4 class="search-results-merchant">&#8213; From ' .
 		    $api->getMerchant($api->getParameterValue('merchant'))->getName() . '</h4><br />');
 	    }
 	    ?>
 	    <div>
-	      <form style="float:left;padding-right:20px;">
+	      <form class="search-refine-keywords">
 		<fieldset>
 		  <?php generateHiddenParameters($api, array('keyword')) ?>
 		  <div class="input-append">
@@ -61,7 +61,7 @@
 	    }
 	    generateBootstrapPagination($api);
 	  ?>
-	  <a type="button" class="btn" href="#inspect_modal" data-toggle="modal">Inspect</a>
+	  <a type="button" class="btn inspect-button" href="#inspect_modal" data-toggle="modal">Inspect</a>
 	</div>
       </div>
     </div>

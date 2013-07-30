@@ -6,13 +6,13 @@
         <img class="merchant-small-image" src="<?=$offer->getMerchant()->getLogoUrl() ?>">
       </td>
       <td class="span2">
-        <h5>$<?= money_format('%i', $offer->getPriceMerchant()) ?></h5>
+        <span class="offer-price-merchant">$<?= money_format('%i', $offer->getPriceMerchant()) ?></span>
       </td>
       <td class="span2">
-        <?= ucfirst($offer->getCondition()) ?>
+        <span class="offer-condition"><?= ucfirst($offer->getCondition()) ?></span>
       </td>
       <td class="span2">
-        <a href="<?= $offer->getUrl() ?>" rel="nofollow" class="btn">Go to Store</a>
+        <a href="<?= $offer->getUrl() ?>" rel="nofollow" class="btn offer-store-button">Go to Store</a>
       </td>
     </tr>
   <?php }
@@ -91,7 +91,7 @@
     } else {
       $min = $current - $half;
     }?>
-    <div class="pagination <?php if ($center) { print('pagination-centered'); } ?>">
+    <div class="pagination generated-pagination <?php if ($center) { print('pagination-centered'); } ?>">
       <ul>
         <li><a href="<?= $api->paginate(1) ?>">&laquo; First</a></li>
         <?php for ($i=$min; $i < $min + $num_cells; $i += 1) {
@@ -115,6 +115,57 @@
       if (! in_array($option, $omit)) { ?>
         <input type="hidden" name="<?= $api->getUrlPrefix() . $option ?>" value="<?= $value ?>">
       <?php }
+    }
+  }
+  
+  function getCategoryIcon($s) {
+    switch ($s) {
+      case "32194": // Arts & Crafts
+        return "icon-pencil";
+      case "2000": // Automotive Parts & Vehicles
+        return "icon-road";
+      case "15000": // Baby & Family
+        return "icon-home";
+      case "3000": // Clothing & Accessories
+        return "icon-briefcase";
+      case "5000": // Computers & Software
+        return "icon-off";
+      case "7000": // Electronics
+        return "icon-camera";
+      case "10000": // Events & Tickets
+        return "icon-tags";
+      case "12000": // Food, Flowers & Gifts
+        return "icon-gift";
+      case "13000": // Health & Beauty
+        return "icon-eye-open";
+      case "16000": // Home & Garden
+        return "icon-home";
+      case "9000": // Mature & Adult
+        return "icon-heart";
+      case "21000": // Media
+        return "icon-play-circle";
+      case "22000": // Musical Instruments
+        return "icon-music";
+      case "24000": // Office & Professional Supplies
+        return "icon-envelope";
+      case "23000": // Pets & Animal Supplies
+        return "icon-leaf";
+      case "25000": // Shoes & Accessories
+        return "icon-shopping-cart";
+      case "32346": // Specialty & Novelty
+        return "icon-star";
+      case "27000": // Sports & Outdoor Activities
+        return "icon-globe";
+      case "31000": // Toys, Games & Hobbies
+        return "icon-bell";
+      case "32345": // Travel
+        return "icon-globe";
+      case "8400": // Video Games, Consoles & Accessories
+        return "icon-hdd";
+      case "9100": // Weapons
+        return "icon-screenshot";
+      default:
+        return "icon-certificate";
     }
   }
 ?>

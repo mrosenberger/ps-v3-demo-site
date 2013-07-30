@@ -29,16 +29,18 @@
 	  </ul>
         </div>
         <div class="span10">
-	  <h2><?=$p->attr('name')?></h2>
+	  <h2><?= $p->getName() ?></h2>
 	  <hr>
 	  <div class="row">
 	    <div class="span10">
-	      <a href="<?=$p->largestImageUrl()?>">
-		<img class="product-detail-large-image" src="<?=$p->largestImageUrl()?>">
+	      <a href="<?= $p->largestImageUrl() ?>">
+		<img class="product-detail-large-image" src="<?= $p->largestImageUrl() ?>">
 	      </a>
-	      <?=$p->attr('description')?>
+	      <span class="product-detail-description">
+		<?= $p->getDescription() ?>
+	      </span>
 	      <br><br>
-	      Brand: <i><?=$p->resource('brand')->attr('name')?></i>
+	      <span class="brand-label">Brand: </span><span class="brand-value"><?= $p->getBrand()->getName() ?></span>
 	    </div>
 	  </div>
 	  <div class="row">
@@ -60,14 +62,14 @@
 	      <h3>Condition</h3>
 	    </div>
 	  </div>
-	  <table class="table-hover">
+	  <table class="table-hover offers-table">
 	    <?php
-	      foreach($p->resource('offers') as $offer) {
+	      foreach($p->getOffers() as $offer) {
 		renderOffer($offer);
 	      }
 	    ?>
 	  </table>
-	  <a type="button" class="btn" href="#inspect_modal" data-toggle="modal">Inspect</a>
+	  <a type="button" class="btn inspect-button" href="#inspect_modal" data-toggle="modal">Inspect</a>
 	</div>
       </div>
     </div>

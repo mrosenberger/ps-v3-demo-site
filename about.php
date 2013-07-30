@@ -9,21 +9,6 @@
     <div class="container">
       <div class="row">
         <div class="span10">
-	  <!--
-	  <div class="modal fade" id="inspect_modal">
-	    <div class="modal-header">
-	      <a class="close" data-dismiss="modal">&times;</a>
-	      <h3>API Call and Logs</h3>
-	    </div>
-	    <div class="modal-body">
-	      <p>Test Modal</p>
-	    </div>
-	    <div class="modal-footer">
-	      <a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
-	    </div>
-	  </div>
-	  <a type="button" class="btn" href="#inspect_modal" data-toggle="modal">Inspect</a>
-	  -->
 	  <h3>About ShopFoo</h3>
 	  <div class="well" style="padding-top:20px">
 	    <img style="float:right;" src="http://www.popshops.com/images/v3/logo.page-blurb.gif" />

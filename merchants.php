@@ -66,7 +66,7 @@
 	  </table>
 	  <hr />
 	  <?php generateBootstrapPagination($api) ?>
-	  <a type="button" class="btn" href="#inspect_modal" data-toggle="modal">Inspect</a>
+	  <a type="button" class="btn inspect-button" href="#inspect_modal" data-toggle="modal">Inspect</a>
 	</div>
       </div>
     </div>

@@ -22,25 +22,34 @@
         <div class="span2 sidebar">
         </div>
         <div class="span10">
-            <h1>Categories</h1>
-             <?php
-	    require("include-before-call.php");
-	      $api = new PsApiCall($api_key, $catalog_key, true);
-	      $api->get('categories');
-	    require("include-after-call.php");
-	    $tree = $api->getCategoryTree();
-	    foreach($tree->getChildren() as $child) {
-              print("<div class=row><div class=span10>");
-              print("<hr>");
-	      print("<h3><a href=search.php?psapi_keyword=&psapi_category=" . $child->getId() . ">"  . $child->getName() . '</a></h3>');
-	      foreach($child->getChildren() as $childchild) {
-		print("&nbsp;&nbsp;&nbsp;<a href=search.php?psapi_keyword=&psapi_category=" . $childchild->getId() . ">"  . $childchild->getName() . '</a><br>');
-	      }
-              print("</div></div>");
-            }
-            ?>
-	    <br />
-	    <a type="button" class="btn" href="#inspect_modal" data-toggle="modal">Inspect</a>
+          <h1>Categories</h1>
+          <?php
+	  require("include-before-call.php");
+	    $api = new PsApiCall($api_key, $catalog_key, true);
+	    $api->get('categories');
+	  require("include-after-call.php");
+	  $tree = $api->getCategoryTree();
+	  foreach($tree->getChildren() as $child) { ?>
+            <div class=row>
+	      <div class=span10>
+		<hr />
+		<h3>
+		  <a class="departments-category" href="search.php?psapi_keyword=&psapi_category=<?= $child->getId() ?>">
+		    <i class="departments-icon <?= getCategoryIcon($child->getId()) ?>"></i>
+		    <?= $child->getName() ?>
+		  </a>
+		</h3>
+		<?php foreach($child->getChildren() as $childchild) { ?>
+		  <a class="departments-subcategory"
+		    href="search.php?psapi_keyword=&psapi_category=<?= $childchild->getId() ?>">
+		    <?= $childchild->getName() ?>
+		  </a>
+		  <br />
+		<?php } ?>
+	      </div>
+	    </div>
+	  <?php } ?>
+	  <a type="button" class="btn inspect-button" href="#inspect_modal" data-toggle="modal">Inspect</a>
 	</div>
       </div>
     </div>
