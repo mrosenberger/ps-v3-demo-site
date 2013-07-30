@@ -328,7 +328,8 @@ class PsApiCall {
     if (array_key_exists( $id, $this->{$resource})) {
       return $this->{$resource}[$id];
     } else {
-      return new PsApiDummy($this, $resource . " with id= $id is not present in PsApiCall results");
+      //return new PsApiDummy($this, $resource . " with id= $id is not present in PsApiCall results");
+      return NULL;
     }
   }
   

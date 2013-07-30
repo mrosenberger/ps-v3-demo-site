@@ -21,7 +21,7 @@
             $p = $p[0];
 	    foreach($api->getCategories() as $category) { ?>
 	      <li>
-		<a href="#">
+		<a href="search.php?psapi_keyword=&psapi_category=<?= $category->getId() ?>">
 		  <?= $category->getName() ?>
 		</a>
 	      </li>

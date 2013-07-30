@@ -84,6 +84,19 @@
     if ($api->hasParameter('results_per_page')) { $per_page = (int) $api->getParameter('results_per_page'); }
     if ($api->hasParameter('page')) { $current = (int) $api->getParameterValue('page'); }
     $pages = (int) ($total / $per_page);
+    if ($pages < 2) { ?>
+      <div class="pagination generated-pagination <?php if ($center) { print('pagination-centered'); } ?>">
+        <ul>
+          <li class="active">
+            <a href="#">
+              Page 1 of 1
+            </a>
+          </li>
+        </ul>
+      </div>
+      <?php
+      return;
+    }
     $half = (int) ($num_cells / 2);
     $min = 0;
     if ($current < ($half + 1)) {
