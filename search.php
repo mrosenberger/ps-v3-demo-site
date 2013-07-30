@@ -12,16 +12,19 @@
           <h3>Categories</h3>
 	  <hr>
 	  <h6>Focus search to:</h6>
-	  <ul>
+	  <ul style="list-style-type:none;padding:0;margin:0;">
 	    <?php
 	      require("include-before-call.php");
 		$api = new PsApiCall($api_key, $catalog_key, true);
 		$api->get('products');
 	      require("include-after-call.php");
-	      foreach($api->getCategories() as $category) {?>
+	      foreach($api->getCategories() as $category) {
+		$checked = ($api->hasParameter('category') and ($category->getId() == $api->getParameterValue('category')));
+		?>
 		<li>
 		  <a href="<?= $api->getQueryString(array('category' => $category->getId())) ?>">
-		    <?= $category->getName() ?>
+		    <input type="checkbox" <?php if ($checked) { print("checked"); } ?>>
+		    <small><?= $category->getName() ?></small>
 		  </a>
 		</li>
 	    <?php } ?>

@@ -97,7 +97,8 @@
         if ($deal->getEndOn() != '') { ?>
           <span class="deal-end-label">Good through: </span><span class="deal-end-value"><?= $deal->getEndOn() ?></span><br />
         <?php }
-        if ($deal->getCode() != '') { ?>
+        if (($deal->getCode() != '') and !in_array(strtolower($deal->getCode()),
+                                                   array('none', 'no code required', 'n/a', 'no code needed', 'no coupon code'))) { ?>
           <span class="deal-code-label">Coupon code: </span><span class="deal-code-value"><?= $deal->getCode() ?></span>
         <?php } ?>
       </div>

@@ -110,7 +110,8 @@ hr {
 }
 
 .deal-start-value {
-    
+    font-style:italic;
+    padding-left:28px;
 }
 
 .deal-end-label {
@@ -118,13 +119,14 @@ hr {
 }
 
 .deal-end-value {
-    
+    font-style:italic;
+    padding-left:4px;
 }
 
 .deal-code-label {
-    
+    font-weight:bold;
 }
 
 .deal-code-value {
-    
+    color:red;
 }
