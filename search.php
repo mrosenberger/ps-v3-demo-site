@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <?php require("header-titleless.php");?>
+    <?php require("header-titleless.php"); ?>
     <title>ShopFoo</title>
   </head>
   <body>
@@ -9,13 +9,13 @@
       require("navbar.php");
       require("include-before-call.php");
 	$api = new PsApiCall($api_key, $catalog_key, true);
-	$api->get('products', array('results_per_page'=>'10'));
+	$api->call('products', array('results_per_page'=>'10'));
       require("include-after-call.php");
     ?>
     <div class="container">
       <div class="row">
         <div class="span3 sidebar">
-	  <h6>Focus on category:</h6>
+	  <span class="sidebar-heading">Focus on category:</span>
 	  <ul class="sidebar-option-ul">
 	    <?php
 	      foreach($api->getCategories() as $category) {
@@ -35,7 +35,7 @@
 		</li>
 	    <?php } ?>
 	  </ul>
-	  <h6>Focus on brand:</h6>
+	  <span class="sidebar-heading">Focus on brand:</span>
 	  <ul class="sidebar-option-ul">
 	    <?php
 	      foreach($api->getBrands() as $brand) {
@@ -84,7 +84,7 @@
 	      <fieldset>
 		<?php generateHiddenParameters($api, array('keyword')) ?>
 		<div class="input-append">
-		  <input class="span2" type="text" name="psapi_keyword" placeholder="Refine keywords...">
+		  <input class="span2" type="text" name="psapi_keyword" placeholder="Refine keywords..." autofocus>
 		  <button class="btn btn-warning" type="submit"><i class="icon-search"> </i></button>
 		</div>
 	      </fieldset>

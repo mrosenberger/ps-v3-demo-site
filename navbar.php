@@ -5,7 +5,7 @@
 	  <div class="nav-collapse collapse">
 	    <ul class="nav">
 	      <li><a class="navbar-link" href="categories.php">Departments</a></li>
-	      <li><a class="navbar-link" href="merchants.php?psapi_alpha=1">Stores</a></li>
+	      <li><a class="navbar-link" href="merchants.php?psapi_alpha=">Stores</a></li>
 	      <li><a class="navbar-link" href="coupons.php">Coupons</a></li>
 	      <li><a class="navbar-link" style="color:orange;" href="about.php">About</a></li>
 	      <li><a href="http://www.popshops.com/"><img src="img/popshops-navbar.png"></a></li>

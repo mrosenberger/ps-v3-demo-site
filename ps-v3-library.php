@@ -269,7 +269,7 @@ class PsApiCall {
   // Parameter $arguments is an associative array mapping $argument=>$value pairs which will be passed to the API.
   // The values of $arguments must be relevant for the API specified by $call_type
   // Returns nothing.
-  public function get($call_type='products', $arguments=array()) {
+  public function call($call_type='products', $arguments=array()) {
     $this->start_time = microtime(true);
     $this->logger->info("Setting up to call PopShops $call_type API...");
     if ($this->called) {

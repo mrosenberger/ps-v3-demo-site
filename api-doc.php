@@ -42,14 +42,6 @@
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
         <link rel="stylesheet" href="css/main.css">
-        <style>
-            .sidebar {
-                margin-left: 0;
-                padding-right: 19px;
-                border-right: 1px groove #000000;
-                min-height: 1000px;
-            }
-        </style>
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
         <title>PS API PHP Library</title>
     </head>
@@ -81,7 +73,8 @@
                     </ul>
                 </div>
                 <div class="span10 offset2">
-                    <h2>PopShops PHP API-V3 Library Documentation</h2>
+		    <img src="img/popshops-large.gif" class="popshops-large-logo" />
+                    <h3>PopShops PHP API-V3 Library Documentation</h3>
                     <hr/>
                     <a class="anchor" name="overview"></a>
                     <h3>Overview</h3>
@@ -108,12 +101,12 @@
                             <li>Find your
                             <a href="http://www.popshops.com/dashboard2/settings/api_keys?v=3.0">API key</a> and
                             <a href="http://www.popshops.com/dashboard2/catalogs?v=3.0">catalog key.</a></li>
-                            Enter them below and the demos on this page will become copy-paste runnable!
+                            Enter them below and the demos on this page will become copy-paste runnable.
                             <form class="form-inline">
                                 <fieldset>
                                     <input type="text" id="api-key-entry" placeholder="API Key"/>
                                     <input type="text" id="catalog-key-entry" placeholder="Catalog Key"/>
-                                    <button type="button" class="btn" href="#!" onclick="update_keys();">Update</button>
+                                    <button type="button" class="btn btn-warning" href="#!" onclick="update_keys();">Update</button>
                                 </fieldset>
                             </form>
                         </ul>
@@ -126,7 +119,7 @@
   require('ps-v3-library.php');                               // Include the library
   $api = new PsApiCall('<span class="fill-api-key">your_api_key</span>',
                        '<span class="fill-catalog-key">your_catalog_key</span>'); 
-  $api->get('products', array('keyword' => 'ipad'));          // Perform the call, searching for 'ipad'
+  $api->call('products', array('keyword' => 'ipad'));         // Perform the call, searching for 'ipad'
   foreach ($api->getProducts() as $product) {                 // Iterate through the returned products
     print($product->getName() . '&lt;br/&gt;');                     // Print the name of each one
   }
@@ -155,12 +148,12 @@
 				<a href="#psapibrand">brands</a>.
 			    </dd>
 			    <dd>
-				Having instantiated a <code>PsApiCall</code> instance called <code>$api</code>, call this API as follows:
+				Having instantiated a <code class="inline-code">PsApiCall</code> instance called <code class="inline-code">$api</code>, call this API as follows:
 			    </dd>
 			    <dd>
-				<blockquote><code>$api->get('products', $parameters);</code></blockquote> where <code>$parameters</code>
+				<blockquote><code class="inline-code">$api->call('products', $parameters);</code></blockquote> where <code class="inline-code">$parameters</code>
 				is an array of <i>$param=>$value</i> string pairs,
-				such as: <code>array('keyword'=>'ipad', 'category'=>'7000')</code>
+				such as: <code class="inline-code">array('keyword'=>'ipad', 'category'=>'7000')</code>
 			    </dd>
 			    <dd>
 				These <i>$param</i>s can be any of the option request parameters listed 
@@ -173,12 +166,12 @@
 				<a href="#psapicountry">countries</a>.
 			    </dd>
 			    <dd>
-				Having instantiated a <code>PsApiCall</code> instance called <code>$api</code>, call this API as follows:
+				Having instantiated a <code class="inline-code">PsApiCall</code> instance called <code class="inline-code">$api</code>, call this API as follows:
 			    </dd>
 			    <dd>
-				<blockquote><code>$api->get('merchants', $parameters);</code></blockquote> where <code>$parameters</code>
+				<blockquote><code class="inline-code">$api->call('merchants', $parameters);</code></blockquote> where <code class="inline-code">$parameters</code>
 				is an array of <i>$param=>$value</i> string pairs,
-				such as: <code>array('alpha'=>'p', 'network'=>'2')</code>
+				such as: <code class="inline-code">array('alpha'=>'p', 'network'=>'2')</code>
 			    </dd>
 			    <dd>
 				These <i>$param</i>s can be any of the option request parameters listed 
@@ -191,12 +184,12 @@
 				<a href="#psapidealtype">deal types</a>, and <a href="#psapicountry">countries</a>.
 			    </dd>
 			    <dd>
-				Having instantiated a <code>PsApiCall</code> instance called <code>$api</code>, call this API as follows:
+				Having instantiated a <code class="inline-code">PsApiCall</code> instance called <code class="inline-code">$api</code>, call this API as follows:
 			    </dd>
 			    <dd>
-				<blockquote><code>$api->get('deals', $parameters);</code></blockquote> where <code>$parameters</code>
+				<blockquote><code class="inline-code">$api->call('deals', $parameters);</code></blockquote> where <code class="inline-code">$parameters</code>
 				is an array of <i>$param=>$value</i> string pairs,
-				such as: <code>array('keyword'=>'laptop', 'deal_type'=>'6')</code>
+				such as: <code class="inline-code">array('keyword'=>'laptop', 'deal_type'=>'6')</code>
 			    </dd>
 			    <dd>
 				These <i>$param</i>s can be any of the option request parameters listed 
@@ -208,22 +201,22 @@
 				general and descending into the very specific.
 			    </dd>
 			    <dd>
-				Having instantiated a <code>PsApiCall</code> instance called <code>$api</code>, call this API as follows:
+				Having instantiated a <code class="inline-code">PsApiCall</code> instance called <code class="inline-code">$api</code>, call this API as follows:
 			    </dd>
 			    <dd>
-				<blockquote><code>$api->get('categories');</code></blockquote>
-			    <dd><code>PsApiCall->getCategoryTree()</code> returns the topmost node of this tree.
+				<blockquote><code class="inline-code">$api->call('categories');</code></blockquote>
+			    <dd><code class="inline-code">PsApiCall->getCategoryTree()</code> returns the topmost node of this tree.
 			    </dd>
 			    <dd>
-				Each node supports the methods <code>getName()</code>, <code>getId()</code>, and
-				<code>getChildren()</code>, the last of which returns a list of zero or more child nodes.
+				Each node supports the methods <code class="inline-code">getName()</code>, <code class="inline-code">getId()</code>, and
+				<code class="inline-code">getChildren()</code>, the last of which returns a list of zero or more child nodes.
 			    </dd>
 			</dl>
 		    </div>
 		    <a class="anchor" name="urlmode"></a>
                     <h3>Passing parameters via the URL string</h3>
                     <div class="well">
-                        To supplement the parameters (such as <code>'keyword' => 'backpack'</code>) passed to <code>PsApiCall->get</code>,
+                        To supplement the parameters (such as <code class="inline-code">'keyword' => 'backpack'</code>) passed to <code class="inline-code">PsApiCall->call</code>,
                         the library searches through the GET query string for any parameters starting with '<i>psapi_</i>' and
                         incorporates them (stripped of their prefix) into the API call.
                     </div>
@@ -233,29 +226,28 @@
   require('ps-v3-library.php');                                               // Include the library
   $api = new PsApiCall('<span class="fill-api-key">your_api_key</span>',
                        '<span class="fill-catalog-key">your_catalog_key</span>');                   
-  $api->get('products');                                                      // Note that no params are passed
+  $api->call('products');                                                     // Note that no params are passed
   foreach ($api->getProducts() as $product) {                                 // Iterate through products
     print($product->getName() . '&lt;br/&gt;');                                     // Print the name of each
   }
 ?&gt;</pre>
 		    <div class="well">
-                      Now, append <code>?psapi_keyword=backpack</code> to your request. The full request will look something like:<br/><br/>
+                      Now, append <code class="inline-code">?psapi_keyword=backpack</code> to your request. The full request will look something like:<br/><br/>
                       <blockquote>http://localhost/demo.php?psapi_keyword=backpack</blockquote>
 		      This technique is useful for a variety of applications, such as accepting input from HTML forms.
 		      <!-- Add something about the precedence of parameters: call-time vs url-passed etc. -->
-                      <!-- Also add something about calling (with ->get) vs retrieving stored values (with ->getProducts) etc. -->
 		    </div>
 		    <div class="well">
 		       The library can also do the "opposite": we can use it to generate query strings which,<br/>
                        having been served and then clicked, will later be read by the library.<br/><hr/>
 		       The parameters included in the generated query string come from two places:<br/>
 		       <ul>
-			 <li>The internal options passed to <code>PsApiCall->get</code></li>
+			 <li>The internal options passed to <code class="inline-code">PsApiCall->call</code></li>
 			 <li>The parameters passed to the library via the query string (includes both parameters <b>with</b>
 			 and <b>without</b> the '<i>psapi_</i>' prefix)</li>
 		       </ul>
                        This feature allows you to preserve any parameters that already exist in the URL string, while modifying others.<br/>
-                       If you want to add to/edit the parameters included in the link, see <code>PsApiCall->getQueryString()</code> below.<br/><br/>
+                       If you want to add to/edit the parameters included in the link, see <code class="inline-code">PsApiCall->getQueryString()</code> below.<br/><br/>
                        <strong>Note that these link generators do not return API call strings: they generate URLs with the same domain, path, and page name as the PHP page being served, but with the query parameters modified.</strong>
 		    </div>
 		    &nbsp;&nbsp;&nbsp;&nbsp;Let's add a link to the next page of results:<br/>
@@ -264,7 +256,7 @@
   require('ps-v3-library.php');                                               // Include the library
   $api = new PsApiCall('<span class="fill-api-key">your_api_key</span>',
                        '<span class="fill-catalog-key">your_catalog_key</span>'); 
-  $api->get('products');                                                      // Note that no params are passed
+  $api->call('products');                                                     // Note that no params are passed
   foreach ($api->getProducts() as $product) {                                 // Iterate through products
     print($product->getName() . '&lt;br/&gt;');                                     // Print the name of each
   }
@@ -274,18 +266,18 @@
 		    <div class="well">
 		      All in all, <a href="#psapicall">PsApiCall</a> supports four such link generators:
 		      <dl class="dl-horizontal">
-			<dt><code>nextPage()</code></dt>
+			<dt><code class="inline-code">nextPage()</code></dt>
 			<dd>Generates a link to the next page of results</dd>
-			<dt><code>prevPage()</code></dt>
+			<dt><code class="inline-code">prevPage()</code></dt>
 			<dd>Generates a link to the previous page of results</dd>
-			<dt><code>paginate($page)</code></dt>
+			<dt><code class="inline-code">paginate($page)</code></dt>
 			<dd>Generates a link to the specified page of results (1-100)</dd>
-			<dt><code>getQueryString($mods)</code></dt>
+			<dt><code class="inline-code">getQueryString($mods)</code></dt>
 			<dd>Generates a link to the page with the $mods (map of $params=>$values) applied
 			    <br/>&nbsp;&nbsp;For example: 
-			    <br/>&nbsp;&nbsp;<code>$api->getQueryString(array('page' => 7))</code>
+			    <br/>&nbsp;&nbsp;<code class="inline-code">$api->getQueryString(array('page' => 7))</code>
 			    <br/>&nbsp;&nbsp;is equivalent to
-			    <br/>&nbsp;&nbsp;<code>$api->paginate(7)</code>
+			    <br/>&nbsp;&nbsp;<code class="inline-code">$api->paginate(7)</code>
 			    <br/>&nbsp;&nbsp;This generator is much more powerful than the other three. 
 			    <br/>&nbsp;&nbsp;It allows a link to be generated to a page with any set of parameters you want.
 			</dd>
@@ -305,7 +297,7 @@
                         </ul>
                         <br/>Provides the following public methods:
                         <dl class="dl-horizontal">
-			  <dt><code>get($call_type, $arguments)</code></dt>
+			  <dt><code class="inline-code">get($call_type, $arguments)</code></dt>
 			</dl>
                         
                     </div>

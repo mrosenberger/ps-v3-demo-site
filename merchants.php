@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <?php
-      require("header-titleless.php");
-      require("include-before-call.php");
-	$api = new PsApiCall($api_key, $catalog_key, true);
-	$api->get('merchants');
-      require("include-after-call.php");
-    ?>
+    <?php require("header-titleless.php"); ?>
     <title>ShopFoo Merchants</title>
   </head>
   <body>
-    <?php require("navbar.php");?>
+    <?php
+      require("navbar.php");
+      require("include-before-call.php");
+	$api = new PsApiCall($api_key, $catalog_key, true);
+	$api->call('merchants');
+      require("include-after-call.php");
+    ?>
     <div class="container">
       <div class="row">
         <div class="span3 sidebar">
-	  <h6>Select store category:</h6>
+	  <span class="sidebar-heading">Select store category:</span>
 	  <ul class="sidebar-option-ul">
 	    <?php
 	      foreach($api->getCategories() as $category) {
@@ -51,30 +51,36 @@
 	    ?>
 	    Stores
 	  </h2>
-	  <form name="alphachoose" method="get" action="merchants.php" style="float:right">
-	    <?php generateHiddenParameters($api, array('alpha', 'page')); ?>
-	    <select onchange="this.form.submit()" name="psapi_alpha" class="span1" id="alpha">
-	      <option id="store-alpha-select-" value=''>Any</option>
+	  <div>
+	    <form name="alphachoose" method="get" action="merchants.php" class="merchant-alpha-select">
+	      <?php generateHiddenParameters($api, array('alpha', 'page')); ?>
+	      <div class="input-prepend">
+		<span class="add-on">Starting with </span>
+		<select onchange="this.form.submit()" name="psapi_alpha" class="span1" id="alpha">
+		  <option id="store-alpha-select-" value=''>Any</option>
+		  <option id="store-alpha-select-0" value="0">#</option>
+		  <?php
+		    foreach(str_split('ABCDEFGHIJKLMNOPQRSTUVWXYZ') as $letter) { ?>
+		      <option id="store-alpha-select-<?= ord($letter)-64 ?>" value="<?= (ord($letter)-64) ?>">
+			<?= $letter ?>
+		      </option>
+		      <?php
+		    }
+		  ?>
+		</select>
+	      </div>
 	      <?php
-	        foreach(str_split('ABCDEFGHIJKLMNOPQRSTUVWXYZ') as $letter) { ?>
-		  <option id="store-alpha-select-<?= ord($letter)-64 ?>" value="<?= (ord($letter)-64) ?>">
-		    <?= $letter ?>
-		  </option>
+		if($api->hasParameter("alpha")) { ?>
+		  <script language="javascript">
+		    document.getElementById("store-alpha-select-".concat(<?= $api->getParameterValue("alpha") ?>)).setAttribute("selected", "true");
+		  </script>
 		  <?php
 		}
 	      ?>
-	     </select>
-	  <?php
-	    if($api->hasParameter("alpha")) { ?>
-	      <script language="javascript">
-		document.getElementById("store-alpha-select-".concat(<?= $api->getParameterValue("alpha") ?>)).setAttribute("selected", "true");
-	      </script>
-	      <?php
-	    }
-	  ?>
-	  </form>
-	  <hr>
-	  <?php generateBootstrapPagination($api) ?>
+	    </form>
+	    <?php generateBootstrapPagination($api, 8, false) ?>
+	  </div>
+	  <br />
 	  <table class="table-hover">
 	    <tr>
 	      <td class="span2">

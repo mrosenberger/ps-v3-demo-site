@@ -11,10 +11,12 @@
         <div class="span10">
 	  <h3>About ShopFoo</h3>
 	  <div class="well" style="padding-top:20px">
-	    <img class="about-page-image" src="http://www.popshops.com/images/v3/logo.page-blurb.gif" />
-	    ShopFoo is intended as a demonstration of what the PopShops V3 API (and its accompanying PHP library) is capable of.<br />
+	    <img class="popshops-large-logo" src="img/popshops-large.gif" />
+	    ShopFoo is intended as a demonstration of what the PopShops V3 API (and its accompanying PHP library) is capable of.<br /><br />
 	    
-	    Click on the "inspect" link at the bottom of any page to see the API call performed, as well as a complete log of the PHP library's actions in rendering the page.<br />
+	    Click on the "inspect" link at the bottom of any page to see the API call performed,
+	    as well as a complete log of the PHP library's actions in performing and processing the results
+	    of the API.<br /><br />
 	    You're welcome to download and reuse parts of this site on your own. See the link below to get a copy of the PHP.
 	    <hr/>
 	    <h4>Resources</h4>
