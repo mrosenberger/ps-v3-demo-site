@@ -21,17 +21,37 @@
     <tr>
       <td class="span2">
         <img class="merchant-small-image" src="<?=$merchant->getLogoUrl()?>">
-      </dtd>
-      <td class="span3">
+      </td>
+      <td class="span4">
         <a href="search.php?psapi_merchant=<?= $merchant->getId() ?>">
           <?=$merchant->getName()?>
         </a>
       </td>
-      <td class="span2" style="text-align:left">
-        <?=$merchant->getDealCount()?>
+      <td class="span2">
+        <?php
+          $count = $merchant->getProductCount();
+          if ($count > 0) { ?>
+            <a href="search.php?psapi_merchant=<?= $merchant->getId() ?>">
+              <?=$merchant->getProductCount()?>
+            </a>
+            <?php
+          } else {
+            print($merchant->getProductCount());
+          }
+        ?>
       </td>
       <td class="span2">
-        <?=$merchant->getProductCount()?>
+        <?php
+          $count = $merchant->getDealCount();
+          if ($count > 0) { ?>
+            <a href="coupons.php?psapi_merchant=<?= $merchant->getId() ?>">
+              <?=$merchant->getDealCount()?>
+            </a>
+            <?php
+          } else {
+            print($merchant->getDealCount());
+          }
+        ?>
       </td>
     </tr>
   <?php }

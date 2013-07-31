@@ -51,18 +51,18 @@
 	      </h2>
 	    </div>
 	  </div>
-	  <div class="row">
-	    <div class="span2">
-	      <h3>Store</h3>
-	    </div>
-	    <div class="span2">
-	      <h3>Price</h3>
-	    </div>
-	    <div class="span2">
-	      <h3>Condition</h3>
-	    </div>
-	  </div>
 	  <table class="table-hover offers-table">
+	    <tr>
+	      <td class="span2 offer-table-header">
+		Store
+	      </td>
+	      <td class="span2 offer-table-header">
+		Price
+	      </td>
+	      <td class="span2 offer-table-header">
+		Condition
+	      </td>
+	    </tr>
 	    <?php
 	      foreach($p->getOffers() as $offer) {
 		renderOffer($offer);

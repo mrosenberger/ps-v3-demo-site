@@ -75,18 +75,20 @@
 	  </form>
 	  <hr>
 	  <?php generateBootstrapPagination($api) ?>
-	  <div class="row">
-	    <div class="span3 offset2">
-	      <h4>Store</h4>
-	    </div>
-	    <div class="span2">
-	      <h4>Coupons</h4>
-	    </div>
-	    <div class="span2">
-	      <h4>Products</h4>
-	    </div>
-	  </div>
 	  <table class="table-hover">
+	    <tr>
+	      <td class="span2">
+	      </td>
+	      <td class="span4 merchant-table-header">
+		Store
+	      </td>
+	      <td class="span2 merchant-table-header">
+		Products
+	      </td>
+	      <td class="span2 merchant-table-header">
+		Coupons
+	      </td>
+	    </tr>	  
 	    <?php
 	      foreach ($api->getMerchants() as $merchant) {
 		renderMerchant($merchant);

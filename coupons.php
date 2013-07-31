@@ -85,7 +85,7 @@
 		<?php generateHiddenParameters($api, array('keyword')) ?>
 		<div class="input-append">
 		  <input class="span2" type="text" name="psapi_keyword" placeholder="Refine keywords...">
-		  <button class="btn" type="submit">Search coupons</button>
+		  <button class="btn btn-warning" type="submit"><i class="icon-search"> </i></button>
 		</div>
 	      </fieldset>
 	    </form>

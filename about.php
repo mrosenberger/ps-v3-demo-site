@@ -11,7 +11,7 @@
         <div class="span10">
 	  <h3>About ShopFoo</h3>
 	  <div class="well" style="padding-top:20px">
-	    <img style="float:right;" src="http://www.popshops.com/images/v3/logo.page-blurb.gif" />
+	    <img class="about-page-image" src="http://www.popshops.com/images/v3/logo.page-blurb.gif" />
 	    ShopFoo is intended as a demonstration of what the PopShops V3 API (and its accompanying PHP library) is capable of.<br />
 	    
 	    Click on the "inspect" link at the bottom of any page to see the API call performed, as well as a complete log of the PHP library's actions in rendering the page.<br />
