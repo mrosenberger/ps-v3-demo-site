@@ -30,7 +30,7 @@
 		  } ?>
 		    ">
 		    <input type="checkbox" <?php if ($checked) { print("checked"); } ?>>
-		    <small><?= $deal_type->getName() ?> <span class="selection-count">(<?= $deal_type->getCount() ?>)</span></small>
+		    <small><?= $deal_type->getName() . getCountHtml($deal_type->getCount()) ?></small>
 		  </a>
 		</li>
 	    <?php } ?>
@@ -50,7 +50,7 @@
 		  } ?>
 		    ">
 		    <input type="checkbox" <?php if ($checked) { print("checked"); } ?>>
-		    <small><?= $merchant->getName() ?> <span class="selection-count">(<?= $merchant->getCount() ?>)</span></small>
+		    <small><?= $merchant->getName() . getCountHtml($merchant->getCount()) ?></small>
 		  </a>
 		</li>
 	    <?php } ?>

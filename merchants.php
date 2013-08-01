@@ -30,7 +30,7 @@
 		  } ?>
 		    ">
 		    <input type="checkbox" <?php if ($checked) { print("checked"); } ?>>
-		    <small><?= $category->getName() ?> <span class="selection-count">(<?= $category->getCount() ?>)</span></small>
+		    <small><?= $category->getName() . getCountHtml($category->getCount()) ?></small>
 		  </a>
 		</li>
 		<?php
@@ -55,7 +55,7 @@
 	    <form name="alphachoose" method="get" action="merchants.php" class="merchant-alpha-select">
 	      <?php generateHiddenParameters($api, array('alpha', 'page')); ?>
 	      <div class="input-prepend">
-		<span class="add-on">Starting with </span>
+		<span class="add-on merchant-alpha-add-on">Starting with </span>
 		<select onchange="this.form.submit()" name="psapi_alpha" class="span1" id="alpha">
 		  <option id="store-alpha-select-" value=''>Any</option>
 		  <option id="store-alpha-select-0" value="0">#</option>
@@ -88,10 +88,10 @@
 	      <td class="span4 merchant-table-header">
 		Store
 	      </td>
-	      <td class="span2 merchant-table-header">
+	      <td align="center" class="span2 merchant-table-header">
 		Products
 	      </td>
-	      <td class="span2 merchant-table-header">
+	      <td align="center" class="span2 merchant-table-header">
 		Coupons
 	      </td>
 	    </tr>	  

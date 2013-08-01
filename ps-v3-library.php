@@ -218,7 +218,7 @@ class PsApiCall {
     if (array_key_exists($param, $this->options)) {
       return $this->options[$param];
     } else {
-      return "Parameter '" . $param . "' is not present in PsApiCall instance.";
+      return NULL;
     }
   }
 
@@ -313,7 +313,7 @@ class PsApiCall {
       return $this->category_tree;
     }
   }
-  // Retrieves an array of the given type of resource. $resource should be plural
+  // Retrieves an array of the given type of resource. Accepts plural $resource
   public function resource($resource) {
     $resource = strtolower($resource);
     if (isset($this->{$resource})) {
@@ -462,7 +462,7 @@ class PsApiCall {
   }
   
   public function getResultsCount() {
-    return $this->results_count;
+    return (int) $this->results_count;
   }
 
   private function processResults($json) {

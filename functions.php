@@ -27,7 +27,7 @@
           <?=$merchant->getName()?>
         </a>
       </td>
-      <td class="span2">
+      <td class="span2" align="center">
         <?php
           $count = $merchant->getProductCount();
           if ($count > 0) { ?>
@@ -40,7 +40,7 @@
           }
         ?>
       </td>
-      <td class="span2">
+      <td class="span2" align="center">
         <?php
           $count = $merchant->getDealCount();
           if ($count > 0) { ?>
@@ -158,17 +158,20 @@
     }?>
     <div class="pagination generated-pagination <?php if ($center) { print('pagination-centered'); } ?>">
       <ul>
-        <li><a href="<?= $api->paginate(1) ?>">&laquo; First</a></li>
-        <?php for ($i=$min; $i < $min + $num_cells; $i += 1) {
-          if ($i <= $pages) { ?>
-            <li<?php if ($i === $current) { print(' class="active"'); } ?>>
-              <a href="<?= $api->paginate($i) ?>">
-                <?= $i ?>
-              </a>
-            </li>
-          <?php }
-        }?>
-        <li><a href="<?= $api->paginate($pages) ?>">Last &raquo;</a></li>
+        <li <?php if ($current === 1) { print('class="active"'); } ?>><a href="<?= $api->paginate(1) ?>">&laquo; First</a></li>
+        <?php
+          for ($i=$min; $i < $min + $num_cells; $i += 1) {
+            if ($i <= $pages) { ?>
+              <li <?php if ($i === $current) { print('class="active"'); } ?>>
+                <a href="<?= $api->paginate($i) ?>">
+                  <?= $i ?>
+                </a>
+              </li>
+              <?php
+            }
+          }
+        ?>
+        <li <?php if ($current === $pages) { print('class="active"'); } ?>><a href="<?= $api->paginate($pages) ?>">Last &raquo;</a></li>
       </ul>
     </div><?php
   }
@@ -231,6 +234,18 @@
         return "icon-screenshot";
       default:
         return "icon-certificate";
+    }
+  }
+  
+  function getCountHtml($num) {
+     if ($num == '') {
+      return '';
+     } else {
+      if ($num > 0) {
+        return ' <span class="selection-count">(' . $num . ')</span>';
+      } else {
+        return '';
+      }
     }
   }
 ?>

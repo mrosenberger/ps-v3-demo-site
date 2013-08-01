@@ -50,7 +50,7 @@
 		  } ?>
 		    ">
 		    <input type="checkbox" <?php if ($checked) { print("checked"); } ?>>
-		    <small><?= $brand->getName() ?> <span class="selection-count">(<?= $brand->getCount() ?>)</span></small>
+		    <small><?= $brand->getName() . getCountHtml($brand->getCount()) ?></small>
 		  </a>
 		</li>
 	    <?php } ?>

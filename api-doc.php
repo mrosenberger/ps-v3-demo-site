@@ -285,7 +285,7 @@
                     </div>
 		    <a class="anchor-objects" name="psapicall"></a>
                     <h3 style="display:inline">PsApiCall </h3>
-                    &#8213; A one-shot call against the PopShops Products/Merchants/Deals/Categories API
+                    &#8213; A one-shot call against the PopShops Products/Merchants/Deals/Categories API, and a container for the response values
                     <div class="well">
                         The central class of the PopShops API Library.
                         <br/>Allows you to construct, execute, and interpret the results of a call against one of four APIs:
@@ -295,11 +295,120 @@
                             <li>Deals</li>
                             <li>Categories</li>
                         </ul>
-                        <br/>Provides the following public methods:
-                        <dl class="dl-horizontal">
-			  <dt><code class="inline-code">get($call_type, $arguments)</code></dt>
+                        <br/>A PsApiCall instance has the following public methods:
+                        <dl>
+			  <dt>call($call_type[, $arguments])</dt>
+			  <dd>
+			    $call_type must be one of 'products', 'merchants', 'deals', or 'categories'.<br/>
+			    $arguments may optionally be passed as an array of parameter=>value pairs, such as:
+			    <ul>
+				<li>array('page'=>5, 'merchant'=>'1043')</li>
+				<li>array('results_per_page'=>10, 'page'=>4, 'category'=>'403')</li>
+				<li>array('merchant_type'=>4, 'results_per_page'=>25)</li>
+			    </ul>
+			    The library then uses the construct-time provided account key, catalog key, $call_type, and optional $arguments to perform a call against a PopShops Api.
+			  </dd>
+			  <dt>getProducts()</dt>
+			  <dd>
+			    Returns an array of <a href="#psapiproduct">PsApiProduct</a> objects parsed from the API response.<br />
+			  </dd>
+			  <dt>getOffers()</dt>
+			  <dd>
+			    Returns an array of <a href="#psapioffer">PsApiOffer</a> objects parsed from the API response.<br />
+			  </dd>
+			  <dt>getMerchants()</dt>
+			  <dd>
+			    Returns an array of <a href="#psapimerchant">PsApiMerchant</a> objects parsed from the API response.<br />
+			  </dd>
+			  <dt>getDeals()</dt>
+			  <dd>
+			    Returns an array of <a href="#psapideal">PsApiDeal</a> objects parsed from the API response.<br />
+			  </dd>
+			  <dt>getBrands()</dt>
+			  <dd>
+			    Returns an array of <a href="#psapibrand">PsApiBrand</a> objects parsed from the API response.<br />
+			  </dd>
+			  <dt>getCategories()</dt>
+			  <dd>
+			    Returns an array of <a href="#psapicategory">PsApiCategory</a> objects parsed from the API response.<br />
+			  </dd>
+			  <dt>getDealTypes()</dt>
+			  <dd>
+			    Returns an array of <a href="#psapidealtype">PsApiDealType</a> objects parsed from the API response.<br />
+			  </dd>
+			  <dt>getMerchantTypes()</dt>
+			  <dd>
+			    Returns an array of <a href="#psapimerchanttype">PsApiMerchantType</a> objects parsed from the API response.<br />
+			  </dd>
+			  <dt>getCountries()</dt>
+			  <dd>
+			    Returns an array of <a href="#psapicountry">PsApiCountry</a> objects parsed from the API response.<br />
+			  </dd>
+			  <dt>getProduct($id)</dt>
+			  <dd>Retrieves the <a href="#psapiproduct">PsApiProduct</a> object from the API response with the specified string $id. Returns NULL on failure.</dd>
+			  <dt>getOffer($id)</dt>
+			  <dd>Retrieves the <a href="#psapioffer">PsApiOffer</a> object from the API response with the specified string $id. Returns NULL on failure.</dd>
+			  <dt>getMerchant($id)</dt>
+			  <dd>Retrieves the <a href="#psapimerchant">PsApiMerchant</a> object from the API response with the specified string $id. Returns NULL on failure.</dd>
+			  <dt>getDeal($id)</dt>
+			  <dd>Retrieves the <a href="#psapideal">PsApiDeal</a> object from the API response with the specified string $id. Returns NULL on failure.</dd>
+			  <dt>getBrand($id)</dt>
+			  <dd>Retrieves the <a href="#psapibrand">PsApiBrand</a> object from the API response with the specified string $id. Returns NULL on failure.</dd>
+			  <dt>getCategory($id)</dt>
+			  <dd>Retrieves the <a href="#psapicategory">PsApiCategory</a> object from the API response with the specified string $id. Returns NULL on failure.</dd>
+			  <dt>getDealType($id)</dt>
+			  <dd>Retrieves the <a href="#psapidealtype">PsApiDealType</a> object from the API response with the specified string $id. Returns NULL on failure.</dd>
+			  <dt>getMerchantType($id)</dt>
+			  <dd>Retrieves the <a href="#psapimerchanttype">PsApMerchantType</a> object from the API response with the specified string $id. Returns NULL on failure.</dd>
+			  <dt>getCountry($id)</dt>
+			  <dd>Retrieves the <a href="#psapicountry">PsApiCountry</a> object from the API response with the specified string $id. Returns NULL on failure.</dd>
+			    <dt>nextPage()</dt>
+			    <dd>Generates a link to the next page of results</dd>
+			    <dt>prevPage()</dt>
+			    <dd>Generates a link to the previous page of results</dd>
+			    <dt>paginate($page)</dt>
+			    <dd>Generates a link to the specified page of results (1-100)</dd>
+			    <dt>getQueryString($mods)</dt>
+			    <dd>Generates a link to the page with the $mods (map of $params=>$values) applied
+				<br/>&nbsp;&nbsp;For example: 
+				<br/>&nbsp;&nbsp;<code class="inline-code">$api->getQueryString(array('page' => 7))</code>
+				<br/>&nbsp;&nbsp;is equivalent to
+				<br/>&nbsp;&nbsp;<code class="inline-code">$api->paginate(7)</code>
+				<br/>&nbsp;&nbsp;This generator is much more powerful than the other three. 
+				<br/>&nbsp;&nbsp;It allows a link to be generated to a page with any set of parameters you want.
+			    </dd>
+			    <dt>hasParameter($parameter)</dt>
+			    <dd>Returns true if the PsApiCall instance has been passed a parameter called $parameter.<br />
+				These parameters may have come from two places:
+				<ul>
+				    <li>The array passed to PsApiCall->call</li>
+				    <li>The HTTP GET parameters prefixed with 'psapi_' (see <a href="#urlmode">URL Parameters</a> above)
+				</ul>
+			    </dd>
+			    <dt>getParameterValue($parameter)</dt>
+			    <dd>Returns the value of the given $parameter (see hasParameter for more information on these parameters).<br />
+				If no such parameter exists, returns NULL.
+			    </dd>
+			    <dt>getOptions()</dt>
+			    <dd>Returns an array of the parameters that the PsApiCall has been configured with. See hasParameter for more information on these parameters.
+			    </dd>
+			    <dt>getUrlPrefix()</dt>
+			    <dd>Returns the URL prefix (see <a href="#urlmode">URL Parameters</a>). Defaults to 'psapi_'.</dd>
+			    <dt>getResultsCount()</dt>
+			    <dd>Returns an integer representing the number of matching results. For example, a products call may return "500", meaning that 500 products were found to match. Not all of these products are guaranteed to be included in the API response; you may have to paginate through to get them all.</dd>
+			    <dt>resource($resource)</dt>
+			    <dd>
+				An alternate way to access the arrays of API response objects. <br />
+				For example, instead of calling "$api->getProducts()", you can call "$api->resource('products')" <br />
+				The valid arguments are 'products, 'offers', 'merchants', 'deals', 'categories', 'deal_types', 'merchant_types', and 'countries'
+			    </dd>
+			    <dt>resourceById($resource, $id)</dt>
+			    <dd>
+				An alternate way to access individual API response objects. <br />
+				For example, instead of calling "$api->getProduct('4412')", you can call "api->resourceById('product', '4412')" <br />
+				See above method for the valid $resource values. $resource must be plural, as seen above.
+			    </dd>
 			</dl>
-                        
                     </div>
 		    <a class="anchor-objects" name="psapiproduct"></a>
                     <h3 style="display:inline">PsApiProduct </h3>
@@ -310,6 +419,11 @@
                         <a href="#psapimerchant">Merchants</a> such as Amazon.com or Barnes&Noble may have
                         <a href="#psapioffer">Offers</a> for a given Product.
                         <br/>It is these Offers that may actually be linked to and purchased by the consumer.
+			<br />A PsApiProduct instance has the following public methods:
+			<dl>
+			    <dt>
+			    </dt>
+			</dl>
                     </div>
 		    <a class="anchor-objects" name="psapioffer"></a>
                     <h3 style="display:inline">PsApiOffer </h3>
