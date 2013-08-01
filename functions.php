@@ -57,7 +57,7 @@
   <?php }
 
   function renderProduct($product) {
-    $description_cutoff = 200; ?>
+    $description_cutoff = 250; ?>
     <div class="row">
       <div class="span2">
         <a href="product.php?psapi_product=<?= $product->getId()?>">
