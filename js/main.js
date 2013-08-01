@@ -13,3 +13,14 @@
         toggleChildren(event, '.more', '.less');
     });
 })( jQuery, window, document );
+
+$( document ).ready(function() {
+  $('.img-hover-zoom').popover({
+    html: true,
+    trigger: 'hover',
+    placement: 'right',
+    content: function () {
+      return '<img class="img-hover-zoom" style="max-width:500px;" src="' +$(this)[0].src + '" />';
+    }
+  });
+});

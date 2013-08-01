@@ -6,6 +6,7 @@
 
 .merchant-small-image {
     max-height:31px;
+    margin:5px;
 }
 
 .search-product-image {
@@ -84,7 +85,9 @@ hr {
 }
 
 .offer-store-button {
-    
+    background:orange;
+    padding:10px;
+    margin:10px;
 }
 
 .product-detail-description {
@@ -122,7 +125,7 @@ hr {
 
 .deal-end-value {
     font-style:italic;
-    padding-left:4px;
+    padding-left:8px;
 }
 
 .deal-code-label {
@@ -131,6 +134,7 @@ hr {
 
 .deal-code-value {
     color:orange;
+    padding-left:7px;
 }
 
 .sidebar-option-ul {
@@ -200,4 +204,31 @@ hr {
 .merchant-alpha-add-on {
     cursor:default;
     color:orange;
+}
+
+.compare-offers-btn {
+    background:orange;
+    padding:20px;
+}
+
+.redeem-coupon-btn {
+    background:orange;
+    padding:15px;
+}
+
+.offers-available {
+    font-style:italic;
+}
+
+.dollar-sign {
+    color:gray;
+}
+
+.product-price {
+    color:gray;
+    font-style:italic;
+}
+
+.popover {
+    max-width: 1000px;
 }

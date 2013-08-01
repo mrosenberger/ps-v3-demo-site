@@ -1,7 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <?php require("header-titleless.php");?>
+    <?php
+      require("header-titleless.php");
+      require("include-before-call.php");
+	$api = new PsApiCall($api_key, $catalog_key, true);
+	$api->call('products');
+      require("include-after-call.php");
+      $p = $api->getProducts();
+      $p = $p[0];
+    ?>
     <title>ShopFoo</title>
   </head>
   <body>
@@ -13,12 +21,6 @@
 	  <hr>
 	  <ul>
 	  <?php
-	    require("include-before-call.php");
-	      $api = new PsApiCall($api_key, $catalog_key, true);
-	      $api->get('products');
-	    require("include-after-call.php");
-	    $p = $api->getProducts();
-            $p = $p[0];
 	    foreach($api->getCategories() as $category) { ?>
 	      <li>
 		<a href="search.php?psapi_keyword=&psapi_category=<?= $category->getId() ?>">
@@ -56,10 +58,10 @@
 	      <td class="span2 offer-table-header">
 		Store
 	      </td>
-	      <td class="span2 offer-table-header">
+	      <td align="center" class="span2 offer-table-header">
 		Price
 	      </td>
-	      <td class="span2 offer-table-header">
+	      <td align="center" class="span2 offer-table-header">
 		Condition
 	      </td>
 	    </tr>

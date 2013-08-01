@@ -3,12 +3,12 @@
   function renderOffer($offer) { ?>
     <tr>
       <td class="span2">
-        <img class="merchant-small-image" src="<?=$offer->getMerchant()->getLogoUrl() ?>">
+        <img class="merchant-small-image img-rounded" src="<?=$offer->getMerchant()->getLogoUrl() ?>">
       </td>
-      <td class="span2">
+      <td align="center" class="span2">
         <span class="offer-price-merchant">$<?= money_format('%i', $offer->getPriceMerchant()) ?></span>
       </td>
-      <td class="span2">
+      <td align="center" class="span2">
         <span class="offer-condition"><?= ucfirst($offer->getCondition()) ?></span>
       </td>
       <td class="span2">
@@ -20,7 +20,7 @@
   function renderMerchant($merchant) { ?>
     <tr>
       <td class="span2">
-        <img class="merchant-small-image" src="<?=$merchant->getLogoUrl()?>">
+        <img class="img-rounded merchant-small-image" src="<?=$merchant->getLogoUrl()?>">
       </td>
       <td class="span4">
         <a href="search.php?psapi_merchant=<?= $merchant->getId() ?>">
@@ -61,37 +61,40 @@
     <div class="row">
       <div class="span2">
         <a href="product.php?psapi_product=<?= $product->getId()?>">
-          <img class="search-product-image" src="<?= $product->largestImageUrl() ?>">
+          <img class="img-hover-zoom search-product-image" src="<?= $product->largestImageUrl() ?>">
         </a>
       </div>
-      <div class="span2">
+      <div class="span5">
         <a href="product.php?psapi_product=<?= $product->getId() ?>"><?= $product->getName() ?></a>
-      </div>
-      <div class="span3 product-description more-less">
+        <br /><br />
+        <div class="product-description more-less">
         <?php
           if (strlen($product->getDescription()) > $description_cutoff) { ?>
             <div class="less">
               <?= substr(htmlentities($product->getDescription()), 0, $description_cutoff) ?>...
-              <a href="#" class="read-more">Read more</a>
+              <a href="#" class="read-more">More</a>
             </div>
             <div class="more" style="display:none;">
               <?= $product->getDescription() ?>
-              <a href="#" class="read-less">Read less</a>
+              <a href="#" class="read-less">Less</a>
             </div>
           <?php } else { ?>
             <?= htmlentities($product->getDescription()) ?>
           <?php } ?>
       </div>
-      <div class="span2">
+      </div>
+      <div align="center" class="span2">
         <?php if ($product->getPriceMin() == $product->getPriceMax()) { ?>
-          $<?= money_format('%i', $product->getPriceMin()) ?>
+          <span class="dollar-sign">$</span><span class="product-price"><?= money_format('%i', $product->getPriceMin()) ?></span>
         <?php } else { ?>
-          $<?= money_format('%i', $product->getPriceMin()) ?><i>-</i> $<?= money_format('%i', $product->getPriceMax()) ?>
+          <span class="dollar-sign">$</span><span class="product-price"><?= money_format('%i', $product->getPriceMin()) ?></span><i> &#8213; </i>
+          <span class="dollar-sign">$</span><span class="product-price"><?= money_format('%i', $product->getPriceMax()) ?></span>
         <?php } ?>
         <br><br>
-        <a href="product.php?psapi_product=<?= $product->getId() ?>">
-          Offers available: <?= $product->getOfferCount() ?>
-        </a>
+        <button class="btn compare-offers-btn" onclick="location.href='product.php?psapi_product=<?= $product->getId() ?>';">
+          Compare Offers
+        </button>
+        <small class="offers-available">Offers available: <?= $product->getOfferCount() ?></small>
       </div>
     </div>
     <hr />
@@ -103,24 +106,36 @@
       <div class="span2">
         <a href="<?= $deal->getUrl() ?>">
           <?php if ($deal->getMerchant()) { ?>
-            <img class="merchant-small-image" src="<?= $deal->getMerchant()->getLogoUrl() ?>">
+            <img class="img-rounded merchant-small-image" src="<?= $deal->getMerchant()->getLogoUrl() ?>">
           <?php } ?>
         </a>
       </div>
-      <div class="span4 deal-name">
+      <div class="span3 deal-name">
         <a href="<?= $deal->getUrl() ?>"><?= $deal->getName() ?></a>
       </div>
-      <div class="span3">
+      <div class="span2">
+        <small>
         <?php if ($deal->getStartOn() != '') { ?>
           <span class="deal-start-label">Valid from: </span><span class="deal-start-value"><?= $deal->getStartOn() ?></span><br />
-        <?php }
-        if ($deal->getEndOn() != '') { ?>
-          <span class="deal-end-label">Good through: </span><span class="deal-end-value"><?= $deal->getEndOn() ?></span><br />
-        <?php }
-        if (($deal->getCode() != '') and !in_array(strtolower($deal->getCode()),
-                                                   array('none', 'no code required', 'n/a', 'no code needed', 'no coupon code'))) { ?>
-          <span class="deal-code-label">Coupon code: </span><span class="deal-code-value"><?= $deal->getCode() ?></span>
-        <?php } ?>
+          <?php
+        }
+          if ($deal->getEndOn() != '') { ?>
+            <span class="deal-end-label">Good through: </span><span class="deal-end-value"><?= $deal->getEndOn() ?></span><br />
+          <?php }
+          if (($deal->getCode() != '') and !in_array(strtolower($deal->getCode()),
+                                                     array('none', 'no code required', 'n/a', 'no code needed', 'no coupon code'))) {
+            if (strpos(strtolower($deal->getCode()), 'required') === FALSE) { ?>
+              <span class="deal-code-label">Coupon code: </span><span class="deal-code-value"><?= $deal->getCode() ?></span>
+              <?php
+            }
+          }
+        ?>
+        </small>
+      </div>
+      <div class="span1">
+        <button class="btn redeem-coupon-btn" onclick="location.href='<?= $deal->getUrl() ?>';">
+          Redeem
+        </button>
       </div>
     </div>
     <hr />
