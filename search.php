@@ -58,11 +58,17 @@
         </div>
         <div class="span9">
 	  <?php
-	    if ($api->hasParameter('keyword') and $api->getParameterValue('keyword') !== '') {
-	      print('<h2 class="search-results-header">' . str_replace("100001", "Thousands of ", (string) $api->getResultsCount()) .
-		    ' results for "' . $api->getParameterValue('keyword') . '"</h2>');
-	    } else {
-	      print('<h2 class="search-results-header">Results</h2>');
+	    if ($api->hasParameter('keyword') and $api->getParameterValue('keyword') !== '') { ?>
+	      <h2 class="search-results-header">
+		<?= str_replace("100001", "Thousands of ", (string) $api->getResultsCount()) ?>
+		results for "<?= $api->getParameterValue('keyword') ?>"
+	      </h2> <?php
+	    } else { ?>
+	      <h2 class="search-results-header">
+		<i class="icon-fire hot-products-icon"> </i>
+		<span class="hot-products-text">Hot</span>
+		Products
+	      </h2> <?php
 	    }
 	    if ($api->getResultsCount() == 0) { ?>
 	      <br /><br />
@@ -70,13 +76,17 @@
 	      <?php
 	      die();
 	    }
-	    if ($api->hasParameter('merchant') and $api->getParameterValue('merchant') !== '') {
-	      print(' <h4 class="search-results-merchant">&#8213; From ' .
-		    $api->getMerchant($api->getParameterValue('merchant'))->getName() . '</h4>');
+	    if ($api->hasParameter('merchant') and $api->getParameterValue('merchant') !== '') { ?>
+	      <h4 class="search-results-merchant">
+		&#8213; From <?= $api->getMerchant($api->getParameterValue('merchant'))->getName() ?>
+	      </h4> <?php
 	    }
-	    if ($api->hasParameter('category') and $api->getParameterValue('category') !== '') {
-	      print(' <h4 class="search-results-category">&#8213; In ' .
-		    $api->getCategory($api->getParameterValue('category'))->getName() . '</h4>');
+	    if ($api->hasParameter('category') and $api->getParameterValue('category') !== '') { ?>
+	      <h4 class="search-results-category">
+		&#8213; In <?= $api->getCategory($api->getParameterValue('category'))->getName() ?>
+	      </h4>
+	      <i class="results-category-icon <?= getCategoryIcon($api->getParameterValue('category')) ?>"> </i>
+	      <?php
 	    }
 	  ?>
 	  <div>
@@ -100,7 +110,9 @@
 	    }
 	    generateBootstrapPagination($api);
 	  ?>
-	  <a type="button" class="btn inspect-button" href="#inspect_modal" data-toggle="modal">Inspect</a>
+	  <a type="button" class="btn inspect-button" href="#inspect_modal" data-toggle="modal">
+	    <i class="icon-info-sign inspect-icon"> </i> Inspect
+	  </a>
 	</div>
       </div>
     </div>

@@ -185,11 +185,6 @@ hr {
     padding-top:65px;
 }
 
-.dl-horizontal dt {
-    white-space:normal;
-    width:200px; 
-}
-
 .merchant-alpha-select {
     float:left;
     padding-right:140px;
@@ -231,4 +226,22 @@ hr {
 
 .popover {
     max-width: 1000px;
+}
+
+.inspect-icon {
+    margin-top:2px;
+    margin-right:0px;
+}
+
+.hot-products-icon {
+    margin-top:13px;
+    margin-right:3px;
+}
+
+.hot-products-text {
+    color:red;
+}
+
+.results-category-icon {
+    margin-left:10px;
 }

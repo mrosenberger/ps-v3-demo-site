@@ -159,6 +159,7 @@
 				These <i>$param</i>s can be any of the option request parameters listed 
 				<a href="http://www.popshops.com/support/api-3-products">here</a>.
 			    </dd>
+			    <hr />
 			    <dt>Merchants</dt>
 			    <dd>
 				Retrieve <a href="#psapimerchant">merchants</a> and their associated
@@ -177,6 +178,7 @@
 				These <i>$param</i>s can be any of the option request parameters listed 
 				<a href="http://www.popshops.com/support/api-3-merchants">here</a>.
 			    </dd>
+			    <hr />
 			    <dt>Deals</dt>
 			    <dd>
 				Retrieve <a href="#psapideal">deals</a>
@@ -195,6 +197,7 @@
 				These <i>$param</i>s can be any of the option request parameters listed 
 				<a href="http://www.popshops.com/support/api-3-coupons-deals">here</a>.
 			    </dd>
+			    <hr />
 			    <dt>Categories</dt>
 			    <dd>
 				Retrieve categories and construct a hierarchical tree, starting at the most
@@ -209,7 +212,7 @@
 			    </dd>
 			    <dd>
 				Each node supports the methods <code class="inline-code">getName()</code>, <code class="inline-code">getId()</code>, and
-				<code class="inline-code">getChildren()</code>, the last of which returns a list of zero or more child nodes.
+				<code class="inline-code">getChildren()</code>, the last of which returns an array of zero or more child nodes.
 			    </dd>
 			</dl>
 		    </div>
@@ -285,10 +288,10 @@
                     </div>
 		    <a class="anchor-objects" name="psapicall"></a>
                     <h3 style="display:inline">PsApiCall </h3>
-                    &#8213; A one-shot call against the PopShops Products/Merchants/Deals/Categories API, and a container for the response values
+                    &#8213; A one-shot call against the PopShops Products/Merchants/Deals/Categories API, and a container for the parsed response values
                     <div class="well">
                         The central class of the PopShops API Library.
-                        <br/>Allows you to construct, execute, and interpret the results of a call against one of four APIs:
+                        <br/>Allows you to construct, execute, and parse the results of a call against one of four APIs:
                         <ul>
                             <li>Products</li>
                             <li>Merchants</li>
@@ -421,8 +424,73 @@
                         <br/>It is these Offers that may actually be linked to and purchased by the consumer.
 			<br />A PsApiProduct instance has the following public methods:
 			<dl>
-			    <dt>
-			    </dt>
+			    <dt>largestImageUrl()</dt>
+			    <dd>Returns a URL to the largest image that PopShops indexes for this product.</dd>
+			    <dt>smallestImageUrl()</dt>
+			    <dd>Returns a URL to the smallest image that PopShops indexes for this product.</dd>
+			    <dt>getBrand()</dt>
+			    <dd>Returns the <a href="#psapibrand">PsApiBrand</a> object corresponding to this product.</dd>
+			    <dt>getBrandId()</dt>
+			    <dd>
+				Returns the string ID of this product's brand.
+				Given a <a href="#psapicall">PsApiCall</a> object <i>$api</i> and a
+				<a href="#psapiproduct">PsApiProduct</a> object <i>$prod</i>,
+				the statements <code>$api->getBrand($prod->getBrandId())</code> and
+				<code>$prod->getBrand()</code> will return the same <a href="#psapibrand">PsApiBrand</a> object.
+			    </dd>
+			    <dt>getCategory()</dt>
+			    <dd>Returns the <a href="#psapicategory">PsApiCategory</a> object corresponding to this product.</dd>
+			    <dt>getCategoryId()</dt>
+			    <dd>
+				Returns the string ID of this product's category.
+				Given a <a href="#psapicall">PsApiCall</a> object <i>$api</i> and a
+				<a href="#psapiproduct">PsApiProduct</a> object <i>$prod</i>,
+				the statements <code>$api->getCategory($prod->getCategoryId())</code> and
+				<code>$prod->getCategory()</code> will return the same <a href="#psapicategory">PsApiCategory</a> object.
+			    </dd>
+			    <dt>getOffers()</dt>
+			    <dd>Returns an array of <a href="#psapioffer">PsApiOffer</a> objects corresponding to this product.
+				The API will only return a maximum of one
+				offer for each product normally; to get all of the offers for a given product,
+				add 'product'=>'product_id' to your parameters. You will only recieve information for one product, but all
+				known offers will be included.</dd>
+			    <dt>getDescription()</dt>
+			    <dd>Returns a string description of the product.</dd>
+			    <dt>getId()</dt>
+			    <dd>
+				Returns the string ID of the product.
+				Given a <a href="#psapicall">PsApiCall</a> object <i>$api</i> and a
+				<a href="#psapiproduct">PsApiProduct</a> object <i>$prod</i>,
+				the statement <code>$api->getProduct($prod->getId())</code> will simply return the same
+				<a href="#psapiproduct">PsApiProduct</a> object that we started with.
+			    </dd>
+			    <dt>getImageUrlLarge()</dt>
+			    <dd>
+				If it exists, returns a large image for the product. If you'd simply like the largest image that PopShops
+				provides for this product, it's recommended that you use largestImageUrl() (see above).
+			    </dd>
+			    <dt>getImageUrlMedium()</dt>
+			    <dd>
+				If it exists, returns a medium sized image for the product.
+			    </dd>
+			    <dt>getImageUrlSmall()</dt>
+			    <dd>
+				If it exists, returns a small image for the product. If you'd simply like the smallest image that PopShops
+				provides for this product, it's recommended that you use smallestImageUrl() (see above).
+			    </dd>
+			    <dt>getName()</dt>
+			    <dd>Returns the product's name in string form.</dd>
+			    <dt>getOfferCount()</dt>
+			    <dd>
+				Returns the total number of offers indexed for this product. The API will only return a maximum of one
+				offer for each product if more than one product is requested; to get all of the offers for a given product,
+				add 'product'=>'product_id' to your parameters. You will only recieve information for one product, but all
+				known offers will be included.
+			    </dd>
+			    <dt>getPriceMax()</dt>
+			    <dd>Returns the highest price among all of the offers for this product.</dd>
+			    <dt>getPriceMin()</dt>
+			    <dd>Returns the lowest price among all of the offers for this product.</dd>
 			</dl>
                     </div>
 		    <a class="anchor-objects" name="psapioffer"></a>
@@ -431,14 +499,92 @@
                     <div class="well">
                         An Offer is a
                         <a href="#psapiproduct">Product</a> being sold by a given
-                        <a href="#psapimerchant">Merchant</a> for a certain price.
+                        <a href="#psapimerchant">Merchant</a> for a certain price. <br />
+			Note that the API will only return a maximum of one
+			offer for each product if more than one product is requested; to get all of the offers for a given product,
+			add 'product'=>'product_id' to your parameters. You will only recieve information for one product, but all
+			known offers will be included.
                     </div>
 		    <a class="anchor-objects" name="psapimerchant"></a>
                     <h3 style="display:inline">PsApiMerchant </h3>
                     &#8213; Represents and facilitates the use of returned API data for a single Merchant
                     <div class="well">
                         A Merchant is an organization which publishes
-                        <a href="#psapioffer">Offers</a>, such as Amazon.com, Footlocker.com, or COMPUSA.
+                        <a href="#psapioffer">Offers</a>, such as Amazon.com, Footlocker.com, or COMPUSA. <br />
+			A PsApiMerchant instance provides the following public methods:
+			<dl>
+			    <dt>getOffers()</dt>
+			    <dd>
+				Returns an array of <a href=#psapioffer">PsApiOffer</a> objects offered by this merchant,
+				parsed from the API response. Of course, only the offers included in the response can be returned.
+			    </dd>
+			    <dt>getDeals()</dt>
+			    <dd>
+				Returns an array of <a href="#psapideal">PsApiDeal</a> objects advertised by this merchant,
+				parsed from the API response. Only deals included in the response can be returned.
+			    </dd>
+			    <dt>getMerchantType()</dt>
+			    <dd>
+				Returns the <a href="psapimerchanttype">PsApiMerchantType</a> object that this merchant belongs to.
+			    </dd>
+			    <dt>getMerchantTypeId()</dt>
+			    <dd>
+				Returns the string id of the merchant type that this merchant belongs to.
+			    </dd>
+			    <dt>getCountry()</dt>
+			    <dd>
+				Returns the <a href="psapicountry">PsApiCountry</a> object corresponding to the country that this merchant
+				operates in.
+			    </dd>
+			    <dt>getCountryId()</dt>
+			    <dd>
+				Returns the string id of the country that this merchant belongs to.
+			    </dd>
+			    <dt>getCategory()</dt>
+			    <dd>
+				Returns the <a href="psapicategory">PsApiCategory</a> object that this merchant belongs to.
+			    </dd>
+			    <dt>getCategoryId()</dt>
+			    <dd>
+				Returns the string id of the category that this merchant belongs to.
+			    </dd>
+			    <dt>getDealCount()</dt>
+			    <dd>
+				Returns the number of deals provided by this merchant.
+			    </dd>
+			    <dt>getId()</dt>
+			    <dd>
+				Returns the string id of this merchant.
+			    </dd>
+			    <dt>getLogoUrl()</dt>
+			    <dd>
+				Returns a URL to a small (about 125 wide by 40 high) logo for the merchant.
+			    </dd>
+			    <dt>getName()</dt>
+			    <dd>
+				Returns the name of this merchant.
+			    </dd>
+			    <dt>getNetworkId()</dt>
+			    <dd>
+				Returns the string id of the network that this merchant belongs to.
+			    </dd>
+			    <dt>getNetworkMerchantId()</dt>
+			    <dd>
+				Returns the string id of this merchant within its network. Note that this id is not globally unique,
+				and is only valid within the affiliate network that the merchant belongs to. PopShops does not
+				use this id, but instead uses the id that can be retrieved with PsApiMerchant->getId().
+			    </dd>
+			    <dt>getUrl()</dt>
+			    <dd>
+				Returns a URL to a landing page for this merchant.
+			    </dd>
+			    <dt>getCount()</dt>
+			    <dd>
+				In a deals/coupons call, getCount() will return the number of deals/coupons available from this merchant.
+			    </dd>
+			</dl>
+			
+				
                     </div>
 		    <a class="anchor-objects" name="psapideal"></a>
                     <h3 style="display:inline">PsApiDeal </h3>

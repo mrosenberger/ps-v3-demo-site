@@ -71,7 +71,9 @@
 	      }
 	    ?>
 	  </table>
-	  <a type="button" class="btn inspect-button" href="#inspect_modal" data-toggle="modal">Inspect</a>
+	  <a type="button" class="btn inspect-button" href="#inspect_modal" data-toggle="modal">
+	    <i class="icon-info-sign inspect-icon"> </i> Inspect
+	  </a>
 	</div>
       </div>
     </div>
