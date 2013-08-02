@@ -504,6 +504,22 @@
 			offer for each product if more than one product is requested; to get all of the offers for a given product,
 			add 'product'=>'product_id' to your parameters. You will only recieve information for one product, but all
 			known offers will be included.
+			<br />
+			A PsApiOffer instance provides the following public methods:
+			<dl>
+			    <dt>largestImageUrl()</dt>
+			    <dd>Returns a URL to the largest image that PopShops indexes for this offer.</dd>
+			    <dt>smallestImageUrl()</dt>
+			    <dd>Returns a URL to the smallest image that PopShops indexes for this offer.</dd>
+			    <dt>getCondition()</dt>
+			    <dd>Returns a string representing the condition of the product, such as "new" or "used".
+			    <dt>getCurrencyIso()</dt>
+			    <dd>Returns the <a href="http://www.xe.com/iso4217.php">ISO currency code</a> for the currency this offer is being sold in.
+			    <dt>getCurrencySymbol()</dt>
+			    <dd>Returns a string representing the HTML entity for the offer's currency symbol.</dd>
+			    <dt>getDescription()</dt>
+			    <dd>Returns a string of the merchant-provided description for the offer.</dd>
+			    <dt>
                     </div>
 		    <a class="anchor-objects" name="psapimerchant"></a>
                     <h3 style="display:inline">PsApiMerchant </h3>

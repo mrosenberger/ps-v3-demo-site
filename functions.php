@@ -12,7 +12,7 @@
         <span class="offer-condition"><?= ucfirst($offer->getCondition()) ?></span>
       </td>
       <td class="span2">
-        <a href="<?= $offer->getUrl() ?>" rel="nofollow" class="btn offer-store-button">Go to Store</a>
+        <a href="<?= $offer->getUrl() ?>" rel="nofollow" class="btn offer-store-button btn-warning">Go to Store</a>
       </td>
     </tr>
   <?php }
@@ -91,10 +91,21 @@
           <span class="dollar-sign">$</span><span class="product-price"><?= money_format('%i', $product->getPriceMax()) ?></span>
         <?php } ?>
         <br><br>
-        <button class="btn compare-offers-btn" onclick="location.href='product.php?psapi_product=<?= $product->getId() ?>';">
-          Compare Offers
+        <button class="btn compare-offers-btn btn-warning" onclick="location.href='product.php?psapi_product=<?= $product->getId() ?>';">
+          <?php if (((int) $product->getOfferCount()) === 1) { print('View Offer'); } else { print('Compare Offers'); } ?>
         </button>
-        <small class="offers-available">Offers available: <?= $product->getOfferCount() ?></small>
+        <br />
+        <small class="offers-available">
+          <?= $product->getOfferCount() ?>
+          <?php
+            if (((int) $product->getOfferCount()) === 1) {
+              print('offer');
+            } else {
+              print('offers');
+            }
+          ?>
+          available
+        </small>
       </div>
     </div>
     <hr />
@@ -133,7 +144,7 @@
         </small>
       </div>
       <div class="span1">
-        <button class="btn redeem-coupon-btn" onclick="location.href='<?= $deal->getUrl() ?>';">
+        <button class="btn redeem-coupon-btn btn-warning" onclick="location.href='<?= $deal->getUrl() ?>';">
           Redeem
         </button>
       </div>

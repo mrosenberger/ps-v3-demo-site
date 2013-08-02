@@ -1,14 +1,22 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
 	<div class="container">
-	  <a class="brand site-logo">ShopFoo</a>
+	  <a href="search.php" class="brand site-logo">ShopFoo</a>
 	  <div class="nav-collapse collapse">
 	    <ul class="nav">
-	      <li><a class="navbar-link" href="categories.php">Departments</a></li>
-	      <li><a class="navbar-link" href="merchants.php?psapi_alpha=">Stores</a></li>
-	      <li><a class="navbar-link" href="coupons.php">Coupons</a></li>
-	      <li><a class="navbar-link" style="color:orange;" href="about.php">About</a></li>
-	      <li><a href="http://www.popshops.com/"><img src="img/popshops-navbar.png"></a></li>
+	      <li><a class="navbar-link<?php
+		if (strpos($_SERVER['REQUEST_URI'], 'categories.php') != FALSE) { print(' navbar-selected-link'); } ?>" href="categories.php">Departments
+	      </a></li>
+	      <li><a class="navbar-link<?php
+		if (strpos($_SERVER['REQUEST_URI'], 'merchants.php') != FALSE) { print(' navbar-selected-link'); } ?>" href="merchants.php">Stores
+	      </a></li>
+	      <li><a class="navbar-link<?php
+		if (strpos($_SERVER['REQUEST_URI'], 'coupons.php') != FALSE) { print(' navbar-selected-link'); } ?>" href="coupons.php">Coupons
+	      </a></li>
+	      <li><a class="navbar-link<?php
+		if (strpos($_SERVER['REQUEST_URI'], 'about.php') != FALSE) { print(' navbar-selected-link'); } ?>" href="about.php">About
+	      </a></li>
+	      <li><a href="http://www.popshops.com/"><img class="popshops-navbar-logo" src="img/popshops-navbar.png"></a></li>
 	    </ul>
 	    <form class="navbar-form pull-right" method="get" action="search.php?">
 	      <input name="psapi_keyword" class="span2" type="text" placeholder="Search products...">

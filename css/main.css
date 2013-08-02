@@ -42,7 +42,6 @@ hr {
 .inspect-button {
     padding:10px;
     margin:30px;
-    background:orange;
 }
 
 .search-results-header {
@@ -85,7 +84,6 @@ hr {
 }
 
 .offer-store-button {
-    background:orange;
     padding:10px;
     margin:10px;
 }
@@ -160,7 +158,6 @@ hr {
 .site-logo {
     color:orange !important;
     font-style:italic;
-    cursor:default;
     padding-top:12px !important;
 }
 
@@ -202,12 +199,11 @@ hr {
 }
 
 .compare-offers-btn {
-    background:orange;
     padding:20px;
+    font-weight:bold;
 }
 
 .redeem-coupon-btn {
-    background:orange;
     padding:15px;
 }
 
@@ -244,4 +240,13 @@ hr {
 
 .results-category-icon {
     margin-left:10px;
+}
+
+.navbar-selected-link {
+    color:white !important;
+}
+
+.popshops-navbar-logo {
+    padding-left:40px;
+    padding-right:30px;
 }

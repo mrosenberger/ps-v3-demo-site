@@ -71,9 +71,7 @@
 	      }
 	    ?>
 	  </table>
-	  <a type="button" class="btn inspect-button" href="#inspect_modal" data-toggle="modal">
-	    <i class="icon-info-sign inspect-icon"> </i> Inspect
-	  </a>
+	  <?php require('footer.php'); ?>
 	</div>
       </div>
     </div>
