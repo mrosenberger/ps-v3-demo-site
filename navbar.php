@@ -14,7 +14,9 @@
 		if (strpos($_SERVER['REQUEST_URI'], 'coupons.php') != FALSE) { print(' navbar-selected-link'); } ?>" href="coupons.php">Coupons
 	      </a></li>
 	      <li><a class="navbar-link<?php
-		if (strpos($_SERVER['REQUEST_URI'], 'about.php') != FALSE) { print(' navbar-selected-link'); } ?>" href="about.php">About
+		if ((strpos($_SERVER['REQUEST_URI'], 'about.php') != FALSE) or
+		    (strpos($_SERVER['REQUEST_URI'], 'api-doc.php') != FALSE)) {
+		  print(' navbar-selected-link'); } ?>" href="about.php">About
 	      </a></li>
 	      <li><a href="http://www.popshops.com/"><img class="popshops-navbar-logo" src="img/popshops-navbar.png"></a></li>
 	    </ul>

@@ -4,4 +4,4 @@
     <i class="icon-info-sign inspect-icon"> </i> Inspect
 </a>
 
-&copy; 2013 PopShops.com
+<small style="padding-left:100px;">&copy; 2013 PopShops.com</small>
