@@ -49,8 +49,8 @@
 		      href="search.php?psapi_keyword=&psapi_category=<?= $childchild->getId() ?>">
 		      <?= $childchild->getName() ?>
 		    </a>
-		    <br />
-		  <?php } ?>
+		    <br /> <?php 
+} ?>
 		</div>
 	      </div>
 	      <?php
