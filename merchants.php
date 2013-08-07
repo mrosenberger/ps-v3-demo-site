@@ -54,30 +54,28 @@
 	  <div>
 	    <form name="alphachoose" method="get" action="merchants.php" class="merchant-alpha-select">
 	      <?php generateHiddenParameters($api, array('alpha', 'page')); ?>
-	      <div class="input-prepend">
-		<span class="add-on merchant-alpha-add-on">Starting with </span>
-		<select onchange="this.form.submit()" name="psapi_alpha" class="span1" id="alpha">
-		  <option id="store-alpha-select-" value=''>Any</option>
-		  <option id="store-alpha-select-0" value="0">#</option>
-		  <?php
-		    foreach(str_split('ABCDEFGHIJKLMNOPQRSTUVWXYZ') as $letter) { ?>
-		      <option id="store-alpha-select-<?= ord($letter)-64 ?>" value="<?= (ord($letter)-64) ?>">
-			<?= $letter ?>
-		      </option>
-		      <?php
-		    }
-		  ?>
-		</select>
-	      </div>
-	      <?php
-		if($api->hasParameter("alpha")) { ?>
-		  <script language="javascript">
-		    document.getElementById("store-alpha-select-".concat(<?= $api->getParameterValue("alpha") ?>)).setAttribute("selected", "true");
-		  </script>
-		  <?php
-		}
-	      ?>
+	      <span style="padding-bottom:10px;" class="help-inline">Starting with</span>
+	      <select onchange="this.form.submit()" name="psapi_alpha" class="span1" id="alpha">
+		<option id="store-alpha-select-" value=''>Any</option>
+		<option id="store-alpha-select-0" value="0">#</option>
+		<?php
+		  foreach(str_split('ABCDEFGHIJKLMNOPQRSTUVWXYZ') as $letter) { ?>
+		    <option id="store-alpha-select-<?= ord($letter)-64 ?>" value="<?= (ord($letter)-64) ?>">
+		      <?= $letter ?>
+		    </option>
+		    <?php
+		  }
+		?>
+	      </select>
 	    </form>
+	    <?php
+	      if($api->hasParameter("alpha")) { ?>
+		<script language="javascript">
+		  document.getElementById("store-alpha-select-".concat(<?= $api->getParameterValue("alpha") ?>)).setAttribute("selected", "true");
+		</script>
+		<?php
+	      }
+	    ?>
 	    <?php generateBootstrapPagination($api, 8, false) ?>
 	  </div>
 	  <br />
@@ -97,7 +95,9 @@
 	    </tr>	  
 	    <?php
 	      foreach ($api->getMerchants() as $merchant) {
-		renderMerchant($merchant);
+		if (($merchant->getProductCount() != 0) or ($merchant->getDealCount() != 0)) {
+		  renderMerchant($merchant);
+		}
 	      }
 	    ?>
 	  </table>

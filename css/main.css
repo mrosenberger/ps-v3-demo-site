@@ -1,7 +1,7 @@
 .product-detail-large-image {
     float:left;
     max-width:300px;
-    padding:20px;
+    padding:10px;
 }
 
 .merchant-small-image {
@@ -54,10 +54,6 @@ hr {
 
 .search-results-category {
     display:inline;
-}
-
-.offers-table {
-    
 }
 
 .generated-pagination {
@@ -203,10 +199,6 @@ hr {
     font-weight:bold;
 }
 
-.redeem-coupon-btn {
-    padding:15px;
-}
-
 .offers-available {
     font-style:italic;
 }
@@ -249,4 +241,50 @@ hr {
 .popshops-navbar-logo {
     padding-left:40px;
     padding-right:30px;
+}
+
+.deal-merchant-name {
+    
+}
+
+.deal-sidebar {
+    text-align:center;
+}
+
+.deal-sidebar-name {
+    font-size:80%;
+}
+
+.deal-sidebar-img {
+    float:left;
+    max-height:30px;
+}
+
+.deal-sidebar-expires {
+    font-size:80%;
+    color:red;
+}
+
+.deal-sidebar-redeem {
+    float:right;
+    font-weight:bold;
+}
+
+.deal-sidebar-buttons {
+    margin-bottom:40px;
+}
+
+.deal-sidebar-code-label {
+    font-size:80%;
+    color:gray;
+    font-weight:bold;
+}
+
+.deal-sidebar-code-value {
+    font-size:80%;
+    color:orange;
+}
+
+.product-deals-header {
+    text-align:center;
 }

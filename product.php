@@ -16,25 +16,30 @@
     <?php require("navbar.php");?>
     <div class="container">
       <div class="row">
-        <div class="span2 sidebar">
-	  <h3>Categories</h3>
-	  <hr>
-	  <ul>
+        <div class="span3 sidebar">
+	  <h3 class="product-deals-header">Available Coupons</h3>
+	  <hr />
 	  <?php
-	    foreach($api->getCategories() as $category) { ?>
-	      <li>
-		<a href="search.php?psapi_keyword=&psapi_category=<?= $category->getId() ?>">
-		  <?= $category->getName() ?>
-		</a>
-	      </li>
-	    <?php } ?>
-	  </ul>
+	    date_default_timezone_set("UTC");
+	    $today_time = strtotime(date("Y-m-d"));
+	    foreach ($api->getDeals() as $deal) {
+	      if ($deal->getStartOn()) {
+		$parts = explode("/", $deal->getStartOn());
+		$start_time = strtotime($parts[2] . '-' . $parts[0] . '-' . $parts[1]);
+		if ($start_time < $today_time) {
+		  renderDealSidebar($deal);
+		}
+	      } else {
+		renderDealSidebar($deal);
+	      }
+	    }
+	  ?>
         </div>
-        <div class="span10">
+        <div class="span9">
 	  <h2><?= $p->getName() ?></h2>
 	  <hr>
 	  <div class="row">
-	    <div class="span10">
+	    <div class="span9">
 	      <a href="<?= $p->largestImageUrl() ?>">
 		<img class="product-detail-large-image" src="<?= $p->largestImageUrl() ?>">
 	      </a>
@@ -45,15 +50,11 @@
 	      <span class="brand-label">Brand: </span><span class="brand-value"><?= $p->getBrand()->getName() ?></span>
 	    </div>
 	  </div>
-	  <div class="row">
-	    <div class="span12">
-	      <hr>
-	      <h2>
-		Offers
-	      </h2>
-	    </div>
-	  </div>
-	  <table class="table-hover offers-table">
+	  <hr />
+	  <h2>
+	    Offers
+	  </h2>
+	  <table class="table-hover">
 	    <tr>
 	      <td class="span2 offer-table-header">
 		Store

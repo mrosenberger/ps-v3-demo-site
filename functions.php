@@ -3,7 +3,15 @@
   function renderOffer($offer) { ?>
     <tr>
       <td class="span2">
-        <img class="merchant-small-image img-rounded" src="<?=$offer->getMerchant()->getLogoUrl() ?>">
+        <?php
+          if ($offer->getMerchant()->getLogoUrl()) { ?>
+            <img class="merchant-small-image img-rounded" src="<?=$offer->getMerchant()->getLogoUrl() ?>">
+            <?php
+          } else { ?>
+            <?= $offer->getMerchant()->getName() ?>
+            <?php
+          }
+        ?>
       </td>
       <td align="center" class="span2">
         <span class="offer-price-merchant">$<?= money_format('%i', $offer->getPriceMerchant()) ?></span>
@@ -72,11 +80,11 @@
           if (strlen($product->getDescription()) > $description_cutoff) { ?>
             <div class="less">
               <?= substr(htmlentities($product->getDescription()), 0, $description_cutoff) ?>...
-              <a href="#" class="read-more">More</a>
+              <a href="#" class="read-more">more</a>
             </div>
             <div class="more" style="display:none;">
               <?= $product->getDescription() ?>
-              <a href="#" class="read-less">Less</a>
+              <a href="#" class="read-less">less</a>
             </div>
           <?php } else { ?>
             <?= htmlentities($product->getDescription()) ?>
@@ -91,9 +99,9 @@
           <span class="dollar-sign">$</span><span class="product-price"><?= money_format('%i', $product->getPriceMax()) ?></span>
         <?php } ?>
         <br><br>
-        <button class="btn compare-offers-btn btn-warning" onclick="location.href='product.php?psapi_product=<?= $product->getId() ?>';">
+        <a class="btn compare-offers-btn btn-warning" href="product.php?psapi_product=<?= $product->getId() ?>">
           <?php if (((int) $product->getOfferCount()) === 1) { print('View Offer'); } else { print('Compare Offers'); } ?>
-        </button>
+        </a>
         <br />
         <small class="offers-available">
           <?= $product->getOfferCount() ?>
@@ -111,18 +119,48 @@
     <hr />
   <?php }
   
-  function renderDeal($deal) {
-    $description_cutoff = 200; ?>
+  function renderDealSidebar($deal) { ?>
+    <div class="well deal-sidebar">
+      <a rel="nofollow" href="<?= $deal->getUrl() ?>">
+        <div class="deal-sidebar-buttons">
+          <img class="img-rounded deal-sidebar-img" src="<?= $deal->getMerchant()->getLogoUrl() ?>" />
+          <a rel="nofollow" class="btn btn-warning deal-sidebar-redeem" href="<?= $deal->getUrl() ?>">Redeem</a>
+        </div>
+        <div class="deal-sidebar-name"><?= $deal->getName() ?></div>
+      </a>
+      <div class="deal-sidebar-expires">Expires <?= $deal->getEndOn() ?></div>
+      <div>
+        <?php
+          if (($deal->getCode() != '') and !in_array(strtolower($deal->getCode()),
+                                                     array('none', 'no code required', 'n/a', 'no code needed', 'no coupon code'))) {
+            if (strpos(strtolower($deal->getCode()), 'required') === FALSE) { ?>
+              <span class="deal-sidebar-code-label">Coupon code: </span><span class="deal-sidebar-code-value"><?= $deal->getCode() ?></span>
+              <?php
+            }
+          }
+        ?>
+      </div>
+    </div>
+    <?php
+  }
+  
+  function renderDeal($deal) { ?>
     <div class="row">
       <div class="span2">
-        <a href="<?= $deal->getUrl() ?>">
-          <?php if ($deal->getMerchant()) { ?>
-            <img class="img-rounded merchant-small-image" src="<?= $deal->getMerchant()->getLogoUrl() ?>">
-          <?php } ?>
+        <a rel="nofollow" href="<?= $deal->getUrl() ?>">
+          <?php
+            if ($deal->getMerchant() and $deal->getMerchant()->getLogoUrl()) { ?>
+              <img class="img-rounded merchant-small-image" src="<?= $deal->getMerchant()->getLogoUrl() ?>">
+              <?php
+            } else if ($deal->getMerchant()) { ?>
+              <span class="deal-merchant-name"><?= $deal->getMerchant()->getName() ?></span>
+              <?php
+            }
+          ?>
         </a>
       </div>
       <div class="span3 deal-name">
-        <a href="<?= $deal->getUrl() ?>"><?= $deal->getName() ?></a>
+        <a rel="nofollow" href="<?= $deal->getUrl() ?>"><?= $deal->getName() ?></a>
       </div>
       <div class="span2">
         <small>
@@ -130,7 +168,7 @@
           <span class="deal-start-label">Valid from: </span><span class="deal-start-value"><?= $deal->getStartOn() ?></span><br />
           <?php
         }
-          if ($deal->getEndOn() != '') { ?>
+          if (($deal->getEndOn() != '') and ($deal->getEndOn() != '01/01/2017')) { ?>
             <span class="deal-end-label">Good through: </span><span class="deal-end-value"><?= $deal->getEndOn() ?></span><br />
           <?php }
           if (($deal->getCode() != '') and !in_array(strtolower($deal->getCode()),
@@ -144,9 +182,7 @@
         </small>
       </div>
       <div class="span1">
-        <button class="btn redeem-coupon-btn btn-warning" onclick="location.href='<?= $deal->getUrl() ?>';">
-          Redeem
-        </button>
+        <a class="btn btn-warning" rel="nofollow" href="<?= $deal->getUrl() ?>">Redeem</a>
       </div>
     </div>
     <hr />
@@ -184,7 +220,7 @@
     }?>
     <div class="pagination generated-pagination <?php if ($center) { print('pagination-centered'); } ?>">
       <ul>
-        <li <?php if ($current === 1) { print('class="active"'); } ?>><a href="<?= $api->paginate(1) ?>">&laquo; First</a></li>
+        <li <?php if ($current === 1) { print('class="active"'); } ?>><a href="<?= $api->prevPage() ?>">&laquo; Prev</a></li>
         <?php
           for ($i=$min; $i < $min + $num_cells; $i += 1) {
             if ($i <= $pages) { ?>
@@ -197,7 +233,7 @@
             }
           }
         ?>
-        <li <?php if ($current === $pages) { print('class="active"'); } ?>><a href="<?= $api->paginate($pages) ?>">Last &raquo;</a></li>
+        <li <?php if ($current === $pages) { print('class="active"'); } ?>><a href="<?= $api->nextPage() ?>">Next &raquo;</a></li>
       </ul>
     </div><?php
   }
@@ -208,7 +244,8 @@
     foreach ($api->getOptions() as $option=>$value) {
       if (! in_array($option, $omit)) { ?>
         <input type="hidden" name="<?= $api->getUrlPrefix() . $option ?>" value="<?= $value ?>">
-      <?php }
+        <?php
+      }
     }
   }
   

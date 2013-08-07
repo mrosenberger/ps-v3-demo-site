@@ -35,7 +35,7 @@
 		</li>
 	    <?php } ?>
 	  </ul>
-	  <span class="sidebar-heading">Focus on retailer:</span>
+	  <span class="sidebar-heading">Focus on store:</span>
 	  <ul class="sidebar-option-ul">
 	    <?php
 	      foreach($api->getMerchants() as $merchant) {
@@ -95,8 +95,26 @@
 	  </div>
 	  <br />
 	  <?php
+	    $not_started = 0;
+	    date_default_timezone_set("UTC");
+	    $today_time = strtotime(date("Y-m-d"));
 	    foreach ($api->getDeals() as $deal) {
-	      renderDeal($deal);
+	      if ($deal->getStartOn()) {
+		$parts = explode("/", $deal->getStartOn());
+		$start_time = strtotime($parts[2] . '-' . $parts[0] . '-' . $parts[1]);
+		if ($start_time < $today_time) {
+		  renderDeal($deal);
+		} else {
+		  //print('HAS NOT STARTED YET: ' . $deal->getStartOn() . '<br />');
+		  $not_started++;
+		  // It hasn't started yet
+		}
+	      } else {
+		renderDeal($deal);
+	      }
+	    }
+	    if ($not_started) {
+	      print('Omitting ' . $not_started . ' coupons that are not yet active.');
 	    }
 	    generateBootstrapPagination($api);
 	  ?>

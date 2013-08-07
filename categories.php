@@ -31,7 +31,7 @@
 	  </ul>
 	</div>
         <div class="span9 offset3">
-          <h1>Categories</h1>
+          <h1>Departments</h1>
           <?php
 	    foreach($tree->getChildren() as $child) { ?>
 	      <div class=row>
