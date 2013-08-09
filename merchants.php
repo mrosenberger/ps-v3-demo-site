@@ -2,7 +2,7 @@
 <html>
   <head>
     <?php require("header-titleless.php"); ?>
-    <title>ShopFoo Merchants</title>
+    <title>Stores</title>
   </head>
   <body>
     <?php
@@ -18,7 +18,7 @@
 	  <span class="sidebar-heading">Select store category:</span>
 	  <ul class="sidebar-option-ul">
 	    <?php
-	      foreach($api->getCategories() as $category) {
+	      foreach(sortByName($api->getCategories()) as $category) {
 		$checked = ($api->hasParameter('category') and ($category->getId() == $api->getParameterValue('category')));
 		?>
 		<li>
@@ -28,9 +28,11 @@
 		  } else {
 		    print($api->getQueryString(array('category' => $category->getId(), 'page' => '1', 'alpha' => '')));
 		  } ?>
-		    ">
-		    <input type="checkbox" <?php if ($checked) { print("checked"); } ?>>
-		    <small><?= $category->getName() . getCountHtml($category->getCount()) ?></small>
+		    ">	    
+		    <?php if ($checked) { print("<i class='sidebar-close-icon icon-remove'></i>"); } ?>
+		    <small <?php if ($checked) { print('style="font-weight:bold;"'); } ?>>
+		      <?= $category->getName() . getCountHtml($category->getCount()) ?>
+		    </small>
 		  </a>
 		</li>
 		<?php
@@ -44,7 +46,7 @@
 	      if ($api->hasParameter('category')) {
 		if ($api->getParameterValue('category') != '') {
 		  if ($api->getCategory($api->getParameterValue('category'))) {
-		    print($api->getCategory($api->getParameterValue('category'))->getName());
+		    print($api->getCategory($api->getParameterValue('category'))->getName() . ' ');
 		  }
 		}
 	      }
@@ -71,7 +73,7 @@
 	    <?php
 	      if($api->hasParameter("alpha")) { ?>
 		<script language="javascript">
-		  document.getElementById("store-alpha-select-".concat(<?= $api->getParameterValue("alpha") ?>)).setAttribute("selected", "true");
+		  document.getElementById("store-alpha-select-<?= $api->getParameterValue("alpha") ?>").selected = "true";
 		</script>
 		<?php
 	      }

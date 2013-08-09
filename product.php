@@ -10,7 +10,7 @@
       $p = $api->getProducts();
       $p = $p[0];
     ?>
-    <title>ShopFoo</title>
+    <title><?= $p->getName() ?></title>
   </head>
   <body>
     <?php require("navbar.php");?>

@@ -2,7 +2,7 @@
 <html>
   <head>
     <?php require("header-titleless.php"); ?>
-    <title>ShopFoo</title>
+    <title>Coupons</title>
   </head>
   <body>
     <?php
@@ -18,7 +18,7 @@
 	  <span class="sidebar-heading">Focus on type of deal:</span>
 	  <ul class="sidebar-option-ul">
 	    <?php
-	      foreach($api->getDealTypes() as $deal_type) {
+	      foreach(sortByName($api->getDealTypes()) as $deal_type) {
 		$checked = ($api->hasParameter('deal_type') and ($deal_type->getId() == $api->getParameterValue('deal_type')));
 		?>
 		<li>
@@ -29,8 +29,10 @@
 		    print($api->getQueryString(array('deal_type' => $deal_type->getId(), 'page' => '1')));
 		  } ?>
 		    ">
-		    <input type="checkbox" <?php if ($checked) { print("checked"); } ?>>
-		    <small><?= $deal_type->getName() . getCountHtml($deal_type->getCount()) ?></small>
+		    <?php if ($checked) { print("<i class='sidebar-close-icon icon-remove'></i>"); } ?>
+		    <small <?php if ($checked) { print('style="font-weight:bold;"'); } ?>>
+		      <?= $deal_type->getName() . getCountHtml($deal_type->getCount()) ?>
+		    </small>
 		  </a>
 		</li>
 	    <?php } ?>
@@ -38,7 +40,7 @@
 	  <span class="sidebar-heading">Focus on store:</span>
 	  <ul class="sidebar-option-ul">
 	    <?php
-	      foreach($api->getMerchants() as $merchant) {
+	      foreach(sortByName($api->getMerchants()) as $merchant) {
 		$checked = ($api->hasParameter('merchant') and ($merchant->getId() == $api->getParameterValue('merchant')));
 		?>
 		<li>
@@ -49,8 +51,10 @@
 		    print($api->getQueryString(array('merchant' => $merchant->getId(), 'page' => '1')));
 		  } ?>
 		    ">
-		    <input type="checkbox" <?php if ($checked) { print("checked"); } ?>>
-		    <small><?= $merchant->getName() . getCountHtml($merchant->getCount()) ?></small>
+		    <?php if ($checked) { print("<i class='sidebar-close-icon icon-remove'></i>"); } ?>
+		    <small <?php if ($checked) { print('style="font-weight:bold;"'); } ?>>
+		      <?= $merchant->getName() . getCountHtml($merchant->getCount()) ?>
+		    </small>
 		  </a>
 		</li>
 	    <?php } ?>
@@ -58,11 +62,17 @@
         </div>
         <div class="span9">
 	  <?php
-	    if ($api->hasParameter('keyword') and $api->getParameterValue('keyword') !== '') {
-	      print('<h2 class="search-results-header">' . $api->getResultsCount() .
-		    ' coupon results for "' . $api->getParameterValue('keyword') . '"</h2>');
-	    } else {
-	      print('<h2 class="search-results-header">Coupon results</h2>');
+	    if ($api->hasParameter('keyword') and $api->getParameterValue('keyword') !== '') { ?>
+	      <h2 class="search-results-header">
+		<?= str_replace("100001", "Thousands of ", (string) $api->getResultsCount()) ?>
+		coupon results for "<?= $api->getParameterValue('keyword') ?>"
+	      </h2> <?php
+	    } else { ?>
+	      <h2 class="search-results-header">
+		<i class="icon-fire hot-products-icon"> </i>
+		<span class="hot-products-text">Hot</span>
+		Coupons
+	      </h2> <?php
 	    }
 	    if ($api->getResultsCount() == 0) { ?>
 	      <br /><br />
@@ -73,10 +83,6 @@
 	    if ($api->hasParameter('merchant') and $api->getParameterValue('merchant') !== '') {
 	      print(' <h4 class="search-results-merchant">&#8213; From ' .
 		    $api->getMerchant($api->getParameterValue('merchant'))->getName() . '</h4>');
-	    }
-	    if ($api->hasParameter('category') and $api->getParameterValue('category') !== '') {
-	      print(' <h4 class="search-results-category">&#8213; In ' .
-		    $api->getCategory($api->getParameterValue('category'))->getName() . '</h4>');
 	    }
 	  ?>
 	  <div>

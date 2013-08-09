@@ -164,21 +164,24 @@
       </div>
       <div class="span2">
         <small>
-        <?php if ($deal->getStartOn() != '') { ?>
-          <span class="deal-start-label">Valid from: </span><span class="deal-start-value"><?= $deal->getStartOn() ?></span><br />
-          <?php
-        }
-          if (($deal->getEndOn() != '') and ($deal->getEndOn() != '01/01/2017')) { ?>
-            <span class="deal-end-label">Good through: </span><span class="deal-end-value"><?= $deal->getEndOn() ?></span><br />
-          <?php }
-          if (($deal->getCode() != '') and !in_array(strtolower($deal->getCode()),
-                                                     array('none', 'no code required', 'n/a', 'no code needed', 'no coupon code'))) {
-            if (strpos(strtolower($deal->getCode()), 'required') === FALSE) { ?>
-              <span class="deal-code-label">Coupon code: </span><span class="deal-code-value"><?= $deal->getCode() ?></span>
-              <?php
-            }
+          <?php if ($deal->getStartOn() != '') { ?>
+            <span class="deal-start-label">Valid from: </span><span class="deal-start-value"><?= $deal->getStartOn() ?></span><br />
+            <?php
           }
-        ?>
+            if (($deal->getEndOn() != '') and ($deal->getEndOn() != '01/01/2017')) { ?>
+              <span class="deal-end-label">Good through: </span><span class="deal-end-value"><?= $deal->getEndOn() ?></span><br />
+            <?php }
+            if (($deal->getCode() != '') and !in_array(strtolower($deal->getCode()),
+                                                       array('none', 'no code required', 'n/a', 'no code needed', 'no coupon code'))) {
+              if (strpos(strtolower($deal->getCode()), 'required') === FALSE) {
+                generateCouponModal($deal); ?>
+                <a class="" href="#deal-modal-<?= $deal->getId() ?>" data-toggle="modal">
+                  View code
+                </a>
+                <?php
+              }
+            }
+          ?>
         </small>
       </div>
       <div class="span1">
@@ -310,5 +313,61 @@
         return '';
       }
     }
+  }
+  
+  function cmpObjByName($a, $b) { 
+    if ($a->getName() ==  $b->getName()) {
+      return 0;
+    } else if ($a->getName() == 'All') {
+      return -1;
+    } else if ($b->getName() == 'All') {
+      return 1;
+    } else {
+      return ($a->getName() < $b->getName()) ? -1 : 1;
+    }
+  }
+
+  function sortByName($arr) {
+    $tmp = $arr;
+    usort($tmp, "cmpObjByName");
+    return $tmp;
+  }
+  
+  function generateCouponModal($deal) { ?>
+    <div class="modal fade span3 coupon-modal" id="deal-modal-<?= $deal->getId() ?>" style="display:none;margin-left:-100px;">
+      <div class="modal-header">
+	<a class="close" data-dismiss="modal">&times;</a>
+	<h3>Coupon</h3>
+      </div>
+      <div class="modal-body well">
+        <a rel="nofollow" href="<?= $deal->getUrl() ?>">
+          <div class="deal-sidebar-buttons">
+            <?php
+              if ($deal->getMerchant()) { ?>
+                <img class="img-rounded deal-sidebar-img" src="<?= $deal->getMerchant()->getLogoUrl() ?>" />
+                <?php
+              } else {
+                print("Unknown");
+              }
+            ?>
+            <a rel="nofollow" class="btn btn-warning deal-sidebar-redeem" href="<?= $deal->getUrl() ?>">Redeem</a>
+          </div>
+          <div class="deal-sidebar-name"><?= $deal->getName() ?></div>
+        </a>
+        <div class="deal-sidebar-expires">Expires <?= $deal->getEndOn() ?></div>
+        <div>
+          <?php
+            if (($deal->getCode() != '') and !in_array(strtolower($deal->getCode()),
+                array('none required', 'none', 'no code required', 'n/a', 'no code needed', 'no coupon code'))) {
+              if (strpos(strtolower($deal->getCode()), 'required') === FALSE) { ?>
+                <span class="deal-sidebar-code-label">Coupon code: </span><span class="deal-sidebar-code-value"><?= $deal->getCode() ?></span>
+                <?php
+              }
+            }
+          ?>
+        </div>
+      </div>
+    </div>
+    <?php
   }
 ?>

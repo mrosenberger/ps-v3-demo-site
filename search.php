@@ -2,7 +2,7 @@
 <html>
   <head>
     <?php require("header-titleless.php"); ?>
-    <title>ShopFoo</title>
+    <title>Products</title>
   </head>
   <body>
     <?php
@@ -18,7 +18,7 @@
 	  <span class="sidebar-heading">Focus on category:</span>
 	  <ul class="sidebar-option-ul">
 	    <?php
-	      foreach($api->getCategories() as $category) {
+	      foreach(sortByName($api->getCategories()) as $category) {
 		$checked = ($api->hasParameter('category') and ($category->getId() == $api->getParameterValue('category')));
 		?>
 		<li>
@@ -29,8 +29,10 @@
 		    print($api->getQueryString(array('category' => $category->getId(), 'page' => '1')));
 		  } ?>
 		    ">
-		    <input type="checkbox" <?php if ($checked) { print("checked"); } ?>>
-		    <small><?= $category->getName() ?></small>
+		    <?php if ($checked) { print("<i class='sidebar-close-icon icon-remove'></i>"); } ?>
+		    <small <?php if ($checked) { print('style="font-weight:bold;"'); } ?>>
+		      <?= $category->getName() ?>
+		    </small>
 		  </a>
 		</li>
 	    <?php } ?>
@@ -38,7 +40,7 @@
 	  <span class="sidebar-heading">Focus on brand:</span>
 	  <ul class="sidebar-option-ul">
 	    <?php
-	      foreach($api->getBrands() as $brand) {
+	      foreach(sortByName($api->getBrands()) as $brand) {
 		$checked = ($api->hasParameter('brand') and ($brand->getId() == $api->getParameterValue('brand')));
 		?>
 		<li>
@@ -49,8 +51,10 @@
 		    print($api->getQueryString(array('brand' => $brand->getId(), 'page' => '1')));
 		  } ?>
 		    ">
-		    <input type="checkbox" <?php if ($checked) { print("checked"); } ?>>
-		    <small><?= $brand->getName() . getCountHtml($brand->getCount()) ?></small>
+		    <?php if ($checked) { print("<i class='sidebar-close-icon icon-remove'></i>"); } ?>
+		    <small <?php if ($checked) { print('style="font-weight:bold;"'); } ?>>
+		      <?= $brand->getName() . getCountHtml($brand->getCount()) ?>
+		    </small>
 		  </a>
 		</li>
 	    <?php } ?>

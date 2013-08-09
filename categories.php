@@ -2,7 +2,7 @@
 <html>
   <head>
     <?php require("header-titleless.php"); ?>
-    <title>ShopFoo</title>
+    <title>Departments</title>
   </head>
   <body>
     <?php

@@ -43,7 +43,7 @@
 		<option value="32345" id="nav-cat-select-32345" class="nav-category-option">Travel</option>
 		<option value="8400" id="nav-cat-select-8400" class="nav-category-option">Video Games, Consoles &amp; Accessories</option>
 		<option value="9100" id="nav-cat-select-9100" class="nav-category-option">Weapons</option>
-		<?php if(array_key_exists("psapi_category", $_GET)) { ?>
+		<?php if(array_key_exists("psapi_category", $_GET) and ($_GET["psapi_category"] != '')) { ?>
 		  <script language="javascript">
 		    document.getElementById("nav-cat-select-".concat(<?= $_GET["psapi_category"] ?>)).setAttribute("selected", "true");
 		  </script>
