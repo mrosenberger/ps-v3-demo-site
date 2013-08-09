@@ -286,4 +286,6 @@ body {
 
 .coupon-modal {
     text-align:center;
+    display:none;
+    margin-left:-100px;
 }

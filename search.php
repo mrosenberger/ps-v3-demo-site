@@ -31,7 +31,7 @@
 		    ">
 		    <?php if ($checked) { print("<i class='sidebar-close-icon icon-remove'></i>"); } ?>
 		    <small <?php if ($checked) { print('style="font-weight:bold;"'); } ?>>
-		      <?= $category->getName() ?>
+		      <?= $category->getName() . getCountHtml($category->getCount()) ?>
 		    </small>
 		  </a>
 		</li>
@@ -54,6 +54,28 @@
 		    <?php if ($checked) { print("<i class='sidebar-close-icon icon-remove'></i>"); } ?>
 		    <small <?php if ($checked) { print('style="font-weight:bold;"'); } ?>>
 		      <?= $brand->getName() . getCountHtml($brand->getCount()) ?>
+		    </small>
+		  </a>
+		</li>
+	    <?php } ?>
+	  </ul>
+	  <span class="sidebar-heading">Products with offers from:</span>
+	  <ul class="sidebar-option-ul">
+	    <?php
+	      foreach(sortByName($api->getMerchants()) as $merchant) {
+		$checked = ($api->hasParameter('merchant') and ($merchant->getId() == $api->getParameterValue('merchant')));
+		?>
+		<li>
+		  <a href="<?php
+		  if ($checked) {
+		    print($api->getQueryString(array('merchant' => '', 'page' => '1')));
+		  } else {
+		    print($api->getQueryString(array('merchant' => $merchant->getId(), 'page' => '1')));
+		  } ?>
+		    ">
+		    <?php if ($checked) { print("<i class='sidebar-close-icon icon-remove'></i>"); } ?>
+		    <small <?php if ($checked) { print('style="font-weight:bold;"'); } ?>>
+		      <?= $merchant->getName() . getCountHtml($merchant->getCount()) ?>
 		    </small>
 		  </a>
 		</li>

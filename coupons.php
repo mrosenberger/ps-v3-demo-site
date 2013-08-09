@@ -15,7 +15,7 @@
     <div class="container">
       <div class="row">
         <div class="span3 sidebar">
-	  <span class="sidebar-heading">Focus on type of deal:</span>
+	  <span class="sidebar-heading">Focus on type of coupon:</span>
 	  <ul class="sidebar-option-ul">
 	    <?php
 	      foreach(sortByName($api->getDealTypes()) as $deal_type) {
